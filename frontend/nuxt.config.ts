@@ -7,6 +7,19 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
+  // Favicon de Carteliax
+  app: {
+    head: {
+      link: [
+        {
+          rel: "icon",
+          type: "image/png",
+          href: "/favicon.png?v=2",
+        },
+      ],
+    },
+  },
+
   css: ["~/assets/css/main.css"],
 
   vite: {
