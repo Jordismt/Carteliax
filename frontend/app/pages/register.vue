@@ -4,14 +4,10 @@ import { CheckCircle2 } from "lucide-vue-next";
 import { authError } from "~/utils/uiErrors";
 import { computed, ref } from "vue";
 
-useHead({
+useSeoMeta({
   title: "Crear cuenta | Carteliax",
-  meta: [
-    {
-      name: "description",
-      content: "Crea tu cuenta en Carteliax y empieza a gestionar tus cartas digitales.",
-    },
-  ],
+  description: "Crea tu cuenta en Carteliax para preparar la web y la carta digital QR de tu restaurante. La prueba empieza al activar la suscripción.",
+  robots: "noindex, nofollow",
 });
 
 const { register, loading, error } = useAuth();

@@ -2,9 +2,7 @@
 import { authError } from "~/utils/uiErrors";
 import { ref } from "vue";
 
-useHead({
-  title: "Iniciar sesión | Carteliax",
-});
+useSeoMeta({ title: "Iniciar sesión | Carteliax", description: "Accede a tu cuenta de Carteliax para gestionar establecimientos, cartas digitales y facturación.", robots: "noindex, nofollow" });
 
 const { login, loading, error } = useAuth();
 

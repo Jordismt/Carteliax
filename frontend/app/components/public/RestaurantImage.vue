@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ src: string; alt: string; width: number; height: number; priority?: boolean }>();
+const props = defineProps<{ src: string; alt: string; width: number; height: number; priority?: boolean; eager?: boolean }>();
 const failed = ref(false);
 const element = ref<HTMLImageElement>();
 onMounted(() => { if (element.value?.complete && !element.value.naturalWidth) failed.value = true; });
@@ -7,7 +7,7 @@ watch(() => props.src, () => { failed.value = false; });
 </script>
 <template>
   <span class="restaurant-image" :class="{ 'image-failed': failed }">
-    <img ref="element" v-if="!failed" :src="src" :alt="alt" :width="width" :height="height" :loading="priority ? 'eager' : 'lazy'" :fetchpriority="priority ? 'high' : 'auto'" decoding="async" @error="failed = true" />
+    <img ref="element" v-if="!failed" :src="src" :alt="alt" :width="width" :height="height" :loading="priority || eager ? 'eager' : 'lazy'" :fetchpriority="priority ? 'high' : 'auto'" decoding="async" @error="failed = true" />
     <span v-else class="image-fallback" role="img" :aria-label="alt">{{ alt.charAt(0) }}</span>
   </span>
 </template>

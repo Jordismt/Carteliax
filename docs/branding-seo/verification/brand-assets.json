@@ -1,0 +1,159 @@
+{
+  "pass": true,
+  "original_intact": true,
+  "all_opaque_pixels_rgb_preserved": true,
+  "master_bbox": [
+    317,
+    212,
+    972,
+    1054
+  ],
+  "ico_sizes": [
+    [
+      16,
+      16
+    ],
+    [
+      32,
+      32
+    ],
+    [
+      48,
+      48
+    ]
+  ],
+  "assets": [
+    {
+      "path": "favicon-16x16.png",
+      "dimensions": [
+        16,
+        16
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 734
+    },
+    {
+      "path": "favicon-32x32.png",
+      "dimensions": [
+        32,
+        32
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 1906
+    },
+    {
+      "path": "apple-touch-icon.png",
+      "dimensions": [
+        180,
+        180
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 27157
+    },
+    {
+      "path": "android-chrome-192x192.png",
+      "dimensions": [
+        192,
+        192
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 30256
+    },
+    {
+      "path": "android-chrome-512x512.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 158480
+    },
+    {
+      "path": "images/brand/carteliax-mark-64.png",
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 5581
+    },
+    {
+      "path": "images/brand/carteliax-mark-64.webp",
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 4150
+    },
+    {
+      "path": "images/brand/carteliax-mark-96.png",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 10095
+    },
+    {
+      "path": "images/brand/carteliax-mark-96.webp",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 7368
+    },
+    {
+      "path": "images/brand/carteliax-mark-512.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 158480
+    },
+    {
+      "path": "images/brand/carteliax-mark-512.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "bytes": 108588
+    }
+  ]
+}

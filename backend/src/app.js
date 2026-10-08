@@ -5,6 +5,7 @@ import helmet from "helmet";
 
 import { env } from "./config/env.js";
 import { createCorsOptions } from "./config/cors.js";
+import { getPublicSitemap } from './modules/publicSites/publicSitemapController.js';
 
 // ==========================================
 // RUTAS EXISTENTES
@@ -51,6 +52,7 @@ const app = express();
 // ==========================================
 
 app.use(helmet());
+app.use((req, res, next) => { res.setHeader('X-Robots-Tag', 'noindex, nofollow'); next(); });
 
 app.use(cors(createCorsOptions(env.FRONTEND_URL)));
 
@@ -103,6 +105,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/public/menus", publicMenuRouter);
 app.use("/api/public/sites", publicSiteRouter);
+app.get('/api/public/sitemap', getPublicSitemap);
 
 // ==========================================
 // ESTABLECIMIENTOS

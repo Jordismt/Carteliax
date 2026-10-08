@@ -1,0 +1,24 @@
+{
+  "brandingAssets": true,
+  "backendTests": {
+    "pass": 117,
+    "fail": 0,
+    "type": "local mocks and fixtures"
+  },
+  "seoUtilityTests": 3,
+  "seoBrandingChecks": 27,
+  "hostChecks": 5,
+  "functionalChecks": 32,
+  "publicTemplateChecks": 43,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "lighthouse": {
+    "performance": 90,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "historicalSuite": "FAIL: pre-existing hidden mobile CTA assumption; current suite passed",
+  "productionChanges": false,
+  "commitPushDeploy": false
+}

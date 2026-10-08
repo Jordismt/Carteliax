@@ -10,6 +10,7 @@ function response(state,requestPath,method='GET',body={}){
   return result;
  }
  for(const b of state.businesses){b.public_slug ??= b.slug;b.public_profile={...empty(),...b.public_profile};b.cover_url ??= null;}
+ if(path==='/api/public/sitemap')return {status:200,data:{slugs:[...new Set(state.businesses.filter(b=>state.menus.some(m=>m.business_id===b.id&&m.is_published)&&state.themeRecord.published_at&&Object.keys(state.themeRecord.published_config||{}).length).map(b=>b.public_slug))],nextOffset:null}};
  if(path.startsWith('/api/public/sites/')){
   const slug=decodeURIComponent(path.split('/').at(-1));const b=state.businesses.find(b=>b.public_slug===slug);
   if(!b)return {status:404,data:{message:'Web no disponible'}};

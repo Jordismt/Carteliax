@@ -177,3 +177,10 @@ textarea { resize: vertical; }
 .workspace input[type=file]::file-selector-button{border:1px solid var(--ui-border);border-radius:8px;background:var(--ui-accent-soft);color:var(--ui-accent);padding:10px 12px;margin-right:10px;cursor:pointer;font-weight:600}
 .workspace :where(button,a):is(.bg-emerald-600,.bg-emerald-700):hover:not(:disabled){background-color:var(--ui-accent-hover)}
 .workspace :where(button,a):is(.bg-emerald-600,.bg-emerald-700):active:not(:disabled){transform:translateY(1px)}
+
+/* Original Carteliax symbol: transparent asset, measured box, existing wordmark. */
+.commercial-brand .brand-mark,.app-brand .app-brand-symbol{background:transparent}
+.auth-brand{display:inline-flex;align-items:center;gap:0}
+.auth-mobile-brand{align-items:center;gap:0}
+.auth-brand .carteliax-mark,.auth-mobile-brand .carteliax-mark{margin-right:10px}
+@media(max-width:767px){.auth-mobile-brand{display:inline-flex}}

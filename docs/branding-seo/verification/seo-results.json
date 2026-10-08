@@ -1,0 +1,115 @@
+{
+  "environment": "Nuxt production build, local explicit fixtures",
+  "results": [
+    {
+      "name": "Landing SSR: metadata, canonical único, esquema y oferta real",
+      "result": "PASS"
+    },
+    {
+      "name": "Privadas SSR: noindex en meta y cabecera, canonical sin query",
+      "result": "PASS"
+    },
+    {
+      "name": "Restaurante publicado SSR: datos reales, imágenes propias y variantes canonical",
+      "result": "PASS"
+    },
+    {
+      "name": "404 real sin mensajes internos; redirección legacy preservada",
+      "result": "PASS"
+    },
+    {
+      "name": "Sitemap XML: sólo raíz y slugs publicados, sin IDs ni variantes",
+      "result": "PASS"
+    },
+    {
+      "name": "Sin cartas publicadas: noindex y ausente del sitemap",
+      "result": "PASS"
+    },
+    {
+      "name": "Iconos globales, manifest y recursos optimizados responden 200",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 320 /: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 320 /login: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 320 /register: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 320 /dashboard: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 320 /restaurante-jordi: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 390 /: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 390 /login: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 390 /register: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 390 /dashboard: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 390 /restaurante-jordi: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 768 /: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 768 /login: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 768 /register: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 768 /dashboard: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 768 /restaurante-jordi: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 1440 /: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 1440 /login: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 1440 /register: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 1440 /dashboard: marca, imágenes y overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "Navegador 1440 /restaurante-jordi: marca, imágenes y overflow",
+      "result": "PASS"
+    }
+  ],
+  "errors": [],
+  "consoleErrors": []
+}

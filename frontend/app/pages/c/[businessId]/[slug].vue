@@ -10,6 +10,8 @@ import { DEFAULT_MENU_THEME } from "~/types/menuTheme";
 
 import type { PublicMenuResponse } from "~/types/publicSite";
 import { publicSitePath } from "~/utils/publicUrls";
+import { seoOrigin, seoText, publicImageUrl } from "~/utils/seo";
+import { setResponseStatus } from "h3";
 
 // ======================================
 // RUTA
@@ -35,6 +37,10 @@ const endpoint = computed(
 );
 
 const { data, pending, error, refresh } = await useFetch<PublicMenuResponse>(endpoint);
+if (import.meta.server && error.value) {
+  const event = useRequestEvent();
+  if (event) setResponseStatus(event, error.value.statusCode === 404 ? 404 : 502);
+}
 
 // ======================================
 // DATOS DE LA CARTA
@@ -57,11 +63,24 @@ if (data.value?.business.public_slug) {
 // SEO
 // ======================================
 
+const origin = seoOrigin(useRuntimeConfig().public.siteUrl);
+const canonical = origin + `/c/${encodeURIComponent(businessId.value)}/${encodeURIComponent(slug.value)}`;
+const seoDescription = computed(() => seoText(localized.value.menuText?.description || data.value?.menu.description || `Consulta la carta digital de ${restaurantName.value}.`));
+const seoImage = computed(() => publicImageUrl(theme.value.branding.coverUrl || logoUrl.value, origin));
+useHead({ link: [{ rel: 'canonical', href: canonical }] });
 useSeoMeta({
   title: () =>
     data.value ? `${localized.value.menuText?.name || data.value.menu.name} | ${restaurantName.value}` : "Carta digital | Carteliax",
 
-  description: () => localized.value.menuText?.description || data.value?.menu.description || `Consulta nuestra carta digital.`,
+  description: () => seoDescription.value,
+  ogTitle: () => `${data.value?.menu.name || 'Carta digital'} | ${restaurantName.value}`,
+  ogDescription: () => seoDescription.value,
+  ogUrl: canonical,
+  ogType: 'website',
+  ogSiteName: () => restaurantName.value,
+  ogImage: () => seoImage.value,
+  twitterCard: 'summary_large_image',
+  twitterImage: () => seoImage.value,
 
   robots: () => (data.value ? "index, follow" : "noindex, nofollow"),
 });

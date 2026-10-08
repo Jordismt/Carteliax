@@ -1,0 +1,14 @@
+{
+  "name": "Carteliax",
+  "short_name": "Carteliax",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#f5f5f0",
+  "theme_color": "#235747",
+  "icons": [
+    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

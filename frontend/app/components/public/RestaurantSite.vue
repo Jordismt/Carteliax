@@ -38,13 +38,13 @@ const style = computed(() => {
   <div class="restaurant-site" :data-preview="preview || undefined" :class="`site-${profile.template}`" :style="style">
     <a class="skip-link" href="#carta">{{ copy.menu }}</a>
     <nav class="site-nav" :aria-label="business.name">
-      <a class="brand" href="#inicio"><PublicRestaurantImage v-if="business.logo_url" class="brand-logo" :src="business.logo_url" :alt="business.name" :width="36" :height="36" priority /><span>{{ business.name }}</span></a>
+      <a class="brand" href="#inicio"><PublicRestaurantImage v-if="business.logo_url" class="brand-logo" :src="business.logo_url" :alt="business.name" :width="36" :height="36" eager /><span>{{ business.name }}</span></a>
       <div class="nav-actions"><nav v-if="languages.length > 1" class="restaurant-languages" :aria-label="language === 'fr' ? 'Langue' : language === 'en' ? 'Language' : 'Idioma'"><label class="sr-only" for="restaurant-language">{{ language === 'en' ? 'Language' : language === 'fr' ? 'Langue' : 'Idioma' }}</label><select id="restaurant-language" :value="language" @change="emit('language', ($event.target as HTMLSelectElement).value)"><option v-for="option in languages" :key="option.code" :value="option.code">{{ option.native_name }}</option></select></nav><a class="menu-cta" href="#carta">{{ copy.menu }} <ArrowDown :size="16" /></a></div>
     </nav>
     <main>
       <header id="inicio" class="site-hero" :class="{ 'has-photo': coverUrl }">
         <div class="hero-content">
-          <PublicRestaurantImage v-if="business.logo_url" class="hero-logo" :src="business.logo_url" :alt="business.name" :width="64" :height="64" priority />
+          <PublicRestaurantImage v-if="business.logo_url" class="hero-logo" :src="business.logo_url" :alt="business.name" :width="64" :height="64" eager />
           <span v-else class="hero-mark" aria-hidden="true"><UtensilsCrossed :size="24" /></span>
           <p v-if="profile.city" class="eyebrow">{{ profile.city }}</p>
           <h1>{{ business.name }}</h1>
@@ -78,7 +78,6 @@ const style = computed(() => {
         <div v-if="profile.address" class="map-area"><iframe v-if="mapVisible" :src="mapUrl" :title="`${copy.location}: ${business.name}`" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen /><button v-else type="button" class="map-placeholder" @click="mapVisible = true"><MapPin :size="28" /><span>{{ copy.map }}</span><small>Google Maps</small></button></div>
       </section>
     </main>
-    <footer class="site-footer"><span>{{ business.name }}</span><a href="https://carteliax.vercel.app" target="_blank" rel="noopener noreferrer">Powered by Carteliax</a></footer>
+    <footer class="site-footer"><span>{{ business.name }}</span><a href="https://www.carteliax.com" target="_blank" rel="noopener noreferrer">Powered by Carteliax</a></footer>
   </div>
 </template>
-

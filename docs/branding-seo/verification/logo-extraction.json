@@ -1,0 +1,75 @@
+{
+  "status": "FINAL_WITH_AUTHORIZED_EXTERIOR_SHADOW_REMOVAL",
+  "shadow_pixels_removed": 4446,
+  "source": "frontend/public/favicon.png",
+  "sha256_original": "bc58668369b3438fbd16e082618b038d2997e596474c4862488eb4ac08ba6290",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "foreground_bbox": [
+    317,
+    212,
+    972,
+    1054
+  ],
+  "exterior_transparent_pixels": 1155370,
+  "unmatted_contour_pixels": 5447,
+  "contour_max_width": 3,
+  "core_rgb_preserved": true,
+  "legitimate_white_probes": {
+    "fork": {
+      "position": [
+        466,
+        603
+      ],
+      "rgba": [
+        254,
+        254,
+        254,
+        255
+      ]
+    },
+    "cream_page": {
+      "position": [
+        650,
+        360
+      ],
+      "rgba": [
+        254,
+        250,
+        242,
+        255
+      ]
+    },
+    "solid_cream_bevel": {
+      "position": [
+        655,
+        970
+      ],
+      "rgba": [
+        248,
+        240,
+        222,
+        255
+      ]
+    },
+    "cream_qr_center": {
+      "position": [
+        766,
+        759
+      ],
+      "rgba": [
+        239,
+        224,
+        200,
+        255
+      ]
+    }
+  },
+  "alpha_range": [
+    0,
+    255
+  ],
+  "partial_alpha_pixels": 5423
+}

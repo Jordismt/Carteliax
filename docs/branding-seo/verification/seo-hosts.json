@@ -1,0 +1,25 @@
+{
+  "environment": "local Nuxt, simulated Host headers, no production writes",
+  "results": [
+    {
+      "name": "Apex 308 hacia www, conserva path y query",
+      "pass": true
+    },
+    {
+      "name": "WWW canónico indexable y metadatos oficiales",
+      "pass": true
+    },
+    {
+      "name": "Preview noindex en meta y cabecera, canonical oficial",
+      "pass": true
+    },
+    {
+      "name": "API interna noindex sin depender del host",
+      "pass": true
+    },
+    {
+      "name": "Privadas con www: cabecera noindex y canonical sin query",
+      "pass": true
+    }
+  ]
+}
