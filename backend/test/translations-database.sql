@@ -1,0 +1,83 @@
+-- Execute ONLY against the disposable schema fixture documented in the report.
+-- Every data change in this file is rolled back.
+\set ON_ERROR_STOP on
+begin;
+do $$ begin
+ if current_setting('port')<>'55432' or current_setting('data_directory') not like '/tmp/carteliax-languages/%'
+ then raise exception 'This test must only run in the disposable Carteliax PostgreSQL fixture'; end if;
+end $$;
+create function pg_temp.assert(ok boolean,label text) returns void language plpgsql as $$begin if ok is distinct from true then raise exception 'FAIL: %',label; end if; raise notice 'PASS: %',label; end$$;
+create function pg_temp.error_expected(query text,expected text) returns void language plpgsql as $$declare msg text;begin begin execute query; exception when others then get stacked diagnostics msg=message_text; if position(expected in msg)>0 then raise notice 'PASS: error %',expected; return; end if; raise; end; raise exception 'Expected error %',expected;end$$;
+select pg_temp.assert((select count(*)=2 from menus),'Existing menus preserved');
+select pg_temp.assert(cx_translation_source_language('33333333-3333-4333-8333-333333333333')='es','Legacy menu source language');
+select pg_temp.assert(jsonb_array_length(cx_translation_sources('33333333-3333-4333-8333-333333333333'))=3,'Menu category product source structure');
+select pg_temp.error_expected($q$select cx_translation_status('33333333-3333-4333-8333-333333333333','bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb')$q$,'CX_FORBIDDEN');
+select pg_temp.error_expected($q$select cx_translation_enqueue('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','zz')$q$,'CX_LANGUAGE');
+update subscriptions set status='trialing',trial_ends_at=now()-interval '1 second';
+select pg_temp.error_expected($q$select cx_translation_status('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa')$q$,'CX_SUBSCRIPTION');
+update subscriptions set status='active';
+update menu_translation_jobs set status='failed' where status in ('queued','processing');
+select cx_translation_enqueue('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en');
+select pg_temp.error_expected($q$select cx_translation_enqueue('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','fr')$q$,'CX_BUSY');
+select pg_temp.assert(cx_translation_claim()->>'status'='processing','Durable single job claim');
+select pg_temp.assert(cx_translation_claim() is null,'No duplicate claim');
+select pg_temp.error_expected($q$select cx_translation_finish(j.id,j.claim_token,'[]') from menu_translation_jobs j where status='processing'$q$,'CX_CHANGED');
+select pg_temp.assert((select count(*)=0 from product_translations),'Invalid/partial result commits nothing');
+select cx_translation_finish(j.id,j.claim_token,(select jsonb_agg(jsonb_build_object('type',i->>'type','id',i->>'id','name','EN '||(i->>'name'),'description',i->>'description','welcome_text',i->>'welcome_text')) from jsonb_array_elements(j.source_items) i)) from menu_translation_jobs j where status='processing';
+select pg_temp.assert((select count(*)=1 from product_translations),'Validated generation persisted');
+select pg_temp.assert((cx_public_translations('33333333-3333-4333-8333-333333333333')->'translations'->'en') is null,'Draft never public');
+select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en','publish');
+select pg_temp.assert(jsonb_array_length(cx_public_translations('33333333-3333-4333-8333-333333333333')->'translations'->'en')=3,'Explicit publication only');
+select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en','manual',jsonb_build_object('type','product','id','77777777-7777-4777-8777-777777777777','name','Manual paella for 2','description','Manual ingredients','sourceHash',source_hash,'revision',revision)) from product_translations;
+select pg_temp.assert((select name='Manual paella for 2' and is_manual from product_translations),'Manual edit persisted');
+select pg_temp.assert((select i->>'name' like 'EN %' from jsonb_array_elements(cx_public_translations('33333333-3333-4333-8333-333333333333')->'translations'->'en') i where i->>'type'='product'),'Manual edit stays draft');
+update products set price=22;
+select pg_temp.assert((select i->>'source_hash'=tr.source_hash from jsonb_array_elements(cx_translation_sources('33333333-3333-4333-8333-333333333333')) i join product_translations tr on i->>'id'=tr.product_id::text where i->>'type'='product'),'Price change does not invalidate translation');
+update products set name='Paella doble para 2 personas';
+select pg_temp.assert((select i->>'source_hash'<>tr.source_hash from jsonb_array_elements(cx_translation_sources('33333333-3333-4333-8333-333333333333')) i join product_translations tr on i->>'id'=tr.product_id::text where i->>'type'='product'),'Original edit detected without AI');
+select pg_temp.assert(jsonb_array_length(cx_public_translations('33333333-3333-4333-8333-333333333333')->'translations'->'en')=2,'Stale public text falls back to original');
+select pg_temp.assert(cx_translation_enqueue('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en')->>'unchanged'='true','Incremental update preserves manual edit');
+select pg_temp.error_expected($q$select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en','publish')$q$,'CX_INCOMPLETE');
+select cx_translation_enqueue('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en',true);
+select pg_temp.assert((select total_items=1 from menu_translation_jobs where status='queued'),'Only changed product translated after explicit manual replacement');
+select cx_translation_claim();
+update products set description='Changed while translating';
+select pg_temp.error_expected($q$select cx_translation_finish(j.id,j.claim_token,(select jsonb_agg(i-'draft') from jsonb_array_elements(j.source_items) i)) from menu_translation_jobs j where status='processing'$q$,'CX_CHANGED');
+select pg_temp.assert((select name='Manual paella for 2' and is_manual from product_translations),'Conflict preserves manual work and rolls back all writes');
+update menu_translation_jobs set status='failed' where status='processing';
+select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en','manual',jsonb_build_object('type','product','id',i->>'id','name','Reviewed paella for 2','description','Reviewed','sourceHash',i->>'source_hash','revision',i->'draft'->>'revision')) from jsonb_array_elements(cx_translation_sources('33333333-3333-4333-8333-333333333333','en')) i where i->>'type'='product';
+select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en','publish');
+select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en','visibility','{"enabled":false}');
+select pg_temp.assert(not(cx_public_translations('33333333-3333-4333-8333-333333333333')->'translations' ? 'en'),'Disabled language not exposed');
+select pg_temp.assert((select count(*)=1 from product_translations),'Disabled language retains translation');
+select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en','visibility','{"enabled":true}');
+update categories set is_visible=false;
+select pg_temp.assert(jsonb_array_length(cx_public_translations('33333333-3333-4333-8333-333333333333')->'translations'->'en')=1,'Hidden category and products never exposed');
+update categories set is_visible=true;
+update products set is_available=false;
+select pg_temp.assert(jsonb_array_length(cx_public_translations('33333333-3333-4333-8333-333333333333')->'translations'->'en')=2,'Unavailable products never exposed');
+update products set is_available=true;
+select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','en','delete',jsonb_build_object('type','product','id',product_id,'revision',revision)) from product_translations;
+select pg_temp.assert((select count(*)=0 from product_translations),'Translation deleted without original deletion');
+select pg_temp.assert((select count(*)=1 from products),'Original product preserved');
+select pg_temp.assert(jsonb_array_length(cx_public_translations('33333333-3333-4333-8333-333333333333')->'translations'->'en')=2,'Delete removes published translation immediately');
+update menus set is_published=false where id='33333333-3333-4333-8333-333333333333';
+select pg_temp.assert(cx_public_translations('33333333-3333-4333-8333-333333333333') is null,'Unpublished menu not exposed');
+update menus set is_published=true where id='33333333-3333-4333-8333-333333333333';
+-- RLS and grants actually run as client roles, not a bypass role.
+set local role authenticated;
+set local request.jwt.claim.sub='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+select pg_temp.assert((select count(*)=1 from menu_language_settings),'Owner reads only own settings');
+select pg_temp.error_expected($q$select cx_translation_enqueue('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','fr')$q$,'permission denied');
+select pg_temp.error_expected($q$insert into menu_languages(menu_id,language_code) values('33333333-3333-4333-8333-333333333333','fr')$q$,'permission denied');
+set local request.jwt.claim.sub='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+select pg_temp.assert((select count(*)=0 from product_translations),'Foreign translations invisible');
+select pg_temp.assert((select count(*)=0 from menu_languages),'Foreign languages invisible');
+reset role;
+-- Additional language support and source-language direction are schema-driven.
+select cx_translation_mutate('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','val','source');
+select pg_temp.assert(cx_translation_source_language('33333333-3333-4333-8333-333333333333')='val','Valencian as source');
+select cx_translation_enqueue('33333333-3333-4333-8333-333333333333','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','es');
+select pg_temp.assert((select source_language='val' and language_code='es' from menu_translation_jobs where status='queued'),'VAL to ES accepted');
+select pg_temp.assert((select count(*)=2 from menus),'Original menu count still two');
+rollback;

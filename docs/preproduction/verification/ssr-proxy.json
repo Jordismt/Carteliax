@@ -1,0 +1,40 @@
+{
+  "type": "REAL_NUXT_SSR_LOCAL_FIXTURE_HTTP",
+  "results": [
+    {
+      "path": "/api/public/sites/restaurante-jordi",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "path": "/api/public/menus/11111111-1111-4111-8111-111111111111/carta-principal",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "path": "/restaurante-jordi?lang=es",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "path": "/api/public/sites/invalid..slug",
+      "status": "PASS",
+      "httpStatus": 404
+    },
+    {
+      "path": "/api/public/sites/no-such-restaurant",
+      "status": "PASS",
+      "httpStatus": 404
+    },
+    {
+      "path": "/no-such-restaurant",
+      "status": "PASS",
+      "httpStatus": 404
+    },
+    {
+      "path": "/api/public/menus/11111111-1111-4111-8111-111111111111/carta-principal",
+      "status": "PASS",
+      "httpStatus": 404
+    }
+  ]
+}

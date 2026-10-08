@@ -1,0 +1,18 @@
+# Variables privadas
+.env
+.env.*
+!.env.example
+
+# Dependencias
+node_modules/
+**/node_modules/
+
+# Nuxt
+.nuxt/
+.output/
+dist/
+.cache/
+
+# Otros
+.DS_Store
+*.log

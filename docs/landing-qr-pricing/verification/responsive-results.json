@@ -1,0 +1,740 @@
+{
+  "rows": [
+    {
+      "name": "landing",
+      "width": 320,
+      "path": "/",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "login",
+      "width": 320,
+      "path": "/login",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "register",
+      "width": 320,
+      "path": "/register",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "width": 320,
+      "path": "/dashboard",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "businesses",
+      "width": 320,
+      "path": "/businesses",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "settings",
+      "width": 320,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "menus",
+      "width": 320,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "editor",
+      "width": 320,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "design",
+      "width": 320,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "qr",
+      "width": 320,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "languages",
+      "width": 320,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/languages",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "billing",
+      "width": 320,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "legacy",
+      "width": 320,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "name": "landing",
+      "width": 375,
+      "path": "/",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "login",
+      "width": 375,
+      "path": "/login",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "register",
+      "width": 375,
+      "path": "/register",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "width": 375,
+      "path": "/dashboard",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "businesses",
+      "width": 375,
+      "path": "/businesses",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "settings",
+      "width": 375,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "menus",
+      "width": 375,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "editor",
+      "width": 375,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "design",
+      "width": 375,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "qr",
+      "width": 375,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "languages",
+      "width": 375,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/languages",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "billing",
+      "width": 375,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "legacy",
+      "width": 375,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 375,
+      "overflow": []
+    },
+    {
+      "name": "landing",
+      "width": 390,
+      "path": "/",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "login",
+      "width": 390,
+      "path": "/login",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "register",
+      "width": 390,
+      "path": "/register",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "width": 390,
+      "path": "/dashboard",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "businesses",
+      "width": 390,
+      "path": "/businesses",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "settings",
+      "width": 390,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "menus",
+      "width": 390,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "editor",
+      "width": 390,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "design",
+      "width": 390,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "qr",
+      "width": 390,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "languages",
+      "width": 390,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/languages",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "billing",
+      "width": 390,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "legacy",
+      "width": 390,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "name": "landing",
+      "width": 430,
+      "path": "/",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "login",
+      "width": 430,
+      "path": "/login",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "register",
+      "width": 430,
+      "path": "/register",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "width": 430,
+      "path": "/dashboard",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "businesses",
+      "width": 430,
+      "path": "/businesses",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "settings",
+      "width": 430,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "menus",
+      "width": 430,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "editor",
+      "width": 430,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "design",
+      "width": 430,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "qr",
+      "width": 430,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "languages",
+      "width": 430,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/languages",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "billing",
+      "width": 430,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "legacy",
+      "width": 430,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 430,
+      "overflow": []
+    },
+    {
+      "name": "landing",
+      "width": 768,
+      "path": "/",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "login",
+      "width": 768,
+      "path": "/login",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "register",
+      "width": 768,
+      "path": "/register",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "width": 768,
+      "path": "/dashboard",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "businesses",
+      "width": 768,
+      "path": "/businesses",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "settings",
+      "width": 768,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "menus",
+      "width": 768,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "editor",
+      "width": 768,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "design",
+      "width": 768,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "qr",
+      "width": 768,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "languages",
+      "width": 768,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/languages",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "billing",
+      "width": 768,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "legacy",
+      "width": 768,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "name": "landing",
+      "width": 1024,
+      "path": "/",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "login",
+      "width": 1024,
+      "path": "/login",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "register",
+      "width": 1024,
+      "path": "/register",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "width": 1024,
+      "path": "/dashboard",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "businesses",
+      "width": 1024,
+      "path": "/businesses",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "settings",
+      "width": 1024,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "menus",
+      "width": 1024,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "editor",
+      "width": 1024,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "design",
+      "width": 1024,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "qr",
+      "width": 1024,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "languages",
+      "width": 1024,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/languages",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "billing",
+      "width": 1024,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "legacy",
+      "width": 1024,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "name": "landing",
+      "width": 1280,
+      "path": "/",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "login",
+      "width": 1280,
+      "path": "/login",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "register",
+      "width": 1280,
+      "path": "/register",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "width": 1280,
+      "path": "/dashboard",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "businesses",
+      "width": 1280,
+      "path": "/businesses",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "settings",
+      "width": 1280,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "menus",
+      "width": 1280,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "editor",
+      "width": 1280,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "design",
+      "width": 1280,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "qr",
+      "width": 1280,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "languages",
+      "width": 1280,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/languages",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "billing",
+      "width": 1280,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "legacy",
+      "width": 1280,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 1280,
+      "overflow": []
+    },
+    {
+      "name": "landing",
+      "width": 1440,
+      "path": "/",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "login",
+      "width": 1440,
+      "path": "/login",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "register",
+      "width": 1440,
+      "path": "/register",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "width": 1440,
+      "path": "/dashboard",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "businesses",
+      "width": 1440,
+      "path": "/businesses",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "settings",
+      "width": 1440,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "menus",
+      "width": 1440,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "editor",
+      "width": 1440,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "design",
+      "width": 1440,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "qr",
+      "width": 1440,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "languages",
+      "width": 1440,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/languages",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "billing",
+      "width": 1440,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "name": "legacy",
+      "width": 1440,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 1440,
+      "overflow": []
+    }
+  ],
+  "errors": [],
+  "overflow": [],
+  "counts": {
+    "businesses": 2,
+    "menus": 2,
+    "categories": 2,
+    "products": 2
+  }
+}

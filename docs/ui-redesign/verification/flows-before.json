@@ -1,0 +1,162 @@
+[
+  {
+    "file": "frontend/app/composables/useSubscription.ts",
+    "name": "getSubscription",
+    "sha256": "4def0e8c284233a54b0ff0ea1a75cadefe58fa0e091a3e5281b8e2da491fb257"
+  },
+  {
+    "file": "frontend/app/composables/useSubscription.ts",
+    "name": "createCheckout",
+    "sha256": "6e25fb0856cf48ac7f8d8f4ab2448445bccdbe90dbe3fa2c13bfec35dd73bfdd"
+  },
+  {
+    "file": "frontend/app/composables/useSubscription.ts",
+    "name": "openBillingPortal",
+    "sha256": "b1c3190c75a86b5553ad51d93783cfe7d41dc9feb073633e2c5d2cbe6ef6b1a7"
+  },
+  {
+    "file": "frontend/app/composables/useSubscription.ts",
+    "name": "cancelPendingCheckout",
+    "sha256": "7f065f9e8e30365ed74391d38207949127c26e6ecafd97db3ca56d1e833ca72b"
+  },
+  {
+    "file": "frontend/app/composables/useSubscription.ts",
+    "name": "hasAccess",
+    "sha256": "d15ab2edb940f2f917a6acf40998f07a7a49451faf6febe1666ea7a37236b1f2"
+  },
+  {
+    "file": "frontend/app/composables/useSubscription.ts",
+    "name": "canManageBilling",
+    "sha256": "44038b7db5a1d13766c30bbed13233d1e44848c5032e9b88cdc3de055daf0ca3"
+  },
+  {
+    "file": "frontend/app/composables/useSubscription.ts",
+    "name": "canStartCheckout",
+    "sha256": "58c45376aff4adde9518e76b0adcd4f84bdec867047915c2dfed9dc84b506f79"
+  },
+  {
+    "file": "frontend/app/components/ProductManager.vue",
+    "name": "openEdit",
+    "sha256": "c986a5eb32ea767197a2713e8bd96026cc8a9de51eb55d012a0e8309944e98fa"
+  },
+  {
+    "file": "frontend/app/components/ProductManager.vue",
+    "name": "saveProduct",
+    "sha256": "0e6e22e2d09dbed447d9ecb73406e6eabd7ec547ddccceaf8b7514187dfb88fe"
+  },
+  {
+    "file": "frontend/app/components/ProductManager.vue",
+    "name": "toggleAvailability",
+    "sha256": "796e48137dd388ee72694069eff26996601dcc0e80b35bc10a930c92c8bbf89e"
+  },
+  {
+    "file": "frontend/app/components/ProductManager.vue",
+    "name": "toggleCategoryLink",
+    "sha256": "95652e4a2a4996449ace65d18a1bd16e9714d47b2f9c5ca5f43cb00717e30453"
+  },
+  {
+    "file": "frontend/app/components/ProductManager.vue",
+    "name": "duplicateProduct",
+    "sha256": "ad106ed29109e16031f1875a02a708f7e6865de825284add8be3b3e157c2f072"
+  },
+  {
+    "file": "frontend/app/components/ProductManager.vue",
+    "name": "deleteProduct",
+    "sha256": "c9fef7be6d4f373911759c2273ae31c6be2f984b9d2fea56fee05494fccfccd1"
+  },
+  {
+    "file": "frontend/app/components/ProductManager.vue",
+    "name": "uploadImage",
+    "sha256": "90c5c92a2eff01e1c349dca598264f2f8d009bb9b695841e5411d272a5736391"
+  },
+  {
+    "file": "frontend/app/pages/businesses/[id].vue",
+    "name": "saveBusiness",
+    "sha256": "73babcf14bc853308e57eb22e35fe28e5b26d73465098347cafeb59fce20a0ce"
+  },
+  {
+    "file": "frontend/app/pages/businesses/[id].vue",
+    "name": "uploadLogo",
+    "sha256": "8ed307e6beb9396e4f7b408452b8c2d9dc00db42a445a25cd419fc047bfb4fb3"
+  },
+  {
+    "file": "frontend/app/pages/businesses/[id].vue",
+    "name": "deleteLogo",
+    "sha256": "d3ac257bdf1d32cf9340917560c38e8b5b8b28255817bd318846e61914b70bc9"
+  },
+  {
+    "file": "frontend/app/pages/businesses/[id].vue",
+    "name": "updateCover",
+    "sha256": "bf9cfd7ccb83fe4a69922797d3451bb6d214b0bff8375b73e1950b5365e32381"
+  },
+  {
+    "file": "frontend/app/pages/menus/index.vue",
+    "name": "saveMenu",
+    "sha256": "147195c83b10f7f4033185ddbf9a0d7a628ee22fdfc5097105940bf79e9bd68f"
+  },
+  {
+    "file": "frontend/app/pages/menus/index.vue",
+    "name": "togglePublished",
+    "sha256": "0aff129c99cfe27a6f976fe9ff397a077158f0c16a61093d680a210b3118b34d"
+  },
+  {
+    "file": "frontend/app/pages/menus/index.vue",
+    "name": "deleteMenu",
+    "sha256": "03dc0e74a89f4fb712cd70d60b2b36d7b0b5b9b9e309b735e39cf93994f9e56c"
+  },
+  {
+    "file": "frontend/app/pages/menus/index.vue",
+    "name": "duplicateMenu",
+    "sha256": "b54a239f02f3a7dde40a5b3bb3b25d64e62582e824a763033ccb4e7ce8fcaff5"
+  },
+  {
+    "file": "frontend/app/pages/menus/[id]/index.vue",
+    "name": "saveCategory",
+    "sha256": "f3d909a2f77d61b84b86ba8c9dec16985d8b6a0c99ce530f1b9d36bca7a16a2c"
+  },
+  {
+    "file": "frontend/app/pages/menus/[id]/index.vue",
+    "name": "toggleVisibility",
+    "sha256": "f54335ca8c4dc37f2c8eb85efdd21e0444a833761880c1be02042f4e464cf660"
+  },
+  {
+    "file": "frontend/app/pages/menus/[id]/index.vue",
+    "name": "deleteCategory",
+    "sha256": "879b3b92ff69b4c8d2f19fb1883ae1bf3e84aff175aa8e8c64fef4239011ca9a"
+  },
+  {
+    "file": "frontend/app/pages/menus/[id]/index.vue",
+    "name": "moveCategory",
+    "sha256": "f8503aa87b0e947451eb921ed5755101a8ed603df3f0941c5e29b57ba05ac238"
+  },
+  {
+    "file": "frontend/app/pages/menus/[id]/design.vue",
+    "name": "saveChanges",
+    "sha256": "40da24435c6e9ffbd492771d8dcbdf74f56ee653b7dd42ac01eb9c2c60443fd1"
+  },
+  {
+    "file": "frontend/app/pages/menus/[id]/design.vue",
+    "name": "publishChanges",
+    "sha256": "5dde19081bf66f97ef4df56c6431f44b3180b3a7d0e0e01946babcdfbc7f0b15"
+  },
+  {
+    "file": "frontend/app/pages/menus/[id]/design.vue",
+    "name": "resetChanges",
+    "sha256": "acabc0b003cbe613dc29d79b6a31abf9f24c389c4c830ba66b344c28eadd8a36"
+  },
+  {
+    "file": "frontend/app/components/menus/MenuQrGenerator.vue",
+    "name": "drawLogo",
+    "sha256": "a9c4c7bfce16bb66e40ba0f1cdb1bb45e7d3e04a2ea5026e74bd71483094447e"
+  },
+  {
+    "file": "frontend/app/components/menus/MenuQrGenerator.vue",
+    "name": "generateCanvas",
+    "sha256": "55159473824db931675d24e5654aaea5a7c3d9f60aacf6682cda64db4dbeb718"
+  },
+  {
+    "file": "frontend/app/components/menus/MenuQrGenerator.vue",
+    "name": "createExportCanvas",
+    "sha256": "272b66e0c34b12e9cb83cc2d5352fb880261e92a8b4853e20bc90b12c7c8bbda"
+  }
+]

@@ -1,0 +1,79 @@
+{
+  "pass": true,
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "POST",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses/ba807fe5-66b0-4bb5-85c9-3ea467fca5cb"
+    },
+    {
+      "method": "GET",
+      "path": "/api/subscriptions/ba807fe5-66b0-4bb5-85c9-3ea467fca5cb"
+    },
+    {
+      "method": "POST",
+      "path": "/api/subscriptions/checkout"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "GET",
+      "path": "/api/subscriptions/ba807fe5-66b0-4bb5-85c9-3ea467fca5cb"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses/ba807fe5-66b0-4bb5-85c9-3ea467fca5cb/menus"
+    },
+    {
+      "method": "POST",
+      "path": "/api/businesses/ba807fe5-66b0-4bb5-85c9-3ea467fca5cb/menus"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/menus/f102ed3f-dd9e-4b69-8e80-5e3db2785665"
+    },
+    {
+      "method": "GET",
+      "path": "/api/menus/f102ed3f-dd9e-4b69-8e80-5e3db2785665"
+    },
+    {
+      "method": "GET",
+      "path": "/api/menus/f102ed3f-dd9e-4b69-8e80-5e3db2785665/theme"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses/ba807fe5-66b0-4bb5-85c9-3ea467fca5cb"
+    },
+    {
+      "method": "GET",
+      "path": "/api/menus/f102ed3f-dd9e-4b69-8e80-5e3db2785665/categories"
+    },
+    {
+      "method": "POST",
+      "path": "/api/menus/f102ed3f-dd9e-4b69-8e80-5e3db2785665/theme/publish"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses/ba807fe5-66b0-4bb5-85c9-3ea467fca5cb"
+    }
+  ],
+  "externalServices": "simulated"
+}

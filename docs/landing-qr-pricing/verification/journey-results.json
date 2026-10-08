@@ -1,0 +1,79 @@
+{
+  "pass": true,
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "POST",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses/018369a5-d360-4242-a853-fbe88fc73e44"
+    },
+    {
+      "method": "GET",
+      "path": "/api/subscriptions/018369a5-d360-4242-a853-fbe88fc73e44"
+    },
+    {
+      "method": "POST",
+      "path": "/api/subscriptions/checkout"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "GET",
+      "path": "/api/subscriptions/018369a5-d360-4242-a853-fbe88fc73e44"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses/018369a5-d360-4242-a853-fbe88fc73e44/menus"
+    },
+    {
+      "method": "POST",
+      "path": "/api/businesses/018369a5-d360-4242-a853-fbe88fc73e44/menus"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/menus/61aa059c-e266-423d-b149-852231c91edb"
+    },
+    {
+      "method": "GET",
+      "path": "/api/menus/61aa059c-e266-423d-b149-852231c91edb"
+    },
+    {
+      "method": "GET",
+      "path": "/api/menus/61aa059c-e266-423d-b149-852231c91edb/theme"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses/018369a5-d360-4242-a853-fbe88fc73e44"
+    },
+    {
+      "method": "GET",
+      "path": "/api/menus/61aa059c-e266-423d-b149-852231c91edb/categories"
+    },
+    {
+      "method": "POST",
+      "path": "/api/menus/61aa059c-e266-423d-b149-852231c91edb/theme/publish"
+    },
+    {
+      "method": "GET",
+      "path": "/api/businesses/018369a5-d360-4242-a853-fbe88fc73e44"
+    }
+  ],
+  "externalServices": "simulated"
+}

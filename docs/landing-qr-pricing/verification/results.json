@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-07",
+  "build": "PASS",
+  "typecheckProjects": 5,
+  "backendTests": 32,
+  "localSQLAssertions": 95,
+  "localConcurrencyChecks": 3,
+  "localAPIIntegrationChecks": 18,
+  "integrityTests": 6,
+  "browserSuites": {
+    "core": 7,
+    "extended": 32,
+    "additional": 6,
+    "states": 44,
+    "publicMenuMatrix": 99,
+    "languages": 37,
+    "microsites": 49,
+    "newBusiness": 1,
+    "interactions": 70,
+    "profileLanguages": 3,
+    "responsive": 104,
+    "focused": 32,
+    "journey": 1
+  },
+  "browserTotal": 485,
+  "widths": [
+    320,
+    375,
+    390,
+    430,
+    768,
+    1024,
+    1280,
+    1440
+  ],
+  "jsErrors": 0,
+  "horizontalOverflow": 0,
+  "publicGroqRequests": 0,
+  "productionWrites": 0,
+  "remoteMigrations": 0,
+  "StripeAmount": "Not verified remotely. Checkout uses existing STRIPE_PRICE_ID; manual configuration/verification required before deployment.",
+  "runtimeDependenciesAdded": []
+}

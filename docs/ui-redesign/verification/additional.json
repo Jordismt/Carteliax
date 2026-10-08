@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Ajustes de carta: nombre, descripción y slug protegido",
+    "pass": true
+  },
+  {
+    "name": "Duplicar carta, confirmar y conservar las existentes",
+    "pass": true
+  },
+  {
+    "name": "Duplicar producto y mostrar la copia en el catálogo",
+    "pass": true
+  },
+  {
+    "name": "QR: copiar enlace y opción de incluir logotipo",
+    "pass": true
+  },
+  {
+    "name": "Restablecer diseño mantiene el diseño publicado",
+    "pass": true
+  },
+  {
+    "name": "Ruta de prueba existente sigue accesible",
+    "pass": true
+  }
+]

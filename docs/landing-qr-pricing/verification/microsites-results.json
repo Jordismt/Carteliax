@@ -1,0 +1,202 @@
+{
+  "results": [
+    {
+      "name": "modern 320px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "modern 375px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "modern 390px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "modern 430px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "modern 768px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "modern 1024px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "modern 1280px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "modern 1440px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "elegant 320px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "elegant 375px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "elegant 390px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "elegant 430px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "elegant 768px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "elegant 1024px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "elegant 1280px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "elegant 1440px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "minimal 320px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "minimal 375px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "minimal 390px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "minimal 430px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "minimal 768px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "minimal 1024px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "minimal 1280px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "minimal 1440px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "classic 320px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "classic 375px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "classic 390px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "classic 430px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "classic 768px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "classic 1024px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "classic 1280px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "classic 1440px SSR, carta inmediata y sin overflow",
+      "pass": true
+    },
+    {
+      "name": "Portada 320px: carta al principio y acceso visible",
+      "pass": true
+    },
+    {
+      "name": "Portada 375px: carta al principio y acceso visible",
+      "pass": true
+    },
+    {
+      "name": "Portada 390px: carta al principio y acceso visible",
+      "pass": true
+    },
+    {
+      "name": "Portada 430px: carta al principio y acceso visible",
+      "pass": true
+    },
+    {
+      "name": "Portada 768px: carta al principio y acceso visible",
+      "pass": true
+    },
+    {
+      "name": "Portada 1024px: carta al principio y acceso visible",
+      "pass": true
+    },
+    {
+      "name": "Portada 1280px: carta al principio y acceso visible",
+      "pass": true
+    },
+    {
+      "name": "Portada 1440px: carta al principio y acceso visible",
+      "pass": true
+    },
+    {
+      "name": "Idioma cambia textos persistidos sin Groq ni peticiones de traducción",
+      "pass": true
+    },
+    {
+      "name": "Varias cartas y deep link respetan selección",
+      "pass": true
+    },
+    {
+      "name": "QR antiguo redirige sin UUID visible y conserva idioma",
+      "pass": true
+    },
+    {
+      "name": "Opcionales vacíos no producen secciones vacías",
+      "pass": true
+    },
+    {
+      "name": "Sin cartas publicadas conserva mini web y contacto",
+      "pass": true
+    },
+    {
+      "name": "SEO y canonical no exponen UUID; JSON-LD válido",
+      "pass": true
+    },
+    {
+      "name": "Un QR del restaurante descarga PNG y PDF sin selector de carta",
+      "pass": true
+    },
+    {
+      "name": "Editar mini web, horarios y textos manuales en dashboard",
+      "pass": true
+    },
+    {
+      "name": "Portada del establecimiento se sube y retira sin alterar logo",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "groq": 0
+}

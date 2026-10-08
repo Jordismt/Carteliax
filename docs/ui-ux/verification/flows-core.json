@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Inicio → cartas del establecimiento",
+    "pass": true
+  },
+  {
+    "name": "Carta existente → categorías y productos sin pérdida de datos",
+    "pass": true
+  },
+  {
+    "name": "Buscar y editar precio, descripción y alérgenos",
+    "pass": true
+  },
+  {
+    "name": "Disponible → agotado → disponible",
+    "pass": true
+  },
+  {
+    "name": "Seleccionar categoría y volver a todas sin perder productos",
+    "pass": true
+  },
+  {
+    "name": "Crear y eliminar carta: confirmación de cancelación",
+    "pass": true
+  },
+  {
+    "name": "Publicar y retirar carta conserva identificador y listado",
+    "pass": true
+  }
+]

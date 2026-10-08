@@ -1,0 +1,467 @@
+{
+  "results": [
+    {
+      "width": 320,
+      "path": "/",
+      "scroll": 320,
+      "overflow": [
+        {
+          "tag": "DIV",
+          "cls": "pointer-events-none absolute -right-40 top-20 h-[500px] w-[500px] rounded-full bg-[#e4eacb]/80 blur-[100px]",
+          "text": ""
+        },
+        {
+          "tag": "SPAN",
+          "cls": "rounded-full bg-[#f1f0e9] px-3 py-2",
+          "text": "Postres"
+        },
+        {
+          "tag": "DIV",
+          "cls": "relative rounded-[35px] bg-[#e8eddb] p-7 sm:p-12",
+          "text": "MI RESTAURANTECarta principal● Publicada🥗Ensalada de la casaEntrantes"
+        },
+        {
+          "tag": "DIV",
+          "cls": "",
+          "text": "MENOS GESTIÓN, MÁS RESTAURANTE El menú cambia.Tu QR no. Se acabó volve"
+        },
+        {
+          "tag": "DIV",
+          "cls": "eyebrow",
+          "text": "MENOS GESTIÓN, MÁS RESTAURANTE"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "path": "/login",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/register",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/dashboard",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/businesses",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 320,
+      "overflow": [
+        {
+          "tag": "DIV",
+          "cls": "flex flex-col items-center justify-center rounded-2xl bg-slate-50 p-3 sm:p-6",
+          "text": "La PlazaEscanea nuestra cartaCarta principalVista previa del código QR"
+        },
+        {
+          "tag": "DIV",
+          "cls": "flex w-full max-w-xs flex-col items-center rounded-2xl bg-white p-4 sm:p-6 shadow-sm",
+          "text": "La PlazaEscanea nuestra cartaCarta principal"
+        },
+        {
+          "tag": "CANVAS",
+          "cls": "mt-5 aspect-square w-full max-w-64",
+          "text": ""
+        },
+        {
+          "tag": "DIV",
+          "cls": "flex flex-col gap-6",
+          "text": " Enlace público Copiar Color del QR  Fondo  Utiliza colores con bastan"
+        },
+        {
+          "tag": "DIV",
+          "cls": "",
+          "text": " Enlace público Copiar"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 320,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/",
+      "scroll": 390,
+      "overflow": [
+        {
+          "tag": "DIV",
+          "cls": "pointer-events-none absolute -right-40 top-20 h-[500px] w-[500px] rounded-full bg-[#e4eacb]/80 blur-[100px]",
+          "text": ""
+        },
+        {
+          "tag": "DIV",
+          "cls": "absolute -bottom-28 -right-20 h-72 w-72 rounded-full border-[45px] border-[#cbdca8]",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "path": "/login",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/register",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/dashboard",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/businesses",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 390,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/",
+      "scroll": 768,
+      "overflow": [
+        {
+          "tag": "DIV",
+          "cls": "pointer-events-none absolute -right-40 top-20 h-[500px] w-[500px] rounded-full bg-[#e4eacb]/80 blur-[100px]",
+          "text": ""
+        },
+        {
+          "tag": "DIV",
+          "cls": "absolute -bottom-28 -right-20 h-72 w-72 rounded-full border-[45px] border-[#cbdca8]",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "path": "/login",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/register",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/dashboard",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/businesses",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 768,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 768,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/",
+      "scroll": 1024,
+      "overflow": [
+        {
+          "tag": "DIV",
+          "cls": "pointer-events-none absolute -right-40 top-20 h-[500px] w-[500px] rounded-full bg-[#e4eacb]/80 blur-[100px]",
+          "text": ""
+        },
+        {
+          "tag": "DIV",
+          "cls": "phone absolute left-[21%] top-[2%] z-10 w-[70%] max-w-[360px] rotate-[5deg] rounded-[43px] border-[9px] border-[#203a30] bg-[#203a30] p-1 shadow-[0_35px_65px_-15px_#203a3066] sm:left-[26%]",
+          "text": "Bienvenidos aLa SobremesaEntrantesPrincipalesPostresPara empezarEnsala"
+        },
+        {
+          "tag": "DIV",
+          "cls": "absolute -bottom-28 -right-20 h-72 w-72 rounded-full border-[45px] border-[#cbdca8]",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "path": "/login",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/register",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/dashboard",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/businesses",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1024,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 1024,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/",
+      "scroll": 1440,
+      "overflow": [
+        {
+          "tag": "DIV",
+          "cls": "pointer-events-none absolute -right-40 top-20 h-[500px] w-[500px] rounded-full bg-[#e4eacb]/80 blur-[100px]",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "path": "/login",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/register",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/dashboard",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/businesses",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/businesses/11111111-1111-4111-8111-111111111111",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/menus?business=11111111-1111-4111-8111-111111111111",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/menus/33333333-3333-4333-8333-333333333333",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/design",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/menus/33333333-3333-4333-8333-333333333333/qr",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/billing/11111111-1111-4111-8111-111111111111",
+      "scroll": 1440,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "path": "/c/11111111-1111-4111-8111-111111111111/carta-principal",
+      "scroll": 1440,
+      "overflow": []
+    }
+  ],
+  "errors": [],
+  "counts": {
+    "businesses": 2,
+    "menus": 2,
+    "categories": 2,
+    "products": 2
+  }
+}

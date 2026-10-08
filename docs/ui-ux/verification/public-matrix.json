@@ -1,0 +1,254 @@
+[
+  {
+    "name": "Pública modern/cards 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/cards 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/cards 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/cards 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/cards 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/list 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/list 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/list 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/list 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/list 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/compact 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/compact 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/compact 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/compact 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública modern/compact 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/cards 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/cards 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/cards 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/cards 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/cards 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/list 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/list 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/list 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/list 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/list 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/compact 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/compact 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/compact 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/compact 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública minimal/compact 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/cards 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/cards 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/cards 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/cards 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/cards 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/list 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/list 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/list 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/list 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/list 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/compact 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/compact 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/compact 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/compact 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública premium/compact 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/cards 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/cards 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/cards 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/cards 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/cards 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/list 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/list 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/list 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/list 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/list 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/compact 320px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/compact 390px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/compact 768px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/compact 1024px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública mediterranean/compact 1440px conserva diseño y contenido",
+    "pass": true
+  },
+  {
+    "name": "Pública respeta opciones de descripción, imágenes y alérgenos ocultos",
+    "pass": true
+  },
+  {
+    "name": "Pública conserva portada y fotos del establecimiento",
+    "pass": true
+  },
+  {
+    "name": "Carta pública no publicada muestra estado no disponible",
+    "pass": true
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "artifacts": [
+    "api-audit.log",
+    "backend-tests.log",
+    "browser-first-run.log",
+    "browser-results.json",
+    "browser.log",
+    "build.log",
+    "commercial-contracts.log",
+    "journey-results.json",
+    "journey.log",
+    "screenshots/landing-full-1440.png",
+    "screenshots/landing-hero-390.png",
+    "secrets-build.log",
+    "security-matrix.json",
+    "stripe-after.json",
+    "stripe-before.json",
+    "stripe-checkout-errors.log",
+    "stripe-checkout.json",
+    "stripe-clocks.json",
+    "stripe-clocks.log",
+    "stripe-configure.json",
+    "typecheck-app.log",
+    "typecheck-node.log",
+    "typecheck-server.log",
+    "typecheck-shared.log",
+    "typecheck.log"
+  ]
+}

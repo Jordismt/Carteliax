@@ -1,0 +1,130 @@
+[
+  {
+    "name": "Ruta protegida → login",
+    "pass": true
+  },
+  {
+    "name": "Login → dashboard → logout",
+    "pass": true
+  },
+  {
+    "name": "Registro con sesión → dashboard",
+    "pass": true
+  },
+  {
+    "name": "Registro con confirmación por correo → login",
+    "pass": true
+  },
+  {
+    "name": "Login incorrecto muestra error y permite reintentar",
+    "pass": true
+  },
+  {
+    "name": "Inicio → establecimientos → configuración → facturación",
+    "pass": true
+  },
+  {
+    "name": "Logotipo: subir y eliminar conserva contrato de almacenamiento",
+    "pass": true
+  },
+  {
+    "name": "Crear establecimiento → billing → checkout sin cobro real",
+    "pass": true
+  },
+  {
+    "name": "Crear y editar categoría; ordenar y visibilidad",
+    "pass": true
+  },
+  {
+    "name": "Añadir producto con categoría, foto, precio y alérgenos",
+    "pass": true
+  },
+  {
+    "name": "Cambiar y quitar foto de producto",
+    "pass": true
+  },
+  {
+    "name": "Producto asociado: error al eliminar; retirar y eliminar",
+    "pass": true
+  },
+  {
+    "name": "Añadir producto existente a categoría y retirarlo",
+    "pass": true
+  },
+  {
+    "name": "Eliminar categoría vacía requiere confirmación",
+    "pass": true
+  },
+  {
+    "name": "Carta → diseño → vista previa con productos reales",
+    "pass": true
+  },
+  {
+    "name": "Cambios pendientes, cancelar salida y guardar borrador",
+    "pass": true
+  },
+  {
+    "name": "Guardar y publicar diseño conserva todas las opciones",
+    "pass": true
+  },
+  {
+    "name": "Carta → QR cuadrado y descargas PNG/PDF",
+    "pass": true
+  },
+  {
+    "name": "QR → carta pública, categorías, precio y alérgenos",
+    "pass": true
+  },
+  {
+    "name": "Facturación: active → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: trialing → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: checkout_pending → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: past_due → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: unpaid → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: paused → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: incomplete → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: incomplete_expired → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: canceled → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Facturación: inactive → lenguaje humano y permisos conservados",
+    "pass": true
+  },
+  {
+    "name": "Billing Portal redirige y envía el establecimiento correcto",
+    "pass": true
+  },
+  {
+    "name": "Cancelar contratación pendiente → reintentar; retorno de checkout",
+    "pass": true
+  },
+  {
+    "name": "Restricción 402 → facturación sin modificar permisos",
+    "pass": true
+  }
+]

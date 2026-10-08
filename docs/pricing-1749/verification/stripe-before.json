@@ -1,0 +1,13 @@
+{
+  "type": "REAL_STRIPE_TEST_READ_ONLY",
+  "current": {
+    "amount": 1800,
+    "currency": "eur",
+    "interval": "month",
+    "interval_count": 1,
+    "tax_behavior": "unspecified",
+    "livemode": false
+  },
+  "valid1749InclusivePriceExists": false,
+  "valid21InclusiveVatRateExists": false
+}

@@ -1,0 +1,1629 @@
+{
+  "type": "REAL_HTTP_MOCKED_SUPABASE_STRIPE_NO_RLS",
+  "results": [
+    {
+      "name": "Invalid/absent authentication",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/businesses",
+      "expected": [
+        401
+      ],
+      "actual": 401,
+      "pass": true
+    },
+    {
+      "name": "Invalid/absent authentication",
+      "identity": "",
+      "method": "GET",
+      "path": "/api/businesses",
+      "expected": [
+        401
+      ],
+      "actual": 401,
+      "pass": true
+    },
+    {
+      "name": "Invalid/absent authentication",
+      "identity": "manipulated.jwt",
+      "method": "GET",
+      "path": "/api/businesses",
+      "expected": [
+        401
+      ],
+      "actual": 401,
+      "pass": true
+    },
+    {
+      "name": "Invalid/absent authentication",
+      "identity": "expired-fixture",
+      "method": "GET",
+      "path": "/api/businesses",
+      "expected": [
+        401
+      ],
+      "actual": 401,
+      "pass": true
+    },
+    {
+      "name": "Invalid/absent authentication",
+      "identity": "nonexistent-user",
+      "method": "GET",
+      "path": "/api/businesses",
+      "expected": [
+        401
+      ],
+      "actual": 401,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333",
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333",
+      "body": {
+        "name": "Hacked",
+        "public_profile": {
+          "about": "Hacked"
+        }
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "DELETE",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333",
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333/menus",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333/menus",
+      "body": {
+        "name": "Hacked",
+        "slug": "hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666",
+      "body": {
+        "is_published": true
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "DELETE",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666/duplicate",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666/categories",
+      "body": {
+        "name": "Hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/categories/88888888-8888-4888-8888-888888888888",
+      "body": {
+        "name": "Hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "DELETE",
+      "path": "/api/categories/88888888-8888-4888-8888-888888888888",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/categories/88888888-8888-4888-8888-888888888888/products",
+      "body": {
+        "productId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "DELETE",
+      "path": "/api/categories/88888888-8888-4888-8888-888888888888/products/dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333/products",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333/products",
+      "body": {
+        "name": "Hacked",
+        "price": 1
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/products/dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "body": {
+        "price": 0
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "DELETE",
+      "path": "/api/products/dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/products/dddddddd-dddd-4ddd-8ddd-dddddddddddd/image",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "DELETE",
+      "path": "/api/products/dddddddd-dddd-4ddd-8ddd-dddddddddddd/image",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "PUT",
+      "path": "/api/products/dddddddd-dddd-4ddd-8ddd-dddddddddddd/allergens",
+      "body": {
+        "allergenIds": [
+          1
+        ]
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333/logo",
+      "body": {
+        "path": "33333333-3333-4333-8333-333333333333/11111111-1111-4111-8111-111111111111.png"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "DELETE",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333/logo",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333/cover",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "DELETE",
+      "path": "/api/businesses/33333333-3333-4333-8333-333333333333/cover",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666/theme",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "PUT",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666/theme",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666/theme/publish",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666/languages",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666/languages/en/translate",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "PUT",
+      "path": "/api/menus/66666666-6666-4666-8666-666666666666/languages/en/text",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/subscriptions/33333333-3333-4333-8333-333333333333",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/subscriptions/checkout",
+      "body": {
+        "businessId": "33333333-3333-4333-8333-333333333333"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/subscriptions/portal",
+      "body": {
+        "businessId": "33333333-3333-4333-8333-333333333333"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/subscriptions/checkout/cancel",
+      "body": {
+        "businessId": "33333333-3333-4333-8333-333333333333"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111",
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111",
+      "body": {
+        "name": "Hacked",
+        "public_profile": {
+          "about": "Hacked"
+        }
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111",
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/menus",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/menus",
+      "body": {
+        "name": "Hacked",
+        "slug": "hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444",
+      "body": {
+        "is_published": true
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444/duplicate",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444/categories",
+      "body": {
+        "name": "Hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/categories/77777777-7777-4777-8777-777777777777",
+      "body": {
+        "name": "Hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/categories/77777777-7777-4777-8777-777777777777",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/categories/77777777-7777-4777-8777-777777777777/products",
+      "body": {
+        "productId": "99999999-9999-4999-8999-999999999999"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/categories/77777777-7777-4777-8777-777777777777/products/99999999-9999-4999-8999-999999999999",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/products",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/products",
+      "body": {
+        "name": "Hacked",
+        "price": 1
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/products/99999999-9999-4999-8999-999999999999",
+      "body": {
+        "price": 0
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/products/99999999-9999-4999-8999-999999999999",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/products/99999999-9999-4999-8999-999999999999/image",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/products/99999999-9999-4999-8999-999999999999/image",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PUT",
+      "path": "/api/products/99999999-9999-4999-8999-999999999999/allergens",
+      "body": {
+        "allergenIds": [
+          1
+        ]
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/logo",
+      "body": {
+        "path": "11111111-1111-4111-8111-111111111111/11111111-1111-4111-8111-111111111111.png"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/logo",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/cover",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/cover",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444/theme",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PUT",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444/theme",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444/theme/publish",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444/languages",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444/languages/en/translate",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PUT",
+      "path": "/api/menus/44444444-4444-4444-8444-444444444444/languages/en/text",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/subscriptions/11111111-1111-4111-8111-111111111111",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/subscriptions/checkout",
+      "body": {
+        "businessId": "11111111-1111-4111-8111-111111111111"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/subscriptions/portal",
+      "body": {
+        "businessId": "11111111-1111-4111-8111-111111111111"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/subscriptions/checkout/cancel",
+      "body": {
+        "businessId": "11111111-1111-4111-8111-111111111111"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222",
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222",
+      "body": {
+        "name": "Hacked",
+        "public_profile": {
+          "about": "Hacked"
+        }
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222",
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222/menus",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222/menus",
+      "body": {
+        "name": "Hacked",
+        "slug": "hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555",
+      "body": {
+        "is_published": true
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555/duplicate",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555/categories",
+      "body": {
+        "name": "Hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/categories/cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      "body": {
+        "name": "Hacked"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/categories/cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/categories/cccccccc-cccc-4ccc-8ccc-cccccccccccc/products",
+      "body": {
+        "productId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/categories/cccccccc-cccc-4ccc-8ccc-cccccccccccc/products/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222/products",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222/products",
+      "body": {
+        "name": "Hacked",
+        "price": 1
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/products/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+      "body": {
+        "price": 0
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/products/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/products/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee/image",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/products/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee/image",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PUT",
+      "path": "/api/products/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee/allergens",
+      "body": {
+        "allergenIds": [
+          1
+        ]
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PATCH",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222/logo",
+      "body": {
+        "path": "22222222-2222-4222-8222-222222222222/11111111-1111-4111-8111-111111111111.png"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222/logo",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222/cover",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "DELETE",
+      "path": "/api/businesses/22222222-2222-4222-8222-222222222222/cover",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555/theme",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PUT",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555/theme",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555/theme/publish",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555/languages",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555/languages/en/translate",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "PUT",
+      "path": "/api/menus/55555555-5555-4555-8555-555555555555/languages/en/text",
+      "body": {},
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "GET",
+      "path": "/api/subscriptions/22222222-2222-4222-8222-222222222222",
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/subscriptions/checkout",
+      "body": {
+        "businessId": "22222222-2222-4222-8222-222222222222"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/subscriptions/portal",
+      "body": {
+        "businessId": "22222222-2222-4222-8222-222222222222"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "Horizontal tenant attack",
+      "identity": "qa-b",
+      "method": "POST",
+      "path": "/api/subscriptions/checkout/cancel",
+      "body": {
+        "businessId": "22222222-2222-4222-8222-222222222222"
+      },
+      "expected": [
+        403
+      ],
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "A1 read own business",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111",
+      "expected": [
+        200
+      ],
+      "actual": 200,
+      "pass": true
+    },
+    {
+      "name": "A2 separate subscription",
+      "identity": "qa-a",
+      "method": "GET",
+      "path": "/api/subscriptions/22222222-2222-4222-8222-222222222222",
+      "expected": [
+        200
+      ],
+      "actual": 200,
+      "pass": true
+    },
+    {
+      "name": "Cross-tenant nested product rejected",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/categories/77777777-7777-4777-8777-777777777777/products",
+      "body": {
+        "productId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+      },
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "A1 cannot link A2 product despite same owner",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/categories/77777777-7777-4777-8777-777777777777/products",
+      "body": {
+        "productId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Body does not override route tenant",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/products/99999999-9999-4999-8999-999999999999?businessId=33333333-3333-4333-8333-333333333333",
+      "body": {
+        "price": 0,
+        "business_id": "33333333-3333-4333-8333-333333333333"
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Direct billing state manipulation",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/subscriptions/11111111-1111-4111-8111-111111111111",
+      "body": {
+        "status": "active"
+      },
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "Price/trial manipulation",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/subscriptions/checkout",
+      "body": {
+        "businessId": "11111111-1111-4111-8111-111111111111",
+        "price": "price_free",
+        "trialDays": 365
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Malformed resource ID",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/products/not-a-uuid",
+      "body": {
+        "name": "Name"
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Malformed resource ID",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/categories/not-a-uuid",
+      "body": {
+        "name": "Name"
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Malformed resource ID",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/menus/not-a-uuid",
+      "body": {
+        "name": "Name"
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Malformed JSON",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses",
+      "body": "{invalid",
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Reserved or malformed public slug",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses",
+      "body": {
+        "name": "Test",
+        "slug": "valid-slug",
+        "public_slug": "login"
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Reserved or malformed public slug",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses",
+      "body": {
+        "name": "Test",
+        "slug": "valid-slug",
+        "public_slug": "a"
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Public slug safely normalized",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses",
+      "body": {
+        "name": "Test",
+        "slug": "valid-slug",
+        "public_slug": "Bad / Slug"
+      },
+      "expected": [
+        201
+      ],
+      "actual": 201,
+      "pass": true
+    },
+    {
+      "name": "Mass assignment",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses",
+      "body": {
+        "name": "Test",
+        "slug": "valid-slug",
+        "owner_id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Negative price",
+      "identity": "qa-a",
+      "method": "POST",
+      "path": "/api/businesses/11111111-1111-4111-8111-111111111111/products",
+      "body": {
+        "name": "Dish",
+        "price": -1
+      },
+      "expected": [
+        400
+      ],
+      "actual": 400,
+      "pass": true
+    },
+    {
+      "name": "Subscription gate cannot be bypassed",
+      "identity": "qa-a",
+      "method": "PATCH",
+      "path": "/api/products/99999999-9999-4999-8999-999999999999",
+      "body": {
+        "price": 5
+      },
+      "expected": [
+        402
+      ],
+      "actual": 402,
+      "pass": true
+    },
+    {
+      "name": "Unpublished menu remains private",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/public/menus/11111111-1111-4111-8111-111111111111/principal",
+      "expected": [
+        404
+      ],
+      "actual": 404,
+      "pass": true
+    }
+  ],
+  "stripeCalls": 0,
+  "transportRequests": 393
+}

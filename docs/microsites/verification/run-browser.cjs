@@ -1,0 +1,4 @@
+const {spawnSync}=require('node:child_process');const path=require('node:path');const fs=require('node:fs');
+for(const dir of ['/tmp/carteliax-redesign','/tmp/carteliax-languages','/tmp/carteliax-microsites'])fs.mkdirSync(dir,{recursive:true});
+const names=process.argv.slice(2);const suites=names.length?names:['browser','regression-flows','regression-extended','regression-additional','regression-states','regression-public-matrix','regression-languages','microsites-browser','new-business-browser'];
+for(const name of suites){const result=spawnSync(process.execPath,[path.join(__dirname,name+'.cjs'),'after'],{env:{...process.env,PLAYWRIGHT_MODULE:'/tmp/carteliax-microsites/qa/node_modules/playwright'},encoding:'utf8',timeout:300000});fs.writeFileSync(`/tmp/carteliax-microsites/${name}.log`,result.stdout+result.stderr);console.log(name,result.status===0?'PASS':'FAIL');if(result.status!==0){console.log((result.stdout+result.stderr).slice(-4500));process.exit(1);}}

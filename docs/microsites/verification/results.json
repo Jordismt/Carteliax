@@ -1,0 +1,13 @@
+{
+  "backendTests": 32,
+  "sqlChecks": 95,
+  "browserGeometry": 60,
+  "browserLegacyChecks": 168,
+  "browserMicrositeChecks": 37,
+  "browserNewBusinessChecks": 1,
+  "typecheckProjects": 5,
+  "build": "PASS",
+  "productionMigrationsExecuted": false,
+  "realGroqCalls": 0,
+  "fixturePublicGroqAttempts": 0
+}

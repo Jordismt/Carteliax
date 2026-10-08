@@ -1,0 +1,16 @@
+# Auditoría previa — 7 octubre 2026
+
+Revisión antes de modificar código: frontend Nuxt 4 (páginas, middleware, composables, componentes, SSR/proxy y configuración), backend Express (todos los módulos, validadores, autorización, clientes Supabase, Storage y Stripe), migración y pruebas de traducciones, documentación de esquema anterior y harness de regresión.
+
+- Establecimientos: businesses, owner_id, slug existente, default_language, logo_url, primary_color. No hay dump de esquema original; no se pueden certificar las políticas RLS remotas. Se conserva ownership por owner_id y no se habilitan miembros.
+- Cartas: menus por business_id, múltiples cartas, slug inmutable por API, orden y publicación separados del diseño. Categorías por menu_id; category_products reutiliza products del mismo establecimiento. Alérgenos por product_allergens. Público filtra categorías visibles y productos disponibles (los agotados actualmente se ocultan; no se cambia).
+- Diseño: menu_themes draft_config y published_config/published_at; se exige carta publicada y diseño publicado. MenuLivePreview sirve editor y público, cuatro diseños existentes. Se reutilizará con una propiedad opcional de integración, sin cambiar el modo actual.
+- URL /c/:businessId/:slug: página Nuxt SSR, proxy Nitro /api/public/menus/:businessId/:slug, lector Express. Consumidores: MenuQrGenerator, menus/index.vue, menus/[id]/index.vue. QR PNG/PDF usa qrcode/jspdf y logo. QR obtiene negocio por API. Preview de diseño es local, sin construir URL. Duplicación SQL crea otro slug de carta; no copia establecimiento.
+- Traducciones: registro es/en/fr/val; idioma fuente congelado por carta, cola persistente, hashes, revisiones, edición manual, publicación independiente y fallback. Groq solo worker privado. Público cx_public_translations y localizePublicMenu. No se modifica la migración aplicada ni el proveedor/worker.
+- Auth: Supabase JWT, middleware privado y RLS mediante createUserClient; suscripción verifica ownership y fechas con servicio. Stripe webhook antes de JSON, Checkout/Portal independientes. Ningún cambio previsto en esos módulos.
+- Storage: business-logos existente con subida cliente y confirmación backend; product-images convierte con sharp y verifica ownership. Portadas tendrán bucket separado y procesamiento backend.
+- SSR público: useFetch a Nitro con apiBaseUrl privado; ninguna clave privada en frontend. Robots existente. Nueva ruta dinámica de un segmento no sustituye rutas estáticas.
+
+Baseline: backend 28/28 tests; build frontend correcto. No se hicieron escrituras ni migraciones remotas. Copia de fuentes previas en /tmp/carteliax-microsites/before.
+
+Decisiones: public_slug nuevo único/inmutable, distinto de slug histórico (backfill no cambia campos existentes), public_profile validado para datos opcionales/horarios/textos manuales. Ruta /:publicSlug y ?menu=:menuSlug#carta evita colisiones con rutas de dos segmentos. Guardas backend + constraint/trigger SQL. Activación controlada MICROSITES_ENABLED tras SQL; lector legacy funciona antes y después. No aliases necesarios al no permitir cambio de dirección. Traducciones manuales del establecimiento con source fingerprint y fallback; ampliar generación automática requeriría cambiar contratos y cola por carta, queda fuera para preservar el sistema recién implantado.

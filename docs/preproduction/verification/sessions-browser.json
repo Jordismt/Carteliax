@@ -1,0 +1,17 @@
+{
+  "type": "REAL_CHROME_MOCKED_AUTH_API",
+  "results": [
+    {
+      "name": "logout unmounts private data in both tabs, public URL retained",
+      "status": "PASS"
+    },
+    {
+      "name": "direct private route without session redirects login",
+      "status": "PASS"
+    },
+    {
+      "name": "backend 401 during private load redirects login",
+      "status": "PASS"
+    }
+  ]
+}

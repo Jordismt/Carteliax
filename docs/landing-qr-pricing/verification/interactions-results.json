@@ -1,0 +1,351 @@
+[
+  {
+    "width": 320,
+    "name": "Las secciones conservan datos y guardan el mismo contrato",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "Error de enlace revela sección y acordeón, enfoca campo y evita envío",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "Varios errores entre secciones se revisan en orden sin perder el foco",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "Formato válido de teléfono y WhatsApp",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "QR del establecimiento: URL limpia y PDF",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "Imágenes y guardado sin desbordamiento",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "Navegación móvil: foco, inert, Escape y retorno",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "Navegación de carta, categorías adaptadas y compartir QR visible",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "Acciones secundarias disponibles por teclado",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "Las secciones conservan datos y guardan el mismo contrato",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "Error de enlace revela sección y acordeón, enfoca campo y evita envío",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "Varios errores entre secciones se revisan en orden sin perder el foco",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "Formato válido de teléfono y WhatsApp",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "QR del establecimiento: URL limpia y PDF",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "Imágenes y guardado sin desbordamiento",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "Navegación móvil: foco, inert, Escape y retorno",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "Navegación de carta, categorías adaptadas y compartir QR visible",
+    "pass": true
+  },
+  {
+    "width": 375,
+    "name": "Acciones secundarias disponibles por teclado",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "Las secciones conservan datos y guardan el mismo contrato",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "Error de enlace revela sección y acordeón, enfoca campo y evita envío",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "Varios errores entre secciones se revisan en orden sin perder el foco",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "Formato válido de teléfono y WhatsApp",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "QR del establecimiento: URL limpia y PDF",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "Imágenes y guardado sin desbordamiento",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "Navegación móvil: foco, inert, Escape y retorno",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "Navegación de carta, categorías adaptadas y compartir QR visible",
+    "pass": true
+  },
+  {
+    "width": 390,
+    "name": "Acciones secundarias disponibles por teclado",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "Las secciones conservan datos y guardan el mismo contrato",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "Error de enlace revela sección y acordeón, enfoca campo y evita envío",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "Varios errores entre secciones se revisan en orden sin perder el foco",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "Formato válido de teléfono y WhatsApp",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "QR del establecimiento: URL limpia y PDF",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "Imágenes y guardado sin desbordamiento",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "Navegación móvil: foco, inert, Escape y retorno",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "Navegación de carta, categorías adaptadas y compartir QR visible",
+    "pass": true
+  },
+  {
+    "width": 430,
+    "name": "Acciones secundarias disponibles por teclado",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "Las secciones conservan datos y guardan el mismo contrato",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "Error de enlace revela sección y acordeón, enfoca campo y evita envío",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "Varios errores entre secciones se revisan en orden sin perder el foco",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "Formato válido de teléfono y WhatsApp",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "QR del establecimiento: URL limpia y PDF",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "Imágenes y guardado sin desbordamiento",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "Navegación móvil: foco, inert, Escape y retorno",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "Navegación de carta, categorías adaptadas y compartir QR visible",
+    "pass": true
+  },
+  {
+    "width": 768,
+    "name": "Acciones secundarias disponibles por teclado",
+    "pass": true
+  },
+  {
+    "width": 1024,
+    "name": "Las secciones conservan datos y guardan el mismo contrato",
+    "pass": true
+  },
+  {
+    "width": 1024,
+    "name": "Error de enlace revela sección y acordeón, enfoca campo y evita envío",
+    "pass": true
+  },
+  {
+    "width": 1024,
+    "name": "Varios errores entre secciones se revisan en orden sin perder el foco",
+    "pass": true
+  },
+  {
+    "width": 1024,
+    "name": "Formato válido de teléfono y WhatsApp",
+    "pass": true
+  },
+  {
+    "width": 1024,
+    "name": "QR del establecimiento: URL limpia y PDF",
+    "pass": true
+  },
+  {
+    "width": 1024,
+    "name": "Imágenes y guardado sin desbordamiento",
+    "pass": true
+  },
+  {
+    "width": 1024,
+    "name": "Navegación de carta, categorías adaptadas y compartir QR visible",
+    "pass": true
+  },
+  {
+    "width": 1024,
+    "name": "Acciones secundarias disponibles por teclado",
+    "pass": true
+  },
+  {
+    "width": 1280,
+    "name": "Las secciones conservan datos y guardan el mismo contrato",
+    "pass": true
+  },
+  {
+    "width": 1280,
+    "name": "Error de enlace revela sección y acordeón, enfoca campo y evita envío",
+    "pass": true
+  },
+  {
+    "width": 1280,
+    "name": "Varios errores entre secciones se revisan en orden sin perder el foco",
+    "pass": true
+  },
+  {
+    "width": 1280,
+    "name": "Formato válido de teléfono y WhatsApp",
+    "pass": true
+  },
+  {
+    "width": 1280,
+    "name": "QR del establecimiento: URL limpia y PDF",
+    "pass": true
+  },
+  {
+    "width": 1280,
+    "name": "Imágenes y guardado sin desbordamiento",
+    "pass": true
+  },
+  {
+    "width": 1280,
+    "name": "Navegación de carta, categorías adaptadas y compartir QR visible",
+    "pass": true
+  },
+  {
+    "width": 1280,
+    "name": "Acciones secundarias disponibles por teclado",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "Las secciones conservan datos y guardan el mismo contrato",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "Error de enlace revela sección y acordeón, enfoca campo y evita envío",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "Varios errores entre secciones se revisan en orden sin perder el foco",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "Formato válido de teléfono y WhatsApp",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "QR del establecimiento: URL limpia y PDF",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "Imágenes y guardado sin desbordamiento",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "Navegación de carta, categorías adaptadas y compartir QR visible",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "Acciones secundarias disponibles por teclado",
+    "pass": true
+  },
+  {
+    "name": "Errores de Auth explicados en español sin filtrar transporte",
+    "pass": true
+  }
+]

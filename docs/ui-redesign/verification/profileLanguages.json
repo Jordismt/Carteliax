@@ -1,0 +1,17 @@
+[
+  {
+    "source": "es",
+    "selected": "en",
+    "pass": true
+  },
+  {
+    "source": "en",
+    "selected": "es",
+    "pass": true
+  },
+  {
+    "source": "ca",
+    "selected": "en",
+    "pass": true
+  }
+]

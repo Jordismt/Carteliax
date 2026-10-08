@@ -1,0 +1,16 @@
+{
+  "type": "REAL_STRIPE_TEST_CONFIGURE",
+  "oldAmount": 1800,
+  "newAmount": 1749,
+  "currency": "eur",
+  "interval": "month",
+  "interval_count": 1,
+  "tax_behavior": "inclusive",
+  "vatPercentage": 21,
+  "vatInclusive": true,
+  "createdPrice": true,
+  "createdRate": true,
+  "localEnvUpdated": true,
+  "existingResourcesModified": false,
+  "liveTouched": false
+}

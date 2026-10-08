@@ -1,0 +1,15 @@
+{
+  "type": "REAL_STRIPE_TEST_CHECKOUT_API_MOCKED_DB_IDENTITY",
+  "pass": true,
+  "monthlyAmount": 1749,
+  "currency": "eur",
+  "taxBehavior": "inclusive",
+  "paymentMethodCollection": "always",
+  "automaticTax": false,
+  "promotions": false,
+  "cardCompletionVerified": false,
+  "supabaseVerified": false,
+  "appWebhooksVerified": false,
+  "existingResourcesModified": false,
+  "liveTouched": false
+}

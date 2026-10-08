@@ -1,0 +1,16 @@
+{
+  "decoder": "installed libzbar",
+  "pdfRasterizer": "pdftoppm",
+  "artifacts": {
+    "png": {
+      "sha256": "e01fec3c462f10017249e99bf749f9108abab16fc4a47852ff300e6426712bda",
+      "bytes": 87919,
+      "decoded": "http://127.0.0.1:3001/restaurante-jordi"
+    },
+    "pdf": {
+      "sha256": "2ded9c8a4d2a1d5b435d200c0e977297f1114acb2f6a1c27f87bd3e2d6112bbc",
+      "bytes": 7683930,
+      "decoded": "http://127.0.0.1:3001/restaurante-jordi"
+    }
+  }
+}

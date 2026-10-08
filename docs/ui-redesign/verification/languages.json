@@ -1,0 +1,150 @@
+[
+  {
+    "name": "Idiomas 320px sin desbordamiento",
+    "pass": true
+  },
+  {
+    "name": "Diálogo, teclado y Escape 320px",
+    "pass": true
+  },
+  {
+    "name": "Idiomas 375px sin desbordamiento",
+    "pass": true
+  },
+  {
+    "name": "Diálogo, teclado y Escape 375px",
+    "pass": true
+  },
+  {
+    "name": "Idiomas 390px sin desbordamiento",
+    "pass": true
+  },
+  {
+    "name": "Diálogo, teclado y Escape 390px",
+    "pass": true
+  },
+  {
+    "name": "Idiomas 430px sin desbordamiento",
+    "pass": true
+  },
+  {
+    "name": "Diálogo, teclado y Escape 430px",
+    "pass": true
+  },
+  {
+    "name": "Idiomas 768px sin desbordamiento",
+    "pass": true
+  },
+  {
+    "name": "Diálogo, teclado y Escape 768px",
+    "pass": true
+  },
+  {
+    "name": "Idiomas 1024px sin desbordamiento",
+    "pass": true
+  },
+  {
+    "name": "Diálogo, teclado y Escape 1024px",
+    "pass": true
+  },
+  {
+    "name": "Idiomas 1280px sin desbordamiento",
+    "pass": true
+  },
+  {
+    "name": "Diálogo, teclado y Escape 1280px",
+    "pass": true
+  },
+  {
+    "name": "Idiomas 1440px sin desbordamiento",
+    "pass": true
+  },
+  {
+    "name": "Diálogo, teclado y Escape 1440px",
+    "pass": true
+  },
+  {
+    "name": "Generar EN sin doble envío y ver borrador",
+    "pass": true
+  },
+  {
+    "name": "Publicar idioma explícitamente",
+    "pass": true
+  },
+  {
+    "name": "Edición manual persiste al recargar sin IA",
+    "pass": true
+  },
+  {
+    "name": "Descartar edición sin guardar restaura scroll y foco",
+    "pass": true
+  },
+  {
+    "name": "Original cambiado conserva corrección; cancelar regeneración no llama IA",
+    "pass": true
+  },
+  {
+    "name": "Regeneración manual exige confirmación explícita",
+    "pass": true
+  },
+  {
+    "name": "Desactivar y reactivar conserva borrador",
+    "pass": true
+  },
+  {
+    "name": "Generación fr en UI con API simulada",
+    "pass": true
+  },
+  {
+    "name": "Generación val en UI con API simulada",
+    "pass": true
+  },
+  {
+    "name": "SSR conserva contenido traducido y html lang Valenciano",
+    "pass": true
+  },
+  {
+    "name": "Selector público 320px: 20 cambios sin peticiones",
+    "pass": true
+  },
+  {
+    "name": "Selector público 375px: 20 cambios sin peticiones",
+    "pass": true
+  },
+  {
+    "name": "Selector público 390px: 20 cambios sin peticiones",
+    "pass": true
+  },
+  {
+    "name": "Selector público 430px: 20 cambios sin peticiones",
+    "pass": true
+  },
+  {
+    "name": "Selector público 768px: 20 cambios sin peticiones",
+    "pass": true
+  },
+  {
+    "name": "Selector público 1024px: 20 cambios sin peticiones",
+    "pass": true
+  },
+  {
+    "name": "Selector público 1280px: 20 cambios sin peticiones",
+    "pass": true
+  },
+  {
+    "name": "Selector público 1440px: 20 cambios sin peticiones",
+    "pass": true
+  },
+  {
+    "name": "Idioma guardado persiste; descripción ausente usa original",
+    "pass": true
+  },
+  {
+    "name": "Cero peticiones Groq en público",
+    "pass": true
+  },
+  {
+    "name": "Cambiar idioma conserva categoría y usa original para traducción ausente",
+    "pass": true
+  }
+]

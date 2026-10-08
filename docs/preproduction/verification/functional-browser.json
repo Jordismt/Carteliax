@@ -1,0 +1,40 @@
+{
+  "type": "REAL_CHROME_MOCKED_AUTH_STORAGE_API",
+  "results": [
+    {
+      "suite": "regression-flows",
+      "status": "PASS",
+      "assertedScenarios": 7
+    },
+    {
+      "suite": "regression-extended",
+      "status": "PASS",
+      "assertedScenarios": 32
+    },
+    {
+      "suite": "regression-additional",
+      "status": "PASS",
+      "assertedScenarios": 6
+    },
+    {
+      "suite": "regression-states",
+      "status": "PASS",
+      "assertedScenarios": 44
+    },
+    {
+      "suite": "regression-public-matrix",
+      "status": "PASS",
+      "assertedScenarios": 99
+    },
+    {
+      "suite": "regression-languages",
+      "status": "PASS",
+      "assertedScenarios": 37
+    },
+    {
+      "suite": "new-business-browser",
+      "status": "PASS",
+      "assertedScenarios": 1
+    }
+  ]
+}

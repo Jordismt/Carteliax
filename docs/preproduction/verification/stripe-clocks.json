@@ -1,0 +1,146 @@
+{
+  "type": "REAL_STRIPE_TEST_CLOCKS_SUBSCRIPTIONS_API_NOT_CHECKOUT",
+  "expected": {
+    "amount": 1599,
+    "currency": "eur",
+    "trialDays": 7
+  },
+  "scenarios": [
+    {
+      "name": "A1 trial",
+      "status": "trialing",
+      "trialSeconds": 604800,
+      "collection_method": "charge_automatically",
+      "pass": true
+    },
+    {
+      "name": "A2 trial",
+      "status": "trialing",
+      "trialSeconds": 604800,
+      "collection_method": "charge_automatically",
+      "pass": true
+    },
+    {
+      "name": "B1 trial",
+      "status": "trialing",
+      "trialSeconds": 604800,
+      "collection_method": "charge_automatically",
+      "pass": true
+    },
+    {
+      "name": "A1 first charge after 7 days",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "A2 first charge after 7 days",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "B1 first charge after 7 days",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "A1 renewal 1",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "A2 renewal 1",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "B1 renewal 1",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "A1 renewal 2",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "A2 renewal 2",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "B1 renewal 2",
+      "status": "active",
+      "invoice_status": "paid",
+      "amount_due": 1800,
+      "amount_paid": 1800,
+      "currency": "eur",
+      "automaticPaymentVerified": true,
+      "commercial1599Verified": false
+    },
+    {
+      "name": "Cancellation A1 does not cancel A2",
+      "pass": true
+    },
+    {
+      "name": "A1 canceled",
+      "status": "canceled",
+      "pass": true
+    },
+    {
+      "name": "A2 failed renewal",
+      "status": "past_due",
+      "pass": true
+    },
+    {
+      "name": "B1 unaffected",
+      "status": "active",
+      "pass": true
+    }
+  ],
+  "actualAmount": 1800,
+  "commercialMatch": false,
+  "fixtureLabel": "carteliax-audit-2026-10-08T10-55-42-193Z",
+  "appWebhooksVerified": false,
+  "liveVerified": false,
+  "status": "FAIL_COMMERCIAL_PRICE"
+}

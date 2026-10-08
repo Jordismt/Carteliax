@@ -1,0 +1,19 @@
+{
+  "components/ProductManager.vue": true,
+  "pages/menus/index.vue": true,
+  "pages/menus/[id]/index.vue": true,
+  "pages/menus/[id]/qr.vue": true,
+  "pages/businesses/index.vue": true,
+  "pages/businesses/[id].vue": true,
+  "pages/dashboard.vue": true,
+  "pages/login.vue": true,
+  "pages/register.vue": true,
+  "components/menuEditor/MenuThemeEditor.vue": true,
+  "components/menuEditor/MenuLivePreview.vue": true,
+  "composables": true,
+  "auth_middleware": true,
+  "backend": true,
+  "package_files_and_nuxt_config": true,
+  "design_script_exception": "Solo se cambia flush del watcher de mensajes a sync; operaciones y datos id\u00e9nticos.",
+  "design_operations_unchanged_except_feedback_watcher": true
+}

@@ -1,0 +1,130 @@
+[
+  {
+    "name": "Formulario de carta 320px: límites, foco y Escape",
+    "pass": true
+  },
+  {
+    "name": "Formulario de producto 320px: precio, foto y botones táctiles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de categoría 320px: abrir, cerrar y no desbordar",
+    "pass": true
+  },
+  {
+    "name": "QR 320px: cuadrado, colores y enlace accesibles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de carta 390px: límites, foco y Escape",
+    "pass": true
+  },
+  {
+    "name": "Formulario de producto 390px: precio, foto y botones táctiles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de categoría 390px: abrir, cerrar y no desbordar",
+    "pass": true
+  },
+  {
+    "name": "QR 390px: cuadrado, colores y enlace accesibles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de carta 768px: límites, foco y Escape",
+    "pass": true
+  },
+  {
+    "name": "Formulario de producto 768px: precio, foto y botones táctiles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de categoría 768px: abrir, cerrar y no desbordar",
+    "pass": true
+  },
+  {
+    "name": "QR 768px: cuadrado, colores y enlace accesibles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de carta 1024px: límites, foco y Escape",
+    "pass": true
+  },
+  {
+    "name": "Formulario de producto 1024px: precio, foto y botones táctiles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de categoría 1024px: abrir, cerrar y no desbordar",
+    "pass": true
+  },
+  {
+    "name": "QR 1024px: cuadrado, colores y enlace accesibles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de carta 1440px: límites, foco y Escape",
+    "pass": true
+  },
+  {
+    "name": "Formulario de producto 1440px: precio, foto y botones táctiles",
+    "pass": true
+  },
+  {
+    "name": "Formulario de categoría 1440px: abrir, cerrar y no desbordar",
+    "pass": true
+  },
+  {
+    "name": "QR 1440px: cuadrado, colores y enlace accesibles",
+    "pass": true
+  },
+  {
+    "name": "Edición móvil con altura reducida 420px",
+    "pass": true
+  },
+  {
+    "name": "Edición móvil con altura reducida 360px",
+    "pass": true
+  },
+  {
+    "name": "Menú móvil: Escape devuelve el foco; navegación inferior usable",
+    "pass": true
+  },
+  {
+    "name": "Envío lento: guardar producto una sola vez",
+    "pass": true
+  },
+  {
+    "name": "Error al guardar mantiene el producto y el formulario",
+    "pass": true
+  },
+  {
+    "name": "Selector de establecimiento conserva las cartas al volver",
+    "pass": true
+  },
+  {
+    "name": "Error de carga se diferencia de una lista realmente vacía",
+    "pass": true
+  },
+  {
+    "name": "Estado vacío de businesses",
+    "pass": true
+  },
+  {
+    "name": "Estado vacío de menus",
+    "pass": true
+  },
+  {
+    "name": "Estado vacío de categories",
+    "pass": true
+  },
+  {
+    "name": "Estado vacío de products",
+    "pass": true
+  },
+  {
+    "name": "Reduced motion y tamaños legibles de inputs móviles",
+    "pass": true
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "file": "frontend/app/pages/index.vue",
+    "line": 80,
+    "text": "a: \"18 €/mes por establecimiento, con 7 días gratis si ese negocio no ha utilizado su prueba. Primero te registras y creas el establecimiento; después activas su suscripción con tarjeta en el pago seguro.\","
+  },
+  {
+    "file": "frontend/app/pages/index.vue",
+    "line": 116,
+    "text": "<p class=\"mt-4 text-sm leading-6 text-slate-600\">7 días gratis al activar la suscripción.<br />Después, 18 €/mes por establecimiento.</p>"
+  },
+  {
+    "file": "frontend/app/pages/index.vue",
+    "line": 153,
+    "text": "<div><h2 class=\"text-2xl font-semibold tracking-tight\">Un precio claro por establecimiento</h2><p class=\"mt-4 text-4xl font-semibold\">18 € <span class=\"text-base font-normal text-slate-600\">/mes</span></p><p class=\"mt-3 text-sm leading-6 text-slate-600\">7 días gratis si ese establecimiento no ha utilizado su prueba. La tarjeta se solicita al activar la suscripción. Puedes gestionar la cancelación desde Facturación.</p><NuxtLink to=\"/register\" class=\"site-primary mt-5\">Crear cuenta gratis <ArrowRight :size=\"17\" /></NuxtLink></div>"
+  },
+  {
+    "file": "frontend/app/pages/register.vue",
+    "line": 93,
+    "text": "<p class=\"mb-6 rounded-xl border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900\"><strong>18 €/mes por establecimiento · 7 días gratis.</strong> La tarjeta se solicita al activar la suscripción, después de crear tu negocio.</p>"
+  },
+  {
+    "file": "frontend/app/pages/dashboard.vue",
+    "line": 67,
+    "text": "<p class=\"mt-4 text-sm text-slate-600\">7 días gratis al activar la suscripción · Después, 18 €/mes por establecimiento.</p>"
+  },
+  {
+    "file": "frontend/app/pages/billing/[businessId].vue",
+    "line": 293,
+    "text": "18 €"
+  },
+  {
+    "file": "frontend/app/pages/billing/[businessId].vue",
+    "line": 372,
+    "text": "<template v-if=\"trialEligible\"><strong>Hoy comienzas con 7 días gratis.</strong> Te pediremos una tarjeta en el pago seguro. Al terminar la prueba, la suscripción pasa a 18 €/mes por este establecimiento, salvo que la canceles antes.</template>"
+  },
+  {
+    "file": "frontend/app/pages/billing/[businessId].vue",
+    "line": 373,
+    "text": "<template v-else>Este establecimiento ya ha utilizado su prueba gratuita. La nueva suscripción cuesta <strong>18 €/mes</strong> desde su activación.</template>"
+  },
+  {
+    "file": "frontend/app/pages/billing/[businessId].vue",
+    "line": 391,
+    "text": ": \"Contratar por 18 €/mes\""
+  },
+  {
+    "file": "frontend/app/pages/businesses/index.vue",
+    "line": 173,
+    "text": "<div class=\"mt-5 rounded-xl bg-emerald-50 p-4 text-sm leading-6 text-emerald-900\">Crear el establecimiento no inicia ningún cobro. En el siguiente paso podrás activar <strong>7 días gratis</strong> con tarjeta; después, <strong>18 €/mes por establecimiento</strong>.</div>"
+  },
+  {
+    "file": "backend/src/config/env.js",
+    "line": 43,
+    "text": "STRIPE_PRICE_ID: z.string().startsWith(\"price_\"),"
+  },
+  {
+    "file": "backend/src/modules/subscriptions/stripeService.js",
+    "line": 7,
+    "text": "if (!process.env.STRIPE_PRICE_ID) {"
+  },
+  {
+    "file": "backend/src/modules/subscriptions/stripeService.js",
+    "line": 8,
+    "text": "throw new Error(\"Falta STRIPE_PRICE_ID.\");"
+  },
+  {
+    "file": "backend/src/modules/subscriptions/stripeService.js",
+    "line": 17,
+    "text": "export const PRICE_ID = process.env.STRIPE_PRICE_ID;"
+  }
+]

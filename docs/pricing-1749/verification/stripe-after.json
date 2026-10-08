@@ -1,0 +1,23 @@
+{
+  "type": "REAL_STRIPE_TEST_READ_ONLY",
+  "price": {
+    "active": true,
+    "livemode": false,
+    "unit_amount": 1749,
+    "currency": "eur",
+    "interval": "month",
+    "interval_count": 1,
+    "tax_behavior": "inclusive"
+  },
+  "commercialMatch": true,
+  "vat": {
+    "active": true,
+    "livemode": false,
+    "percentage": 21,
+    "inclusive": true,
+    "tax_type": "vat",
+    "country": "ES"
+  },
+  "taxMatch": true,
+  "webhooks": []
+}
