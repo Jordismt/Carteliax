@@ -1,0 +1,62 @@
+{
+  "type": "REAL_PRODUCTION_PUBLIC_READ_ONLY",
+  "checkedAt": "2026-10-08T14:47:32.087Z",
+  "deployedChanges": false,
+  "results": [
+    {
+      "url": "https://www.carteliax.com/",
+      "status": 200,
+      "durationMs": 410
+    },
+    {
+      "url": "https://www.carteliax.com/restaurante-jordi",
+      "status": 502,
+      "durationMs": 175,
+      "hasBusiness": false,
+      "statusCode": 502,
+      "applicationUnavailableMessage": true
+    },
+    {
+      "url": "https://www.carteliax.com/api/public/sites/restaurante-jordi",
+      "status": 502,
+      "durationMs": 219,
+      "hasBusiness": false,
+      "statusCode": 502
+    },
+    {
+      "url": "https://carteliax-api.vercel.app/api/health",
+      "status": 200,
+      "durationMs": 277,
+      "success": true,
+      "hasBusiness": false
+    },
+    {
+      "url": "https://carteliax-api.vercel.app/api/public/sites/restaurante-jordi",
+      "status": 200,
+      "durationMs": 3191,
+      "success": true,
+      "hasBusiness": true
+    },
+    {
+      "operation": "OPTIONS /api/businesses",
+      "origin": "https://www.carteliax.com",
+      "status": 204,
+      "allowOrigin": "https://www.carteliax.com",
+      "allowHeaders": "authorization,content-type"
+    },
+    {
+      "operation": "OPTIONS /api/businesses",
+      "origin": "https://carteliax.com",
+      "status": 204,
+      "allowOrigin": "https://www.carteliax.com",
+      "allowHeaders": "authorization,content-type"
+    },
+    {
+      "operation": "OPTIONS /api/businesses",
+      "origin": "https://evil.example",
+      "status": 204,
+      "allowOrigin": "https://www.carteliax.com",
+      "allowHeaders": "authorization,content-type"
+    }
+  ]
+}

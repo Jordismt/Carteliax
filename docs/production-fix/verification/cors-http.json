@@ -1,0 +1,57 @@
+{
+  "type": "REAL_LOCAL_HTTP_NO_REMOTE_SERVICES",
+  "results": [
+    {
+      "operation": "OPTIONS /api/businesses",
+      "origin": "https://www.carteliax.com",
+      "status": 204,
+      "allowed": true,
+      "pass": true
+    },
+    {
+      "operation": "GET /api/businesses without JWT",
+      "origin": "https://www.carteliax.com",
+      "status": 401,
+      "allowed": true,
+      "pass": true
+    },
+    {
+      "operation": "OPTIONS /api/businesses",
+      "origin": "https://carteliax.com",
+      "status": 204,
+      "allowed": true,
+      "pass": true
+    },
+    {
+      "operation": "GET /api/businesses without JWT",
+      "origin": "https://carteliax.com",
+      "status": 401,
+      "allowed": true,
+      "pass": true
+    },
+    {
+      "operation": "OPTIONS /api/businesses",
+      "origin": "https://evil.example",
+      "status": 401,
+      "allowed": false,
+      "pass": true
+    },
+    {
+      "operation": "GET /api/businesses without JWT",
+      "origin": "https://evil.example",
+      "status": 401,
+      "allowed": false,
+      "pass": true
+    },
+    {
+      "operation": "GET health without Origin",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "operation": "unsigned webhook rejected",
+      "status": 400,
+      "pass": true
+    }
+  ]
+}

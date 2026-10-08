@@ -16,3 +16,6 @@ dist/
 # Otros
 .DS_Store
 *.log
+
+# Local Vercel project metadata and generated deployment output
+.vercel/

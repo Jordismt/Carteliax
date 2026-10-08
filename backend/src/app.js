@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 
 import { env } from "./config/env.js";
+import { createCorsOptions } from "./config/cors.js";
 
 // ==========================================
 // RUTAS EXISTENTES
@@ -51,11 +52,7 @@ const app = express();
 
 app.use(helmet());
 
-app.use(
-  cors({
-    origin: env.FRONTEND_URL,
-  }),
-);
+app.use(cors(createCorsOptions(env.FRONTEND_URL)));
 
 // ==========================================
 // STRIPE WEBHOOK

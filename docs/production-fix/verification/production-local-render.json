@@ -1,0 +1,20 @@
+{
+  "type": "LOCAL_PRODUCTION_BUILD_REAL_PUBLIC_BACKEND_READ_ONLY",
+  "pass": true,
+  "results": [
+    {
+      "route": "/restaurante-jordi",
+      "status": 200,
+      "hasSSRRestaurant": true
+    },
+    {
+      "route": "/qa-no-existe-20261008",
+      "status": 404,
+      "hasSSRRestaurant": false
+    }
+  ],
+  "backend": "https://carteliax-api.vercel.app",
+  "supabaseAuth": "fixture-only, not exercised",
+  "frontendDeployed": false,
+  "privateApiConfigured": false
+}

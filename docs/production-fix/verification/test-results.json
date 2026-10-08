@@ -1,0 +1,32 @@
+{
+  "backend": {
+    "tests": 114,
+    "fail": 0,
+    "pass": true
+  },
+  "apiConfig": {
+    "tests": 2,
+    "pass": true
+  },
+  "ssrFixture": {
+    "checks": 34,
+    "pass": true
+  },
+  "browserFixture": {
+    "checks": 32,
+    "errors": 0,
+    "pass": true
+  },
+  "corsHTTP": {
+    "checks": 8,
+    "pass": true
+  },
+  "vercelHandler": {
+    "checks": 4,
+    "pass": true
+  },
+  "buildNode": "PASS",
+  "buildVercel": "PASS",
+  "typecheckAppServerSharedNode": "PASS",
+  "productionDeployed": false
+}

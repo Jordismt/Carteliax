@@ -5,7 +5,8 @@ export const stripe = new Stripe(env.STRIPE_SECRET_KEY, { timeout: 20000, maxNet
 export const PRICE_ID = env.STRIPE_PRICE_ID;
 export const VAT_TAX_RATE_ID = env.STRIPE_VAT_TAX_RATE_ID;
 export const FRONTEND_URL = env.FRONTEND_URL.replace(/\/$/, "");
-export const STRIPE_LIVE_MODE = env.STRIPE_SECRET_KEY.startsWith("sk_live_");
+// env validation guarantees the standard/restricted key matches this mode.
+export const STRIPE_LIVE_MODE = env.STRIPE_MODE === "live";
 
 function billingConfigurationError() {
   return Object.assign(new Error("La configuración de precio o IVA no coincide con el plan."), { code: "BILLING_CONFIGURATION", status: 503 });

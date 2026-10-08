@@ -14,7 +14,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    apiBaseUrl: "http://localhost:5000",
+    // SSR can use NUXT_API_BASE_URL, or the explicitly configured public API URL.
+    // Never silently send production requests to a developer's localhost.
+    apiBaseUrl: "",
 
     public: {
       supabaseUrl: "",

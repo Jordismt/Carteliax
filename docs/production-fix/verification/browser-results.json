@@ -1,0 +1,134 @@
+{
+  "results": [
+    {
+      "name": "Landing 320: hero, móvil, precio, anchors y SEO",
+      "pass": true
+    },
+    {
+      "name": "Landing 320: plantillas, idiomas, FAQ, navegación y CTA",
+      "pass": true
+    },
+    {
+      "name": "Landing 375: hero, móvil, precio, anchors y SEO",
+      "pass": true
+    },
+    {
+      "name": "Landing 375: plantillas, idiomas, FAQ, navegación y CTA",
+      "pass": true
+    },
+    {
+      "name": "Landing 390: hero, móvil, precio, anchors y SEO",
+      "pass": true
+    },
+    {
+      "name": "Landing 390: plantillas, idiomas, FAQ, navegación y CTA",
+      "pass": true
+    },
+    {
+      "name": "Landing 430: hero, móvil, precio, anchors y SEO",
+      "pass": true
+    },
+    {
+      "name": "Landing 430: plantillas, idiomas, FAQ, navegación y CTA",
+      "pass": true
+    },
+    {
+      "name": "Landing 768: hero, móvil, precio, anchors y SEO",
+      "pass": true
+    },
+    {
+      "name": "Landing 768: plantillas, idiomas, FAQ, navegación y CTA",
+      "pass": true
+    },
+    {
+      "name": "Landing 1024: hero, móvil, precio, anchors y SEO",
+      "pass": true
+    },
+    {
+      "name": "Landing 1024: plantillas, idiomas, FAQ, navegación y CTA",
+      "pass": true
+    },
+    {
+      "name": "Landing 1280: hero, móvil, precio, anchors y SEO",
+      "pass": true
+    },
+    {
+      "name": "Landing 1280: plantillas, idiomas, FAQ, navegación y CTA",
+      "pass": true
+    },
+    {
+      "name": "Landing 1440: hero, móvil, precio, anchors y SEO",
+      "pass": true
+    },
+    {
+      "name": "Landing 1440: plantillas, idiomas, FAQ, navegación y CTA",
+      "pass": true
+    },
+    {
+      "name": "Landing SSR y assets locales sin API comercial ni dependencias externas",
+      "pass": true
+    },
+    {
+      "name": "QR 320: una dirección, personalización y sin selector",
+      "pass": true
+    },
+    {
+      "name": "QR 375: una dirección, personalización y sin selector",
+      "pass": true
+    },
+    {
+      "name": "QR 390: una dirección, personalización y sin selector",
+      "pass": true
+    },
+    {
+      "name": "QR 430: una dirección, personalización y sin selector",
+      "pass": true
+    },
+    {
+      "name": "QR 768: una dirección, personalización y sin selector",
+      "pass": true
+    },
+    {
+      "name": "QR 1024: una dirección, personalización y sin selector",
+      "pass": true
+    },
+    {
+      "name": "QR 1280: una dirección, personalización y sin selector",
+      "pass": true
+    },
+    {
+      "name": "QR 1440: una dirección, personalización y sin selector",
+      "pass": true
+    },
+    {
+      "name": "PNG y PDF descargados decodifican la dirección general, sin carta/idioma/UUID",
+      "pass": true
+    },
+    {
+      "name": "Copiar web, opciones de logo y accesos privados antiguos convergen en el mismo QR",
+      "pass": true
+    },
+    {
+      "name": "Una carta, varias cartas y ninguna publicada usan la misma entrada",
+      "pass": true
+    },
+    {
+      "name": "Deep link con carta/idioma, selector y 302 legacy preservados, sin Groq",
+      "pass": true
+    },
+    {
+      "name": "Renombrar conserva QR y los enlaces directos se copian sin crear otro QR",
+      "pass": true
+    },
+    {
+      "name": "Precios coherentes en registro, creación, dashboard vacío y billing",
+      "pass": true
+    },
+    {
+      "name": "Sin dirección pública no se fabrica un QR técnico; error de ownership no muestra QR",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "publicGroq": 0
+}

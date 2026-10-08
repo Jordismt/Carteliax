@@ -6,7 +6,7 @@ const route = useRoute();
 const publicSlug = computed(() => String(route.params.publicSlug));
 const endpoint = computed(() => `/api/public/sites/${encodeURIComponent(publicSlug.value)}`);
 const { data, error } = await useFetch<PublicSiteResponse>(endpoint, { query: computed(() => typeof route.query.menu === 'string' ? { menu: route.query.menu } : {}) });
-if (error.value || !data.value) throw createError({ statusCode: error.value?.statusCode === 404 ? 404 : 502, message: 'Esta web no está disponible.' });
+if (error.value || !data.value) throw createError({ statusCode: error.value?.statusCode === 404 ? 404 : error.value?.statusCode === 503 ? 503 : 502, message: 'Esta web no está disponible.' });
 const menu = computed(() => data.value?.currentMenu);
 const { selectedLanguage, chooseLanguage } = usePublicMenuLanguage(menu);
 const siteLanguage = computed(() => menu.value ? selectedLanguage.value : (data.value?.business.default_language === 'ca' ? 'val' : data.value?.business.default_language ?? 'es'));

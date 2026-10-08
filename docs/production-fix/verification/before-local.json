@@ -1,0 +1,11 @@
+{
+  "type": "PRODUCTION_BUILD_LOCAL_UNREACHABLE_PRIVATE_API",
+  "apiBase": "http://127.0.0.1:59998",
+  "publicApiBase": "http://127.0.0.1:5099",
+  "landingStatus": 200,
+  "proxyStatus": 502,
+  "proxySeconds": 0.017799,
+  "pageStatus": 502,
+  "pageSeconds": 0.100237,
+  "unreachableTargetExplicit": true
+}
