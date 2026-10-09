@@ -2,18 +2,26 @@ import { translateSnapshot } from "./translationService.js";
 
 // Durable PostgreSQL queue, SKIP LOCKED claims and token fencing allow multiple
 // processes. No automatic replay of an interrupted/billed operation.
-export function createTranslationWorker({ repository, provider, logger = console }) {
-  let running = false, stopped = false, timer;
+export function createTranslationWorker({ repository, provider, logger = console, deadline = () => undefined }) {
+  let running = false, stopped = false, timer, active;
   const drainWaiters = [];
-  async function tick() {
-    if (running || stopped) return;
+  function tick() {
+    if (running) return active;
+    if (stopped) return Promise.resolve();
     running = true;
+    active = run();
+    return active;
+  }
+  async function run() {
     let job, completed = 0;
     try {
       job = await repository.claim();
       if (!job) return;
       const checkedProvider = { translate: async (input) => {
         if (stopped) throw Object.assign(new Error("worker stopped"), { code: "WORKER_INTERRUPTED" });
+        // Leave time for a provider timeout, progress writes and atomic finish.
+        const endsAt = deadline();
+        if (endsAt && endsAt.getTime() - Date.now() < 75000) throw Object.assign(new Error("invocation ending"), { code: "WORKER_INTERRUPTED" });
         if (Date.now() >= new Date(job.expires_at).getTime()) throw Object.assign(new Error("expired"), { code: "CX_EXPIRED" });
         // Subscription/ownership are rechecked before each billed request.
         const current = await repository.status(job.menu_id, job.requested_by);
@@ -42,6 +50,7 @@ export function createTranslationWorker({ repository, provider, logger = console
         catch { logger.error("[TRANSLATION_STATE_WRITE_FAILED]", { jobId: job.id }); }
       }
     } finally { running = false; for (const resolve of drainWaiters.splice(0)) resolve(); }
+    return job?.id;
   }
   return {
     tick,

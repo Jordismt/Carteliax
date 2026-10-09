@@ -10,13 +10,18 @@ async function sql(query){const r=await execute('psql',['-XAt','-h','/tmp/cartel
 async function main(){
  await sql("DELETE FROM menu_translation_jobs; DELETE FROM menu_languages WHERE menu_id='33333333-3333-4333-8333-333333333333'; ALTER TABLE businesses ADD COLUMN IF NOT EXISTS logo_url text; ALTER TABLE categories ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0; ALTER TABLE products ADD COLUMN IF NOT EXISTS image_url text; ALTER TABLE category_products ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0; CREATE TABLE IF NOT EXISTS allergens(id integer PRIMARY KEY,code text,name_es text); CREATE TABLE IF NOT EXISTS product_allergens(product_id uuid,allergen_id integer); INSERT INTO allergens SELECT 1,'gluten','Cereales con gluten' WHERE NOT EXISTS(SELECT 1 FROM allergens WHERE id=1); INSERT INTO product_allergens SELECT '77777777-7777-4777-8777-777777777777',1 WHERE NOT EXISTS(SELECT 1 FROM product_allergens);");
  process.chdir(root);process.env.TRANSLATIONS_ENABLED='true';process.env.GROQ_API_KEY='test-only-never-sent-to-groq';
- const nativeFetch=globalThis.fetch;let unexpected=0;
+ const nativeFetch=globalThis.fetch;let unexpected=0,ai=0,releaseProvider;
+ const providerGate=new Promise(resolve=>{releaseProvider=resolve});
  const tables=new Set(['menus','businesses','subscriptions','menu_themes','categories','products','category_products','allergens','product_allergens']);
  const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json'}});
  globalThis.fetch=async(input,options={})=>{
   const url=new URL(typeof input==='string'?input:input.url??String(input));
   if(url.hostname==='127.0.0.1'&&url.port==='5065')return nativeFetch(input,options);
   if(url.pathname.endsWith('/auth/v1/user')){const headers=new Headers(options.headers);const token=headers.get('authorization')?.replace('Bearer ','');if(!['qa-owner','qa-foreign'].includes(token))return json({message:'Invalid test token'},401);return json({id:token==='qa-owner'?owner:foreign,aud:'authenticated',role:'authenticated'});}
+  if(url.hostname==='api.groq.com'&&url.pathname==='/openai/v1/chat/completions'){
+   ai++;await providerGate;const payload=JSON.parse(options.body),items=JSON.parse(payload.messages[1].content).items;
+   return json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({language:payload.response_format.json_schema.schema.properties.language.enum[0],items:items.map(i=>({...i,name:'EN '+i.name}))})}}]});
+  }
   try{
    if(url.pathname.startsWith('/rest/v1/rpc/')){
     const name=url.pathname.split('/').at(-1);assert(/^cx_(?:translation_|public_translations)/.test(name));
@@ -35,10 +40,8 @@ async function main(){
  };
  const {default:app}=await import(pathToFileURL(path.join(root,'src/app.js')));
  const {supabaseAdmin}=await import(pathToFileURL(path.join(root,'src/infrastructure/database/supabase.js')));
- const {TranslationRepository}=await import(pathToFileURL(path.join(root,'src/modules/translations/translationRepository.js')));
- const {createTranslationWorker}=await import(pathToFileURL(path.join(root,'src/modules/translations/translationWorker.js')));
+ const {translationWorker:worker}=await import(pathToFileURL(path.join(root,'src/modules/translations/translationRuntime.js')));
  const server=await new Promise(resolve=>{const s=app.listen(5065,'127.0.0.1',()=>resolve(s))});
- let ai=0;const worker=createTranslationWorker({repository:new TranslationRepository(supabaseAdmin),provider:{translate:async({items,targetLanguage})=>{ai++;return{language:targetLanguage,items:items.map(i=>({type:i.type,id:i.id,name:'EN '+i.name,description:i.description,welcome_text:i.welcome_text}))}}},logger:{info(){},error(...args){console.log(...args)}}});
  async function request(route,method='GET',body,token='qa-owner'){const response=await fetch('http://127.0.0.1:5065'+route,{method,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});return{status:response.status,data:await response.json()}}
  const base=`/api/menus/${menu}/languages`;
  try{
@@ -47,7 +50,7 @@ async function main(){
   assert.equal((await request(base+'/en/translate','POST',{prompt:'arbitrary'})).status,400);
   assert.equal((await request(base+'/zz/translate','POST',{})).status,400);console.log('PASS Strict HTTP payload and registry validation');
   assert.equal((await request(base+'/en/translate','POST',{})).status,202);
-  assert.equal((await request(base+'/fr/translate','POST',{})).status,409);await worker.tick();assert.equal(ai,1);console.log('PASS HTTP enqueue -> actual worker -> atomic PostgreSQL persistence');
+  assert.equal((await request(base+'/fr/translate','POST',{})).status,409);releaseProvider();await worker.tick();assert.equal(ai,1);console.log('PASS HTTP enqueue starts runtime worker -> atomic PostgreSQL persistence');
   const saved=await request(base);assert.equal(saved.data.job.status,'completed');const product=saved.data.translations.find(t=>t.language==='en').items.find(i=>i.type==='product');assert(product.draft);
   assert.equal((await request(base+'/en/publish','POST',{})).status,200);
   const route='/api/public/menus/11111111-1111-4111-8111-111111111111/principal';

@@ -1,22 +1,12 @@
 import "dotenv/config";
 import app from "./app.js";
 import { env } from "./config/env.js";
-import { supabaseAdmin } from "./infrastructure/database/supabase.js";
-import { TranslationRepository } from "./modules/translations/translationRepository.js";
-import { GroqTranslationProvider } from "./modules/translations/groqTranslationProvider.js";
-import { createTranslationWorker } from "./modules/translations/translationWorker.js";
-
-let worker;
-if (env.TRANSLATIONS_ENABLED && env.GROQ_API_KEY) {
-  worker = createTranslationWorker({
-    repository: new TranslationRepository(supabaseAdmin),
-    provider: new GroqTranslationProvider({ apiKey: env.GROQ_API_KEY, model: env.GROQ_TRANSLATION_MODEL }),
-  });
-}
+import { translationWorker as worker } from "./modules/translations/translationRuntime.js";
 
 const server = app.listen(env.PORT, () => {
   console.log(`Carteliax API running on http://localhost:${env.PORT}`);
-  worker?.start();
+  // Vercel workers run in request lifetimes; a persistent timer is local only.
+  if (!process.env.VERCEL) worker?.start();
 });
 
 let shuttingDown = false;

@@ -13,12 +13,26 @@ export class TranslationRepository {
   claim() { return this.rpc("cx_translation_claim"); }
   progress(job, completed, error = null) { return this.rpc("cx_translation_progress", { p_job: job.id, p_token: job.claim_token, p_completed: completed, p_error: error }); }
   finish(job, items) { return this.rpc("cx_translation_finish", { p_job: job.id, p_token: job.claim_token, p_items: items }); }
+  async job(menuId, actor) {
+    const { data, error } = await this.db.from('menu_translation_jobs')
+      .select('id,language_code,status,completed_items,total_items,error_code,expires_at,lease_expires_at')
+      .eq('menu_id', menuId).eq('requested_by', actor)
+      .order('created_at', { ascending: false }).limit(1).maybeSingle()
+      .abortSignal(AbortSignal.timeout(10000));
+    if (error) throw databaseError(error);
+    return privateJob(data);
+  }
+}
+
+export function privateJob(job) {
+  if (job && ["queued", "processing"].includes(job.status) && (Date.now() >= new Date(job.expires_at).getTime() || (job.status === "processing" && job.lease_expires_at && Date.now() >= new Date(job.lease_expires_at).getTime()))) {
+    return { ...job, status: "failed", error_code: "WORKER_INTERRUPTED" };
+  }
+  return job;
 }
 
 export function privateStatus(raw) {
-  if (raw.job && ["queued", "processing"].includes(raw.job.status) && (Date.now() >= new Date(raw.job.expires_at).getTime() || (raw.job.status === "processing" && raw.job.lease_expires_at && Date.now() >= new Date(raw.job.lease_expires_at).getTime()))) {
-    raw.job = { ...raw.job, status: "failed", error_code: "WORKER_INTERRUPTED" };
-  }
+  raw.job = privateJob(raw.job);
   const languages = raw.languages.map((language) => {
     const record = raw.menu_languages.find((item) => item.language_code === language.code);
     const items = raw.translations.find((item) => item.language === language.code)?.items ?? raw.items;

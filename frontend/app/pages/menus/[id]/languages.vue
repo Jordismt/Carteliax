@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { uiError } from "~/utils/uiErrors";
 import { ArrowLeft, LoaderCircle, Pencil, X } from "lucide-vue-next";
-import type { TranslationSource, TranslationStatusResponse, LanguageStatus } from "~/types/menuTranslations";
+import type { TranslationSource, TranslationStatusResponse, LanguageStatus, TranslationJob } from "~/types/menuTranslations";
 
 definePageMeta({ middleware: "auth", layout: "dashboard" });
 useHead({ title: "Idiomas de la carta | Carteliax" });
@@ -18,6 +18,7 @@ const form = reactive({ name: "", description: "", welcome_text: "" });
 const showConfirm = ref(false), confirmText = ref(""), confirmAction = ref<(() => Promise<void>) | null>(null);
 let pollTimer: ReturnType<typeof setTimeout> | undefined;
 let disposed = false;
+let wakingJob: string | undefined;
 const jobRunning = computed(() => ["queued", "processing"].includes(status.value?.job?.status ?? ""));
 const locked = computed(() => busy.value || jobRunning.value);
 const otherLanguages = computed(() => status.value?.languages.filter((l) => l.code !== status.value?.sourceLanguage) ?? []);
@@ -50,6 +51,9 @@ async function load(initial = false) {
     if (disposed || id !== menuId.value) return;
     const previousJob = status.value?.job;
     status.value = next;
+    // Wake an existing queued job after a reload, without enqueuing another
+    // translation or retrying an interrupted provider request.
+    wakeQueuedJob(id, next.job);
     if (m) menu.value = m.menu;
     if (!otherLanguages.value.some((l) => l.code === selected.value)) selected.value = otherLanguages.value[0]?.code ?? "";
     const jobLanguage = next.languages.find((l) => l.code === next.job?.language_code);
@@ -60,7 +64,32 @@ async function load(initial = false) {
   } catch (err) { if (id === menuId.value && !disposed) { error.value = message(err); if (jobRunning.value) schedulePoll(6000); } }
   finally { if (id === menuId.value) loading.value = false; }
 }
-function schedulePoll(delay = 2500) { clearTimeout(pollTimer); if (!disposed) pollTimer = setTimeout(() => { void load(); }, delay); }
+function wakeQueuedJob(id: string, job: TranslationJob | null) {
+  if (job?.status !== 'queued' || wakingJob === job.id) return;
+  const jobId = job.id;
+  wakingJob = jobId;
+  void apiFetch(`/api/menus/${id}/languages/process`, { method: 'POST', body: {} })
+    .catch(() => {})
+    .finally(() => { if (wakingJob === jobId) wakingJob = undefined; });
+}
+async function pollProgress() {
+  const id = menuId.value;
+  try {
+    const next = await apiFetch<{ job: TranslationJob | null }>(`/api/menus/${id}/languages/job`);
+    if (disposed || id !== menuId.value || !status.value) return;
+    if (!next.job || !['queued', 'processing'].includes(next.job.status)) {
+      // Fetch drafts once on completion; polling only needs job counters.
+      await load();
+      return;
+    }
+    status.value.job = next.job;
+    wakeQueuedJob(id, next.job);
+    schedulePoll();
+  } catch (err) {
+    if (!disposed && id === menuId.value) { error.value = message(err); schedulePoll(6000); }
+  }
+}
+function schedulePoll(delay = 1500) { clearTimeout(pollTimer); if (!disposed) pollTimer = setTimeout(() => { void pollProgress(); }, delay); }
 async function action(path: string, method: "POST" | "PATCH" | "PUT" | "DELETE", body: Record<string, unknown> = {}) {
   if (locked.value) return;
   const requestedId = menuId.value;

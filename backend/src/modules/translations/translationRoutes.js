@@ -6,6 +6,8 @@ import { translationAction, validateTranslationId } from "./translationControlle
 export const translationRouter = Router();
 translationRouter.use("/:id/languages", requireAuth, validateTranslationId, requireActiveSubscription("menu"));
 translationRouter.get("/:id/languages", translationAction("status"));
+translationRouter.get("/:id/languages/job", translationAction("progress"));
+translationRouter.post("/:id/languages/process", translationAction("process"));
 translationRouter.patch("/:id/languages/source", translationAction("source"));
 translationRouter.post("/:id/languages/:language/translate", translationAction("generate"));
 translationRouter.put("/:id/languages/:language/text", translationAction("manual"));
