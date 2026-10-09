@@ -23,7 +23,7 @@ require('dotenv').config({ path: __dirname + '/../.env', quiet: true });
     assert.equal(session.livemode, false); assert.equal(session.mode, 'subscription');
     assert.equal(session.payment_method_collection, 'always');
     assert.equal(session.automatic_tax.enabled, false);
-    assert.equal(session.allow_promotion_codes, false);
+    assert.equal(session.allow_promotion_codes, true);
     assert.equal(lines.data.length, 1); assert.equal(lines.data[0].quantity, 1);
     assert.equal(lines.data[0].price.id, PRICE_ID);
     assert.equal(lines.data[0].price.unit_amount, 1749);

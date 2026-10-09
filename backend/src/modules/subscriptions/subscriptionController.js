@@ -315,7 +315,7 @@ export async function createCheckout(req, res) {
 
         payment_method_collection: "always",
         automatic_tax: { enabled: false },
-        allow_promotion_codes: false,
+        allow_promotion_codes: true,
 
         subscription_data: {
           default_tax_rates: [VAT_TAX_RATE_ID],

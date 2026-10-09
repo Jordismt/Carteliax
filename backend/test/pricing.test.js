@@ -9,6 +9,17 @@ const { createCheckout } = await import('../src/modules/subscriptions/subscripti
 const { supabaseAdmin } = await import('../src/infrastructure/database/supabase.js');
 const price={active:true,livemode:false,tax_behavior:'inclusive',unit_amount:1749,currency:'eur',recurring:{interval:'month',interval_count:1}};
 const rate={active:true,livemode:false,percentage:21,inclusive:true,tax_type:'vat',country:'ES'};
+test('existing customer discounts are allowed without weakening tax, mode or balance checks',async t=>{
+ for(const discounts of [{discount:{id:'di_fixture'}},{discounts:['di_fixture']}]) await t.test(JSON.stringify(discounts),async t=>{
+  t.mock.method(stripe.customers,'retrieve',async()=>({livemode:false,tax_exempt:'none',balance:0,...discounts}));
+  t.mock.method(stripe.invoiceItems,'list',async()=>({data:[]}));
+  await verifyReusedCustomer('cus_fixture');
+  for(const [patch,reason] of [[{tax_exempt:'exempt'},'CUSTOMER_TAX_EXEMPT'],[{livemode:true},'CUSTOMER_MODE_MISMATCH'],[{balance:1},'CUSTOMER_BALANCE']]) {
+   t.mock.method(stripe.customers,'retrieve',async()=>({livemode:false,tax_exempt:'none',balance:0,...discounts,...patch}));
+   await assert.rejects(verifyReusedCustomer('cus_fixture'),{billingReason:reason});
+  }
+ });
+});
 test('Dashboard Spanish VAT with null type requires a VAT label and every fiscal guard',async t=>{
  for(const label of ['IVA','VAT',' iva ']) await t.test('accepts '+label,async t=>{
   t.mock.method(stripe.prices,'retrieve',async()=>price);
@@ -35,7 +46,7 @@ test('every configuration rejection identifies the exact failed check', async t 
   t.mock.method(stripe.prices,'retrieve',async()=>price);t.mock.method(stripe.taxRates,'retrieve',async()=>({...rate,...patch}));
   await assert.rejects(verifyCommercialPrice(),{code:'BILLING_CONFIGURATION',status:503,billingReason:reason});
  });
- const customers=[['CUSTOMER_DELETED',{deleted:true}],['CUSTOMER_MODE_MISMATCH',{livemode:true}],['CUSTOMER_TAX_EXEMPT',{tax_exempt:'exempt'}],['CUSTOMER_BALANCE',{balance:1}],['CUSTOMER_CREDIT_BALANCE',{invoice_credit_balance:{eur:1}}],['CUSTOMER_DISCOUNT',{discounts:['discount']}]];
+ const customers=[['CUSTOMER_DELETED',{deleted:true}],['CUSTOMER_MODE_MISMATCH',{livemode:true}],['CUSTOMER_TAX_EXEMPT',{tax_exempt:'exempt'}],['CUSTOMER_BALANCE',{balance:1}],['CUSTOMER_CREDIT_BALANCE',{invoice_credit_balance:{eur:1}}]];
  for(const [reason,patch] of customers) await t.test(reason,async t=>{
   t.mock.method(stripe.customers,'retrieve',async()=>({livemode:false,tax_exempt:'none',balance:0,...patch}));
   t.mock.method(stripe.invoiceItems,'list',async()=>{throw Error('Must reject before invoice lookup')});
@@ -84,9 +95,9 @@ test('billing rejects incorrect gross price, recurrence, mode and VAT before Che
  await t.test('valid inclusive Price and 21% VAT accepted',async t=>{t.mock.method(stripe.prices,'retrieve',async()=>price);t.mock.method(stripe.taxRates,'retrieve',async()=>rate);assert.deepEqual(await verifyCommercialPrice(),{price,taxRate:rate});});
  await t.test('provider failure fails closed without reservation',async t=>{const state=fixture();state.subscriptions=[];t.mock.method(supabaseAdmin,'from',memoryDb(state).from);t.mock.method(stripe.prices,'retrieve',async()=>price);t.mock.method(stripe.taxRates,'retrieve',async()=>{throw Error('QA_OFFLINE')});const res=response();await createCheckout({body:{businessId:ids.a1},user:{id:ids.a}},res);assert.equal(res.statusCode,500);assert.equal(state.subscriptions.length,0);});
 });
-test('reuse never modifies a customer whose tax exemption, balance or discount changes total',async t=>{
+test('reuse retains tax exemption and balance protections',async t=>{
  const valid={livemode:false,tax_exempt:'none',balance:0};
- for(const p of [{deleted:true},{livemode:true},{tax_exempt:'exempt'},{tax_exempt:'reverse'},{balance:1},{balance:-1},{invoice_credit_balance:{eur:1}},{discount:{id:'discount'}},{discounts:['discount']}])await t.test(JSON.stringify(p),async t=>{t.mock.method(stripe.customers,'retrieve',async()=>({...valid,...p}));await assert.rejects(verifyReusedCustomer('cus_fixture'),{code:'BILLING_CONFIGURATION'});});
+ for(const p of [{deleted:true},{livemode:true},{tax_exempt:'exempt'},{tax_exempt:'reverse'},{balance:1},{balance:-1},{invoice_credit_balance:{eur:1}}])await t.test(JSON.stringify(p),async t=>{t.mock.method(stripe.customers,'retrieve',async()=>({...valid,...p}));await assert.rejects(verifyReusedCustomer('cus_fixture'),{code:'BILLING_CONFIGURATION'});});
  await t.test('pending invoice item blocks reuse',async t=>{t.mock.method(stripe.customers,'retrieve',async()=>valid);t.mock.method(stripe.invoiceItems,'list',async()=>({data:[{id:'ii_fixture'}]}));await assert.rejects(verifyReusedCustomer('cus_fixture'),{code:'BILLING_CONFIGURATION'});});
  await t.test('unmodified ordinary customer accepted',async t=>{t.mock.method(stripe.customers,'retrieve',async()=>valid);t.mock.method(stripe.invoiceItems,'list',async()=>({data:[]}));await verifyReusedCustomer('cus_fixture');});
 });

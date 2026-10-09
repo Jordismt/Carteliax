@@ -42,7 +42,7 @@ Estos requisitos reflejan la política fiscal fija del código; no certifican su
 | `CUSTOMER_TAX_EXEMPT` | Cliente exento/inversión del sujeto pasivo o campo distinto de `none`. Revisar política fiscal antes de cualquier cambio. |
 | `CUSTOMER_BALANCE` | Saldo distinto de cero. Reconciliar; no ponerlo a cero automáticamente. |
 | `CUSTOMER_CREDIT_BALANCE` | Saldo de crédito de facturas distinto de cero. Reconciliar sin eliminarlo. |
-| `CUSTOMER_DISCOUNT` | Descuento aplicado al cliente. Revisar sin eliminarlo automáticamente. |
+| Descuentos del cliente | Permitidos; Stripe valida los códigos promocionales introducidos en Checkout. No cambian el Price base ni las comprobaciones fiscales. |
 | `CUSTOMER_PENDING_INVOICE_ITEMS` | Conceptos pendientes de facturación. Revisar sin borrarlos ni facturarlos automáticamente. |
 
 Stripe permite `country` y `tax_type` nulos: https://docs.stripe.com/api/tax_rates/object. La creación permite indicar ambos: https://docs.stripe.com/api/tax_rates/create. Se admite el tipo nulo de los impuestos manuales del Dashboard únicamente con etiqueta IVA/VAT y las restantes comprobaciones fiscales satisfechas. No se han modificado objetos remotos. Para atributos que Stripe no permita cambiar, preparar un objeto nuevo para futuras contrataciones con autorización; preservar los objetos y contratos existentes.

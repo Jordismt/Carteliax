@@ -37,8 +37,9 @@ export async function verifyCommercialPrice() {
   return { price, taxRate };
 }
 
-// Exempt/reverse customers can back out inclusive VAT; balances/discounts can
-// alter the invoice total. Preserve their data and require reconciliation.
+// Exempt/reverse customers can back out inclusive VAT; balances can alter
+// the invoice total. Preserve those guards. Stripe validates promotional discounts
+// in hosted Checkout; they do not change the configured base Price or VAT rate.
 export async function verifyReusedCustomer(customerId) {
   const customer = await stripe.customers.retrieve(customerId);
   if (customer.deleted) throw billingConfigurationError('CUSTOMER_DELETED');
@@ -46,7 +47,6 @@ export async function verifyReusedCustomer(customerId) {
   if (customer.tax_exempt !== 'none') throw billingConfigurationError('CUSTOMER_TAX_EXEMPT');
   if (customer.balance !== 0) throw billingConfigurationError('CUSTOMER_BALANCE');
   if (Object.values(customer.invoice_credit_balance ?? {}).some(value => value !== 0)) throw billingConfigurationError('CUSTOMER_CREDIT_BALANCE');
-  if (customer.discount || (customer.discounts?.length ?? 0) > 0) throw billingConfigurationError('CUSTOMER_DISCOUNT');
   const pending = await stripe.invoiceItems.list({ customer: customerId, pending: true, limit: 1 });
   if (pending.data.length) throw billingConfigurationError('CUSTOMER_PENDING_INVOICE_ITEMS');
 }
