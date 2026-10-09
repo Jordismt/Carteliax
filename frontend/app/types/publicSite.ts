@@ -19,6 +19,6 @@ export const emptyPublicProfile = (): PublicProfile => ({ template: "modern", ab
 export interface PublicSiteResponse {
   success: boolean;
   business: { name: string; public_slug: string; description: string | null; logo_url: string | null; cover_url: string | null; primary_color: string; default_language: string; profile: PublicProfile };
-  menus: { name: string; slug: string }[];
+  menus: { name: string; slug: string; translated_names?: Record<string, string> }[];
   currentMenu: PublicMenuResponse | null;
 }

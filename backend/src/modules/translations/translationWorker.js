@@ -1,4 +1,5 @@
 import { translateSnapshot } from "./translationService.js";
+import { TRANSLATION_QUALITY_VERSION } from './translationQuality.js';
 
 // Durable PostgreSQL queue, SKIP LOCKED claims and token fencing allow multiple
 // processes. No automatic replay of an interrupted/billed operation.
@@ -17,6 +18,7 @@ export function createTranslationWorker({ repository, provider, logger = console
     try {
       job = await repository.claim();
       if (!job) return;
+      if (Object.hasOwn(job, 'quality_version') && job.quality_version !== TRANSLATION_QUALITY_VERSION) throw Object.assign(new Error('old translation policy'), { code: 'TRANSLATION_POLICY_CHANGED' });
       const checkedProvider = { translate: async (input) => {
         if (stopped) throw Object.assign(new Error("worker stopped"), { code: "WORKER_INTERRUPTED" });
         // Leave time for a provider timeout, progress writes and atomic finish.
@@ -34,7 +36,10 @@ export function createTranslationWorker({ repository, provider, logger = console
           }
         }
         await repository.progress(job, completed);
-        return provider.translate(input);
+        const context = current.items.filter(item => ['menu','category','restaurant'].includes(item.type)).slice(0,24).map(({ type, name }) => ({ type, name: name.slice(0,240) }));
+        const approved = freshItems.filter(item => item.draft?.source_hash === item.source_hash && (item.draft.is_manual || item.draft.quality_version === TRANSLATION_QUALITY_VERSION))
+          .slice(0,24).map(item => ({ source: item.name.slice(0,240), translation: item.draft.name.slice(0,240) }));
+        return provider.translate({ ...input, context, terminology: [...(input.terminology ?? []), ...approved].slice(0,24) });
       } };
       const items = await translateSnapshot({ items: job.source_items, language: job.language_code, sourceLanguage: job.source_language, provider: checkedProvider,
         onProgress: async (count) => { completed = count; await repository.progress(job, count); },

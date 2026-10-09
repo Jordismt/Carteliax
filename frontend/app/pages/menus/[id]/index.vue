@@ -39,6 +39,7 @@ interface Menu {
   slug: string;
   description: string | null;
   is_published: boolean;
+  public_ready?: boolean;
 }
 
 interface Category {
@@ -364,7 +365,7 @@ onMounted(loadEditor);
       </section>
 
       <UiMenuNavigation v-if="menu" :menu-id="menuId" />
-      <UiNotice v-if="menu" tone="info"><strong>{{ menu.is_published ? 'Esta carta está marcada como publicada.' : 'Esta carta todavía es un borrador.' }}</strong> Los productos, precios y disponibilidad se actualizan al guardar. El diseño y los idiomas se publican desde sus secciones. Para aparecer en el QR, la carta también necesita un diseño publicado.</UiNotice>
+      <UiNotice v-if="menu" tone="info"><strong>{{ menu.is_published && menu.public_ready === false ? 'La publicación está incompleta. Pulsa Completar publicación en Mis cartas o publica el diseño desde Personalización.' : menu.is_published ? 'Esta carta está publicada.' : 'Esta carta todavía es un borrador.' }}</strong> Los productos, precios y disponibilidad se actualizan al guardar. Los cambios de diseño y los idiomas se publican desde sus secciones.</UiNotice>
       <!-- Notificaciones -->
       <div
         v-if="successMessage"

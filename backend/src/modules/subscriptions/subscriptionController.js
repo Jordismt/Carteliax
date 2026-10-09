@@ -2,6 +2,8 @@ import { subscriptionHasAccess } from "./subscriptionAccess.js";
 import { definitiveCheckoutFailure, historicalReference, recoverCheckout, billingError } from "./checkoutRecovery.js";
 import { logSafeError } from "../../utils/logSafeError.js";
 import { randomUUID } from "node:crypto";
+import { reconcileCompletedCheckout } from './checkoutReconciliation.js';
+import { synchronize } from './stripeWebhookController.js';
 
 import { supabaseAdmin } from "../../infrastructure/database/supabase.js";
 
@@ -172,6 +174,16 @@ export async function getSubscription(req, res) {
   } catch (error) {
     return respondError(res, error);
   }
+}
+
+export async function reconcileCheckout(req, res) {
+  try {
+    const { businessId } = req.body ?? {};
+    if (!validBusinessId(businessId) || Object.keys(req.body ?? {}).some(key => key !== 'businessId')) return res.status(400).json({ success: false, message: 'Solicitud no válida.' });
+    if (!await ownedBusiness(req.user.id, businessId)) return res.status(403).json({ success: false, message: 'No autorizado.' });
+    const recovered = await reconcileCompletedCheckout({ stripe, existing: await findSubscription(businessId), businessId, ownerId: req.user.id, liveMode: STRIPE_LIVE_MODE, synchronize });
+    return res.json({ success: true, recovered });
+  } catch (error) { return respondError(res, error); }
 }
 
 // ==========================================

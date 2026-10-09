@@ -27,7 +27,7 @@ const envSchema = z
 
     GROQ_API_KEY: z.preprocess((value) => (value === "" ? undefined : value), z.string().min(1).optional()),
 
-    GROQ_TRANSLATION_MODEL: z.string().min(1).max(100).default("openai/gpt-oss-20b"),
+    GROQ_TRANSLATION_MODEL: z.literal("openai/gpt-oss-120b").default("openai/gpt-oss-120b"),
 
     FRONTEND_URL: z.url(),
 

@@ -4,6 +4,7 @@ import { env } from "../../config/env.js";
 import { createUserClient } from "../../infrastructure/database/createUserClient.js";
 
 import { createMenuSchema, updateMenuSchema } from "./menuSchemas.js";
+import { ensurePublishedTheme, hasPublishedTheme } from '../menuThemes/menuPublication.js';
 
 const uuidSchema = z.string().uuid();
 
@@ -87,7 +88,7 @@ export async function getBusinessMenus(req, res, next) {
 
     const { data, error } = await supabase
       .from("menus")
-      .select(MENU_FIELDS)
+      .select(`${MENU_FIELDS},menu_themes(published_at,published_config)`)
       .eq("business_id", businessId)
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: true });
@@ -97,7 +98,7 @@ export async function getBusinessMenus(req, res, next) {
     return res.json({
       success: true,
       business,
-      menus: data,
+      menus: data.map(({ menu_themes, ...menu }) => ({ ...menu, public_ready: menu.is_published && hasPublishedTheme(Array.isArray(menu_themes) ? menu_themes[0] : menu_themes) })),
     });
   } catch (error) {
     next(error);
@@ -207,7 +208,9 @@ export async function getMenuById(req, res, next) {
       if (error) throw error;
       publicSlug = business?.public_slug;
     }
-    return res.json({ success: true, menu: { ...menu, ...(publicSlug ? { public_slug: publicSlug } : {}) } });
+    const { data: theme, error: themeError } = await supabase.from('menu_themes').select('published_at,published_config').eq('menu_id', menu.id).maybeSingle();
+    if (themeError) throw themeError;
+    return res.json({ success: true, menu: { ...menu, public_ready: menu.is_published && hasPublishedTheme(theme), ...(publicSlug ? { public_slug: publicSlug } : {}) } });
   } catch (error) {
     next(error);
   }
@@ -241,6 +244,8 @@ export async function updateMenu(req, res, next) {
 
     if (!menu) return notFound(res);
 
+    if (parsed.data.is_published === true) await ensurePublishedTheme(supabase, menu.id);
+
     const { data, error } = await supabase
       .from("menus")
       .update(parsed.data)
@@ -255,9 +260,10 @@ export async function updateMenu(req, res, next) {
     return res.json({
       success: true,
       message: "Carta actualizada correctamente.",
-      menu: data,
+      menu: { ...data, ...(parsed.data.is_published === true ? { public_ready: true } : parsed.data.is_published === false ? { public_ready: false } : {}) },
     });
   } catch (error) {
+    if (error?.code === 'MENU_PUBLICATION_CONFLICT') return res.status(409).json({ success: false, code: error.code, message: 'El diseño cambió mientras se publicaba. Actualiza la carta y vuelve a intentarlo.' });
     next(error);
   }
 }

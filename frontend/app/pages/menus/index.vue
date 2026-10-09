@@ -39,6 +39,7 @@ interface Menu {
   slug: string;
   description: string | null;
   is_published: boolean;
+  public_ready?: boolean;
   sort_order: number;
   created_at: string;
 }
@@ -77,7 +78,7 @@ const selectedBusiness = computed(() =>
   businesses.value.find((item) => item.id === selectedBusinessId.value),
 );
 
-const publishedCount = computed(() => menus.value.filter((menu) => menu.is_published).length);
+const publishedCount = computed(() => menus.value.filter((menu) => menu.is_published && menu.public_ready !== false).length);
 
 function messageFromError(error: unknown, fallback: string): string {
   return uiError(error, fallback);
@@ -296,14 +297,14 @@ async function togglePublished(menu: Menu) {
     }>(`/api/menus/${menu.id}`, {
       method: "PATCH",
       body: {
-        is_published: !menu.is_published,
+        is_published: !menu.is_published || menu.public_ready === false,
       },
     });
 
     menus.value = menus.value.map((item) => (item.id === response.menu.id ? response.menu : item));
 
     successMessage.value = response.menu.is_published
-      ? "Carta marcada como publicada."
+      ? "Carta publicada y disponible para tus clientes."
       : "Carta retirada de publicación.";
   } catch (error) {
     errorMessage.value = messageFromError(error, "No se pudo cambiar el estado de la carta.");
@@ -438,7 +439,7 @@ onMounted(loadBusinesses);
           <article v-for="menu in menus" :key="menu.id" class="ui-panel menu-card">
             <div class="flex flex-wrap items-start justify-between gap-3">
               <h2 class="min-w-0 flex-1 break-words text-xl font-semibold">{{ menu.name }}</h2>
-              <span class="rounded-lg px-2.5 py-1.5 text-xs font-semibold" :class="menu.is_published ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-100 text-slate-600'">{{ menu.is_published ? 'Publicada' : 'Borrador' }}</span>
+              <span class="rounded-lg px-2.5 py-1.5 text-xs font-semibold" :class="menu.is_published && menu.public_ready !== false ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-100 text-slate-600'">{{ menu.is_published && menu.public_ready === false ? 'Publicación incompleta' : menu.is_published ? 'Publicada' : 'Borrador' }}</span>
             </div>
             <p v-if="menu.description" class="mt-2 text-sm leading-6 text-slate-600">{{ menu.description }}</p>
             <NuxtLink :to="`/menus/${menu.id}`" class="ui-primary mt-4 w-full"><BookOpen :size="18" /> Gestionar carta <ArrowRight :size="17" /></NuxtLink>
@@ -447,7 +448,7 @@ onMounted(loadBusinesses);
               <NuxtLink :to="`/menus/${menu.id}/languages`" class="ui-secondary px-2">Idiomas</NuxtLink>
               <a :href="publicMenuPath(menu.business_id, menu.slug, selectedBusiness?.public_slug)" target="_blank" rel="noopener noreferrer" class="ui-secondary px-2" :aria-label="`Ver ${menu.name} en una pestaña nueva`">Ver carta</a>
             </div>
-            <button type="button" :disabled="actionBusy" class="ui-quiet mt-2 w-full text-emerald-800" @click="togglePublished(menu)">{{ publishingId === menu.id ? 'Actualizando…' : menu.is_published ? 'Retirar publicación' : 'Publicar carta' }}</button>
+            <button type="button" :disabled="actionBusy" class="ui-quiet mt-2 w-full text-emerald-800" @click="togglePublished(menu)">{{ publishingId === menu.id ? 'Actualizando…' : menu.is_published && menu.public_ready === false ? 'Completar publicación' : menu.is_published ? 'Retirar publicación' : 'Publicar carta' }}</button>
             <details class="ui-action-disclosure mt-3"><summary>Más opciones de la carta</summary><div class="flex flex-wrap items-center justify-between gap-1 pt-2">
               <button type="button" class="ui-quiet" @click="copyDirectLink(menu)">Copiar enlace directo</button>
               <button type="button" :disabled="actionBusy" class="ui-quiet" @click="openEdit(menu)"><Pencil :size="15" /> Ajustes</button>
@@ -456,7 +457,7 @@ onMounted(loadBusinesses);
             </div></details>
           </article>
         </section>
-        <p class="text-sm leading-6 text-slate-600">Para que tus clientes puedan consultar una carta, publica la carta y su diseño.</p>
+        <p class="text-sm leading-6 text-slate-600">Al publicar, tu carta queda disponible con su diseño publicado o con el diseño inicial. Los cambios del editor de diseño se publican desde Personalización.</p>
       </template>
     </template>
 

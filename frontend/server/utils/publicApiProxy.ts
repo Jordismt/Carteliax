@@ -1,9 +1,10 @@
-import { createError, type H3Event } from 'h3';
+import { createError, setResponseHeader, type H3Event } from 'h3';
 import { useRuntimeConfig } from 'nitropack/runtime';
 import { $fetch } from 'ofetch';
 import { resolvePublicApiBase } from './publicApiConfig';
 
 export async function fetchPublicApi<T>(event: H3Event, path: string, query?: Record<string, string>): Promise<T> {
+  setResponseHeader(event, 'Cache-Control', 'no-store');
   const base = resolvePublicApiBase(useRuntimeConfig(event));
   try {
     return await $fetch<T>(base + path, { query, timeout: 15000, retry: 0 });

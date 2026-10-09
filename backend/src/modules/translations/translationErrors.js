@@ -18,6 +18,8 @@ export function databaseError(error) {
     CX_LANGUAGE: [400, "El idioma no está disponible o es el idioma principal."],
     CX_EXPIRED: [409, "La traducción ha caducado. Puedes volver a intentarlo."],
     CX_SIZE: [413, "Esta carta supera el tamaño permitido para traducirla de una vez."],
+    CX_MANUAL_PROTECTED: [409, 'Las traducciones manuales están protegidas. Revísalas en el editor.'],
+    CX_POLICY: [409, 'Este trabajo usa una versión anterior. Inicia una nueva traducción.'],
   };
   const code = Object.keys(errors).find((key) => error?.message?.includes(key));
   if (code) return new TranslationError(code, errors[code][1], errors[code][0]);

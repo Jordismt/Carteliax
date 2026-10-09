@@ -1,0 +1,411 @@
+{
+  "date": "2026-10-09",
+  "data": "synthetic, no production writes",
+  "notes": "Only GPT-OSS 120B. Automatic checks passed; grammar review is not a linguistic certification and occasional errors remain possible.",
+  "results": [
+    {
+      "source": "val",
+      "target": "es",
+      "status": "validated",
+      "elapsedMs": 5553,
+      "items": [
+        {
+          "type": "menu",
+          "id": "90000000-0000-4000-8000-000000000001",
+          "name": "Carta de temporada",
+          "description": "Entrantes, platos principales, bebidas y postres.",
+          "welcome_text": "Bienvenidos. Consulta con nuestro equipo si tienes alguna alergia."
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000002",
+          "name": "Entrantes",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000003",
+          "name": "Platos principales",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000004",
+          "name": "Bebidas",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000005",
+          "name": "Postres",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000006",
+          "name": "Paella valenciana para 2 personas",
+          "description": "Arroz cocido con pollo, conejo, judías verdes y garrofón. Se prepara al momento y necesita 25 minutos.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000007",
+          "name": "Fideuà de marisco",
+          "description": "Fideos finos con gambas, sepia y caldo de pescado. Contiene pescado y crustáceos.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000008",
+          "name": "Croquetas caseras de setas",
+          "description": "Croquetas cremosas de setas con bechamel, rebozadas con pan rallado. Contienen leche, trigo y huevo.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000009",
+          "name": "Ensalada de tomate y queso de cabra",
+          "description": "Tomates frescos con queso de cabra, nueces y aceite de oliva. No lleva salsa.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000010",
+          "name": "Coca-Cola 330 ml",
+          "description": "Servida fría, con hielo y una rodaja de limón.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000011",
+          "name": "Tiramisú casero",
+          "description": "Postres con mascarpone, café y cacao. Contiene leche y huevo.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000012",
+          "name": "Crema catalana",
+          "description": "Crema suave con una capa de azúcar caramelizado. La preparamos cada mañana con leche, huevo y canela, y la servimos fría. La textura es cremosa y la cobertura se carameliza justo antes de servir.",
+          "welcome_text": ""
+        },
+        {
+          "type": "restaurant",
+          "id": "90000000-0000-4000-8000-000000000013",
+          "name": "Restaurant dels Sants",
+          "description": "Cocina de temporada en un restaurante familiar.",
+          "welcome_text": "Desde 1998 cocinamos con productos de temporada. Nuestro equipo te ayudará a elegir los platos y a consultar la información sobre alérgenos. No garantizamos la ausencia de trazas."
+        }
+      ],
+      "model": "openai/gpt-oss-120b",
+      "editorialCalls": 1
+    },
+    {
+      "source": "fr",
+      "target": "en",
+      "status": "validated",
+      "elapsedMs": 3468,
+      "items": [
+        {
+          "type": "menu",
+          "id": "90000000-0000-4000-8000-000000000001",
+          "name": "Seasonal menu",
+          "description": "Starters, main courses, drinks and desserts.",
+          "welcome_text": "Welcome. Please speak to our team if you have an allergy."
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000002",
+          "name": "Starters",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000003",
+          "name": "Main courses",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000004",
+          "name": "Drinks",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000005",
+          "name": "Desserts",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000006",
+          "name": "Valencian paella for 2 people",
+          "description": "Rice cooked with chicken, rabbit, green beans and white beans. Prepared to order; allow 25 minutes.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000007",
+          "name": "Seafood fideuà",
+          "description": "Fine vermicelli with shrimp, cuttlefish and fish broth. Contains fish and crustaceans.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000008",
+          "name": "Homemade mushroom croquettes",
+          "description": "Creamy mushroom croquettes with béchamel, breaded and fried. Contains milk, wheat and egg.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000009",
+          "name": "Tomato and goat cheese salad",
+          "description": "Fresh tomatoes with goat cheese, walnuts and olive oil. No sauce.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000010",
+          "name": "Coca-Cola 330 ml",
+          "description": "Served chilled with ice and a lemon slice.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000011",
+          "name": "Homemade tiramisu",
+          "description": "Dessert with mascarpone, coffee and cocoa. Contains milk and egg.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000012",
+          "name": "Crema catalana",
+          "description": "Creamy custard topped with caramelized sugar. We prepare it each morning with milk, egg and cinnamon, then serve it cold. Its texture is creamy and the top is caramelized just before serving.",
+          "welcome_text": ""
+        },
+        {
+          "type": "restaurant",
+          "id": "90000000-0000-4000-8000-000000000013",
+          "name": "Restaurant dels Sants",
+          "description": "Seasonal cuisine in a family restaurant.",
+          "welcome_text": "Since 1998, we have been cooking with seasonal produce. Our team helps you choose your dishes and consult allergen information. We do not guarantee the absence of traces."
+        }
+      ],
+      "model": "openai/gpt-oss-120b",
+      "editorialCalls": 1
+    },
+    {
+      "source": "en",
+      "target": "fr",
+      "status": "validated",
+      "elapsedMs": 4713,
+      "items": [
+        {
+          "type": "menu",
+          "id": "90000000-0000-4000-8000-000000000001",
+          "name": "Menu de saison",
+          "description": "Entrées, plats principaux, boissons et desserts.",
+          "welcome_text": "Bienvenue. Veuillez vous adresser à notre équipe si vous avez des allergies."
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000002",
+          "name": "Entrées",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000003",
+          "name": "Plats principaux",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000004",
+          "name": "Boissons",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000005",
+          "name": "Desserts",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000006",
+          "name": "Paella valenciana pour 2 personnes",
+          "description": "Riz cuit avec du poulet, du lapin, des haricots verts et des haricots de Lima. Préparée à la commande ; veuillez prévoir 25 minutes.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000007",
+          "name": "Fideuà aux fruits de mer",
+          "description": "Nouilles fines avec des crevettes, de la seiche et du fond de poisson. Contient du poisson et des crustacés.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000008",
+          "name": "Croquettes aux champignons maison",
+          "description": "Croquettes aux champignons crémeuses avec béchamel, enrobées de chapelure. Contient du lait, du blé et des œufs.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000009",
+          "name": "Salade de tomates et fromage de chèvre",
+          "description": "Tomates fraîches, fromage de chèvre, noix et huile d'olive. Sans sauce.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000010",
+          "name": "Coca-Cola 330 ml",
+          "description": "Servi frais, avec des glaçons et une tranche de citron.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000011",
+          "name": "Tiramisu maison",
+          "description": "Dessert à base de mascarpone, café et cacao. Contient du lait et des œufs.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000012",
+          "name": "Crème catalane",
+          "description": "Une crème lisse avec une couche de sucre caramélisé. Nous la préparons chaque matin avec du lait, des œufs et de la cannelle, et la servons froide. Elle a une texture crémeuse et le dessus est caramélisé juste avant le service.",
+          "welcome_text": ""
+        },
+        {
+          "type": "restaurant",
+          "id": "90000000-0000-4000-8000-000000000013",
+          "name": "Restaurant dels Sants",
+          "description": "Cuisine de saison dans un restaurant familial.",
+          "welcome_text": "Depuis 1998, nous cuisinons avec des ingrédients de saison. Notre équipe vous aidera à choisir les plats et à vérifier les informations sur les allergènes. Nous ne pouvons pas garantir l'absence de traces."
+        }
+      ],
+      "model": "openai/gpt-oss-120b",
+      "editorialCalls": 1
+    },
+    {
+      "source": "es",
+      "target": "val",
+      "status": "validated",
+      "elapsedMs": 9819,
+      "items": [
+        {
+          "type": "menu",
+          "id": "90000000-0000-4000-8000-000000000001",
+          "name": "Carta de temporada",
+          "description": "Entrants, plats principals, begudes i postres.",
+          "welcome_text": "Benvinguts. Consulta amb el nostre equip si tens alguna al·lèrgia."
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000002",
+          "name": "Entrants",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000003",
+          "name": "Plats principals",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000004",
+          "name": "Begudes",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "category",
+          "id": "90000000-0000-4000-8000-000000000005",
+          "name": "Postres",
+          "description": "",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000006",
+          "name": "Paella valenciana per a 2 persones",
+          "description": "Arròs cuit amb pollastre, conill, bajoqueta i garrofó. Es prepara al moment i requereix 25 minuts.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000007",
+          "name": "Fideuà de marisc",
+          "description": "Fideus fins amb gambes, sèpia i brou de peix. Conté peix i crustacis.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000008",
+          "name": "Croquetes casolanes de bolets",
+          "description": "Croquetes cremoses de bolets amb beixamel, arrebossades en pa ratllat. Contenen llet, blat i ou.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000009",
+          "name": "Ensalada de tomaques i formatge de cabra",
+          "description": "Tomaques fresques amb formatge de cabra, nous i oli d'oliva. No porta salsa.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000010",
+          "name": "Coca-Cola 330 ml",
+          "description": "Servida freda, amb gel i una rodanxa de llima.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000011",
+          "name": "Tiramisú casolà",
+          "description": "Postre amb mascarpone, cafè i cacau. Conté llet i ou.",
+          "welcome_text": ""
+        },
+        {
+          "type": "product",
+          "id": "90000000-0000-4000-8000-000000000012",
+          "name": "Crema catalana",
+          "description": "Crema suau amb una capa de sucre caramel·litzat. La preparem cada matí amb llet, ou i canella, i la servim freda. La seua textura és cremosa i la cobertura es caramel·litzada just abans de servir.",
+          "welcome_text": ""
+        },
+        {
+          "type": "restaurant",
+          "id": "90000000-0000-4000-8000-000000000013",
+          "name": "Restaurant dels Sants",
+          "description": "Cuina de temporada en un restaurant familiar.",
+          "welcome_text": "Des de 1998 cuinem amb productes de temporada. El nostre equip t’ajudarà a triar els plats i a consultar la informació sobre al·lèrgens. No garantim l’absència de traces."
+        }
+      ],
+      "model": "openai/gpt-oss-120b",
+      "editorialCalls": 2
+    }
+  ]
+}

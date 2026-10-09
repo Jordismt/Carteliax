@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExternalLink } from "lucide-vue-next";
-import { publicSitePath } from "~/utils/publicUrls";
+import { publicMenuPath, publicSitePath } from "~/utils/publicUrls";
 import QRCode from "qrcode";
 import { jsPDF } from "jspdf";
 
@@ -41,11 +41,11 @@ onMounted(() => {
 const publicUrl = computed(() => {
   const base = (props.publicBaseUrl || origin.value).replace(/\/+$/, "");
 
-  if (!base || !props.publicSlug) {
+  if (!base || (props.generalOnly ? !props.publicSlug : !props.slug)) {
     return "";
   }
 
-  const path = publicSitePath(props.publicSlug);
+  const path = props.generalOnly ? publicSitePath(props.publicSlug!) : publicMenuPath(props.businessId, props.slug, props.publicSlug);
   return `${base}${path}`;
 });
 
@@ -277,7 +277,7 @@ onMounted(() => {
 
 <template>
   <section class="ui-panel qr-generator mx-auto w-full max-w-4xl">
-    <p v-if="!publicSlug" role="alert" class="mb-5 rounded-lg bg-amber-50 p-4 text-sm text-amber-900">La dirección de tu web todavía no está disponible. Revisa la configuración de tu establecimiento antes de descargar el QR. Los QR que ya hayas impreso siguen funcionando.</p>
+    <p v-if="generalOnly && !publicSlug" role="alert" class="mb-5 rounded-lg bg-amber-50 p-4 text-sm text-amber-900">La dirección de tu web todavía no está disponible. Revisa la configuración de tu establecimiento antes de descargar el QR. Los QR que ya hayas impreso siguen funcionando.</p>
     <div class="grid items-start gap-6 md:grid-cols-2">
       <div class="qr-preview flex min-w-0 flex-col items-center">
         <h2 class="text-center text-xl font-semibold">{{ restaurantName }}</h2>
@@ -290,12 +290,12 @@ onMounted(() => {
         <div class="grid w-full gap-2">
           <button type="button" :disabled="generating || !publicUrl" class="ui-primary" @click="downloadPdf">{{ generating ? 'Preparando QR…' : 'Descargar PDF para imprimir' }}</button>
           <button type="button" :disabled="generating || !publicUrl" class="ui-secondary" @click="downloadPng">{{ generating ? 'Preparando QR…' : 'Descargar PNG' }}</button>
-          <a v-if="publicUrl" :href="publicUrl" target="_blank" rel="noopener noreferrer" class="ui-quiet">Ver mi web <ExternalLink :size="16" /></a>
+          <a v-if="publicUrl" :href="publicUrl" target="_blank" rel="noopener noreferrer" class="ui-quiet">{{ generalOnly ? 'Ver mi web' : 'Ver esta carta' }} <ExternalLink :size="16" /></a>
         </div>
       </div>
       <div class="min-w-0">
-        <div class="qr-share-panel"><p class="ui-eyebrow">COMPARTE CON TUS CLIENTES</p><h3 class="font-semibold">Un QR para todas tus cartas</h3><p class="ui-description mb-5">Este QR abre la web de tu restaurante y permite consultar todas tus cartas. Puedes actualizar platos, precios e idiomas sin volver a imprimirlo.</p>        <div>
-          <label for="qr-public-url" class="mb-2 block text-sm font-semibold text-slate-800"> Web de tu restaurante </label>
+        <div class="qr-share-panel"><p class="ui-eyebrow">COMPARTE CON TUS CLIENTES</p><h3 class="font-semibold">{{ generalOnly ? 'Un QR para todas tus cartas' : 'Un QR para esta carta' }}</h3><p class="ui-description mb-5">{{ generalOnly ? 'Este QR abre la web de tu restaurante y permite consultar todas tus cartas.' : 'Este QR abre directamente la carta seleccionada.' }} Puedes actualizar platos, precios e idiomas sin volver a imprimirlo.</p>        <div>
+          <label for="qr-public-url" class="mb-2 block text-sm font-semibold text-slate-800">{{ generalOnly ? 'Web de tu restaurante' : 'Enlace de esta carta' }}</label>
 
           <div class="flex gap-2">
             <input

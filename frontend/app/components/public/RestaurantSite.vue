@@ -2,7 +2,7 @@
 import { ArrowDown, MapPin, Phone, Mail, ArrowUpRight, UtensilsCrossed } from 'lucide-vue-next';
 import type { PublicSiteResponse } from '~/types/publicSite';
 import { SITE_COPY } from '~/utils/publicSiteCopy';
-import { localizePublicMenu } from '~/utils/publicMenuLanguages';
+import { localizePublicMenu, localizeRestaurant } from '~/utils/publicMenuLanguages';
 import '~/assets/css/restaurant.css';
 import { publicSitePath } from '~/utils/publicUrls';
 const props = defineProps<{ site: PublicSiteResponse; language: string; preview?: boolean }>();
@@ -11,9 +11,9 @@ const business = computed(() => props.site.business);
 const profile = computed(() => business.value.profile);
 const coverUrl = computed(() => business.value.cover_url || props.site.currentMenu?.theme.branding.coverUrl);
 const copy = computed(() => SITE_COPY[props.language === 'ca' ? 'val' : props.language] ?? SITE_COPY.es!);
-const translated = computed(() => profile.value.translations.find(t => t.language === props.language && t.source === JSON.stringify([business.value.description ?? '', profile.value.about, business.value.default_language])));
-const description = computed(() => translated.value?.description?.trim() || business.value.description);
-const about = computed(() => translated.value?.about?.trim() || profile.value.about);
+const translated = computed(() => localizeRestaurant(props.site, props.language));
+const description = computed(() => translated.value.description);
+const about = computed(() => translated.value.about);
 const address = computed(() => [profile.value.address, profile.value.postal_code, profile.value.city].filter(Boolean).join(', '));
 const directions = computed(() => profile.value.maps_url || (address.value ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address.value)}` : ''));
 const mapVisible = ref(false);
@@ -57,7 +57,7 @@ const style = computed(() => {
       <section id="carta" class="site-menu" :aria-label="copy.menu">
         <div class="menu-heading"><div><p class="eyebrow">{{ copy.information }}</p><h2>{{ menuTitle }}</h2></div>
           <nav v-if="site.menus.length > 1" class="menu-tabs" :aria-label="copy.menu">
-            <NuxtLink v-for="menu in site.menus" :key="menu.slug" :to="publicSitePath(business.public_slug, menu.slug, language)" :aria-current="site.currentMenu?.menu.slug === menu.slug ? 'page' : undefined">{{ menu.name }}</NuxtLink>
+            <NuxtLink v-for="menu in site.menus" :key="menu.slug" :to="publicSitePath(business.public_slug, menu.slug, language)" :aria-current="site.currentMenu?.menu.slug === menu.slug ? 'page' : undefined">{{ menu.translated_names?.[language] || menu.name }}</NuxtLink>
           </nav>
         </div>
         <PublicRestaurantMenu v-if="site.currentMenu" :data="site.currentMenu" :language="language" :preview="preview" />

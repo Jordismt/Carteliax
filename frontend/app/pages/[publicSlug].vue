@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PublicSiteResponse } from '~/types/publicSite';
 import { publicSitePath } from '~/utils/publicUrls';
+import { localizeRestaurant } from '~/utils/publicMenuLanguages';
 import { jsonLd, seoOrigin, seoText, publicImageUrl } from '~/utils/seo';
 definePageMeta({ layout: false });
 const route = useRoute();
@@ -12,8 +13,8 @@ const menu = computed(() => data.value?.currentMenu);
 const { selectedLanguage, chooseLanguage } = usePublicMenuLanguage(menu);
 const siteLanguage = computed(() => menu.value ? selectedLanguage.value : (data.value?.business.default_language === 'ca' ? 'val' : data.value?.business.default_language ?? 'es'));
 const business = computed(() => data.value!.business);
-const translated = computed(() => business.value.profile.translations.find(t => t.language === siteLanguage.value));
-const description = computed(() => seoText(translated.value?.description || business.value.description || `Consulta la carta digital de ${business.value.name} y la información del restaurante.`));
+const translated = computed(() => localizeRestaurant(data.value!, siteLanguage.value));
+const description = computed(() => seoText(translated.value.description || business.value.description || `Consulta la carta digital de ${business.value.name} y la información del restaurante.`));
 const origin = seoOrigin(useRuntimeConfig().public.siteUrl);
 const canonicalHost = [new URL(origin).hostname, 'carteliax.com'].includes(useRequestURL().hostname);
 const indexable = computed(() => !!data.value?.currentMenu && data.value.menus.length > 0 && canonicalHost);

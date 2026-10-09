@@ -53,6 +53,7 @@ const app = express();
 
 app.use(helmet());
 app.use((req, res, next) => { res.setHeader('X-Robots-Tag', 'noindex, nofollow'); next(); });
+app.use((req, res, next) => { res.setHeader('Cache-Control', 'private, no-store'); next(); });
 
 app.use(cors(createCorsOptions(env.FRONTEND_URL)));
 

@@ -7,7 +7,7 @@ async function currentSubscription(id) {
   try { return await stripe.subscriptions.retrieve(id); }
   catch (error) { if (error?.statusCode === 404) return null; throw error; }
 }
-async function synchronize(event) {
+export async function synchronize(event) {
   const object = event.data.object;
   let subscription, session;
   if (event.type === 'checkout.session.completed') {

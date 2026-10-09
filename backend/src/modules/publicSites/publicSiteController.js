@@ -21,6 +21,12 @@ export async function loadPublicSite(db, slug, requestedMenu) {
   const currentMenu = selected ? await loadPublicMenu(db, business.id, selected) : null;
   // A publication withdrawn during the request must not leak or silently select another menu.
   if (selected && !currentMenu) return null;
+  if (env.TRANSLATIONS_ENABLED && menus.length) {
+    const { data: titles, error: titlesError } = await db.rpc('cx_public_menu_titles', { p_business: business.id });
+    // Staged rollout: the older database may not have this optional projection.
+    // Never fall back to drafts or expose extra fields to get a translated title.
+    if (!titlesError && titles) for (const menu of menus) if (titles[menu.slug]) menu.translated_names = titles[menu.slug];
+  }
   const parsed = publicProfileSchema.safeParse(business.public_profile ?? {});
   const profile = parsed.success ? parsed.data : publicProfileSchema.parse({});
   const source = JSON.stringify([business.description ?? "", profile.about, business.default_language]);

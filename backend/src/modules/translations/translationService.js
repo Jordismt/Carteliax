@@ -1,13 +1,14 @@
 import { TranslationError } from "./translationErrors.js";
 import { outputSchema } from "./translationSchemas.js";
+import { suspiciousTranslation, TRANSLATION_QUALITY_VERSION } from './translationQuality.js';
 
 export const TRANSLATION_LIMITS = Object.freeze({ maxItems: 600, maxCharacters: 250000, batchItems: 30, batchCharacters: 12000, batchApproxTokens: 2400, maxBatches: 60 });
 const key = (item) => `${item.type}:${item.id}`;
 
 // The source hash comes from PostgreSQL. Price, allergens and availability never
 // enter the provider payload or the hash.
-export function planTranslation(items, replaceManual = false) {
-  return items.filter((item) => item.draft?.source_hash !== item.source_hash && (!item.draft?.is_manual || replaceManual));
+export function planTranslation(items, regenerate = false) {
+  return items.filter(item => !item.draft?.is_manual && (regenerate || item.draft?.source_hash !== item.source_hash || item.draft?.quality_version !== TRANSLATION_QUALITY_VERSION));
 }
 
 export function makeBatches(items) {
@@ -43,6 +44,7 @@ export function validateOutput(value, source, language) {
     if (!original.description && item.description.trim()) return fail();
     if (original.welcome_text && !item.welcome_text.trim()) return fail();
     if (!original.welcome_text && item.welcome_text.trim()) return fail();
+    if (original.type === 'restaurant' && item.name !== original.name) return fail();
     // Quantities/numbers must survive translation. Prices are never submitted.
     for (const field of ["name", "description", "welcome_text"]) {
       const numbers = (text) => (text.match(/\d+(?:[.,]\d+)?/g) ?? []).map((n) => n.replace(",", ".")).sort().join("|");
@@ -52,12 +54,37 @@ export function validateOutput(value, source, language) {
   return parsed.data.items;
 }
 
-export async function translateSnapshot({ items, language, sourceLanguage, provider, onProgress }) {
+export async function translateSnapshot({ items, language, sourceLanguage, provider, onProgress, contextItems = items, existingTerminology = [] }) {
   const batches = makeBatches(items);
   const result = [];
+  const context = contextItems.filter(item => ['menu','category','restaurant'].includes(item.type)).slice(0, 24).map(({ type, name }) => ({ type, name: name.slice(0,240) }));
+  const terminology = existingTerminology.slice(0,24);
   for (const batch of batches) {
-    const output = await provider.translate({ sourceLanguage, targetLanguage: language, items: batch });
-    result.push(...validateOutput(output, batch, language));
+    let accepted, retryIssues = [], retryCandidate = [];
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const output = await provider.translate({ sourceLanguage, targetLanguage: language, items: batch, context, terminology, retryIssues, retryCandidate });
+        accepted = validateOutput(output, batch, language);
+        const byKey = new Map(batch.map(item => [key(item), item]));
+        retryIssues = accepted.flatMap(item => suspiciousTranslation(byKey.get(key(item)), item, language).map(issue => ({ type: item.type, id: item.id, ...issue })));
+        if (retryIssues.length) throw new TranslationError('SUSPICIOUS_TRANSLATION', 'La traducción no supera las comprobaciones de calidad. Los textos anteriores siguen intactos.', 502);
+        // Valencian showed spelling/agreement mistakes that language-marker
+        // heuristics cannot detect. Reserve the existing second attempt for an
+        // editorial pass, using the same model and the same bounded budget.
+        if (language === 'val' && attempt === 0) { retryCandidate = accepted; retryIssues = [{ code: 'FINAL_EDITORIAL_REVIEW' }]; continue; }
+        break;
+      } catch (error) {
+        if (attempt || !['INVALID_PROVIDER_OUTPUT','SUSPICIOUS_TRANSLATION'].includes(error.code)) throw error;
+        retryCandidate = accepted ?? [];
+        if (!retryIssues.length) retryIssues = [{ code: 'INVALID_PROVIDER_OUTPUT' }];
+      }
+    }
+    result.push(...accepted);
+    for (const item of accepted) {
+      if (terminology.length === 24) terminology.shift();
+      const original = batch.find(source => key(source) === key(item));
+      terminology.push({ source: original.name.slice(0,240), translation: item.name.slice(0,240) });
+    }
     await onProgress?.(result.length);
   }
   // Nothing is persisted until every batch has passed validation.

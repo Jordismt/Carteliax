@@ -1,4 +1,5 @@
 import { databaseError } from "./translationErrors.js";
+import { TRANSLATION_QUALITY_VERSION } from './translationQuality.js';
 
 export class TranslationRepository {
   constructor(db) { this.db = db; }
@@ -8,11 +9,11 @@ export class TranslationRepository {
     return data;
   }
   status(menuId, actor) { return this.rpc("cx_translation_status", { p_menu: menuId, p_actor: actor }); }
-  enqueue(menuId, actor, language, replaceManual) { return this.rpc("cx_translation_enqueue", { p_menu: menuId, p_actor: actor, p_language: language, p_replace_manual: replaceManual }); }
+  enqueue(menuId, actor, language, regenerate) { return this.rpc("cx_translation_enqueue_v2", { p_menu: menuId, p_actor: actor, p_language: language, p_force: regenerate }); }
   mutate(menuId, actor, language, action, payload = {}) { return this.rpc("cx_translation_mutate", { p_menu: menuId, p_actor: actor, p_language: language, p_action: action, p_payload: payload }); }
   claim() { return this.rpc("cx_translation_claim"); }
   progress(job, completed, error = null) { return this.rpc("cx_translation_progress", { p_job: job.id, p_token: job.claim_token, p_completed: completed, p_error: error }); }
-  finish(job, items) { return this.rpc("cx_translation_finish", { p_job: job.id, p_token: job.claim_token, p_items: items }); }
+  finish(job, items) { return this.rpc("cx_translation_finish", { p_job: job.id, p_token: job.claim_token, p_items: items.map(item => ({ ...item, quality_version: TRANSLATION_QUALITY_VERSION })) }); }
   async job(menuId, actor) {
     const { data, error } = await this.db.from('menu_translation_jobs')
       .select('id,language_code,status,completed_items,total_items,error_code,expires_at,lease_expires_at')
@@ -37,7 +38,7 @@ export function privateStatus(raw) {
     const record = raw.menu_languages.find((item) => item.language_code === language.code);
     const items = raw.translations.find((item) => item.language === language.code)?.items ?? raw.items;
     const missing = items.filter((item) => !item.draft).length;
-    const stale = items.filter((item) => item.draft && item.draft.source_hash !== item.source_hash).length;
+    const stale = items.filter((item) => item.draft && (item.draft.source_hash !== item.source_hash || (!item.draft.is_manual && item.draft.quality_version !== TRANSLATION_QUALITY_VERSION))).length;
     const manualStale = items.filter((item) => item.draft?.is_manual && item.draft.source_hash !== item.source_hash).length;
     const published = new Map((record?.published_items ?? []).map((item) => [`${item.type}:${item.id}`, item]));
     const unpublished = items.filter((item) => {

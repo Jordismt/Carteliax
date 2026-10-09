@@ -9,7 +9,6 @@ import { DEFAULT_MENU_THEME } from "~/types/menuTheme";
 // ======================================
 
 import type { PublicMenuResponse } from "~/types/publicSite";
-import { publicSitePath } from "~/utils/publicUrls";
 import { seoOrigin, seoText, publicImageUrl } from "~/utils/seo";
 import { setResponseStatus } from "h3";
 
@@ -55,9 +54,6 @@ const theme = computed(() => data.value?.theme ?? DEFAULT_MENU_THEME);
 const categories = computed(() => data.value?.categories ?? []);
 
 const { availableLanguages, selectedLanguage, localized, copy, chooseLanguage } = usePublicMenuLanguage(data);
-if (data.value?.business.public_slug) {
-  await navigateTo(publicSitePath(data.value.business.public_slug, data.value.menu.slug, typeof route.query.lang === "string" ? route.query.lang : undefined), { redirectCode: 302, replace: true });
-}
 
 // ======================================
 // SEO

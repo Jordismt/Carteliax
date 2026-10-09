@@ -7,6 +7,7 @@ import { createTranslationWorker } from "../src/modules/translations/translation
 import { privateStatus } from "../src/modules/translations/translationRepository.js";
 import { getPersistedPublicLanguages } from "../src/modules/publicMenus/publicMenuTranslations.js";
 import { manualSchema, generateSchema } from "../src/modules/translations/translationSchemas.js";
+import { TRANSLATION_QUALITY_VERSION } from '../src/modules/translations/translationQuality.js';
 
 const id = "77777777-7777-4777-8777-777777777777";
 const source = { type: "product", id, name: "Paella valenciana per a 2 🍽️", description: "Arròs, pollastre i tomaca. L'oli és d'oliva.", welcome_text: "", source_hash: "a".repeat(64), draft: null };
@@ -14,11 +15,12 @@ const output = (language = "en", items = [source]) => ({ language, items: items.
 const response = (data, options) => new Response(JSON.stringify(data), { status: 200, ...options });
 const completion = (data) => response({ choices: [{ finish_reason: "stop", message: { content: JSON.stringify(data) } }] });
 
-test("incremental planning skips identical and manual stale texts unless explicitly approved", () => {
-  const unchanged = { ...source, draft: { source_hash: source.source_hash } };
+test("incremental planning reuses current quality and always protects manual texts", () => {
+  const unchanged = { ...source, draft: { source_hash: source.source_hash, quality_version: TRANSLATION_QUALITY_VERSION } };
   const manual = { ...source, draft: { source_hash: "b".repeat(64), is_manual: true } };
   assert.equal(planTranslation([source, unchanged, manual]).length, 1);
   assert.equal(planTranslation([source, unchanged, manual], true).length, 2);
+  assert(!planTranslation([manual], true).length);
 });
 test("empty source uses zero batches and zero requests", async () => {
   let calls = 0;

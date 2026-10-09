@@ -1,7 +1,9 @@
 import type { PreviewCategory, MenuTheme } from "~/types/menuTheme";
 import type { PublicLanguages } from "~/types/menuTranslations";
+import type { PublicSiteResponse } from '~/types/publicSite';
 
 const allergenNames: Record<string, Record<string, string>> = {
+  es: { gluten: 'Cereales que contienen gluten', crustaceans: 'Crustáceos', eggs: 'Huevos', fish: 'Pescado', peanuts: 'Cacahuetes', soybeans: 'Soja', milk: 'Leche', nuts: 'Frutos de cáscara', celery: 'Apio', mustard: 'Mostaza', sesame: 'Sésamo', sulphites: 'Dióxido de azufre y sulfitos', lupin: 'Altramuces', molluscs: 'Moluscos' },
   en: { gluten: "Cereals containing gluten", crustaceans: "Crustaceans", eggs: "Eggs", fish: "Fish", peanuts: "Peanuts", soybeans: "Soybeans", milk: "Milk", nuts: "Nuts", celery: "Celery", mustard: "Mustard", sesame: "Sesame", sulphites: "Sulphur dioxide and sulphites", lupin: "Lupin", molluscs: "Molluscs" },
   fr: { gluten: "Céréales contenant du gluten", crustaceans: "Crustacés", eggs: "Œufs", fish: "Poisson", peanuts: "Arachides", soybeans: "Soja", milk: "Lait", nuts: "Fruits à coque", celery: "Céleri", mustard: "Moutarde", sesame: "Sésame", sulphites: "Anhydride sulfureux et sulfites", lupin: "Lupin", molluscs: "Mollusques" },
   val: { gluten: "Cereals amb gluten", crustaceans: "Crustacis", eggs: "Ous", fish: "Peix", peanuts: "Cacauets", soybeans: "Soja", milk: "Llet", nuts: "Fruits de closca", celery: "Api", mustard: "Mostassa", sesame: "Sèsam", sulphites: "Diòxid de sofre i sulfits", lupin: "Tramussos", molluscs: "Mol·luscs" },
@@ -25,7 +27,7 @@ export function matchMenuLanguage(value: string | undefined, available: string[]
 
 // Pure projection. No requests, AI or mutation of the original public response.
 export function localizePublicMenu(categories: PreviewCategory[], theme: MenuTheme, languages: PublicLanguages | undefined, language: string, menuId: string) {
-  const texts = language === languages?.source_language ? [] : languages?.translations[language] ?? [];
+  const texts = languages?.translations[language] ?? [];
   const byKey = new Map(texts.map((t) => [`${t.type}:${t.id}`, t]));
   const text = (translated: string | undefined, original: string) => translated?.trim() ? translated : original;
   const menuText = byKey.get(`menu:${menuId}`);
@@ -35,9 +37,22 @@ export function localizePublicMenu(categories: PreviewCategory[], theme: MenuThe
     categories: categories.map((c) => {
       const translatedCategory = byKey.get(`category:${c.id}`);
       return { ...c, name: text(translatedCategory?.name, c.name), products: c.products.map((p) => {
-        const t = byKey.get(`product:${p.id}`);
+        const candidate = byKey.get(`product:${p.id}`);
+        // A missing/stale or incomplete translation falls back as one whole
+        // product, rather than combining a translated title with source prose.
+        const t = candidate?.name.trim() && (!p.description.trim() || candidate.description.trim()) ? candidate : undefined;
         return { ...p, name: text(t?.name, p.name), description: text(t?.description, p.description), allergens: p.allergens.map((original, index) => allergenNames[language]?.[p.allergen_codes?.[index] ?? ""] ?? original) };
       }) };
     }),
   };
+}
+
+export function localizeRestaurant(site: PublicSiteResponse, language: string) {
+  const business = site.business;
+  const automatic = site.currentMenu?.languages?.translations[language]?.find(item => item.type === 'restaurant' && item.id === site.currentMenu?.business.id);
+  if (automatic) return { description: automatic.description, about: automatic.welcome_text };
+  const source = JSON.stringify([business.description ?? '', business.profile.about, business.default_language]);
+  const manual = business.profile.translations.find(item => item.language === language && item.source === source);
+  if (manual && (!(business.description ?? '').trim() || manual.description.trim()) && (!business.profile.about.trim() || manual.about.trim())) return { description: manual.description, about: manual.about };
+  return { description: business.description, about: business.profile.about };
 }

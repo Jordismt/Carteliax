@@ -21,7 +21,7 @@ let disposed = false;
 let wakingJob: string | undefined;
 const jobRunning = computed(() => ["queued", "processing"].includes(status.value?.job?.status ?? ""));
 const locked = computed(() => busy.value || jobRunning.value);
-const otherLanguages = computed(() => status.value?.languages.filter((l) => l.code !== status.value?.sourceLanguage) ?? []);
+const otherLanguages = computed(() => status.value?.languages ?? []);
 const selectedStatus = computed(() => otherLanguages.value.find((l) => l.code === selected.value));
 const items = computed(() => status.value?.translations.find((t) => t.language === selected.value)?.items ?? status.value?.items ?? []);
 const visibleItems = computed(() => items.value.filter((i) => `${i.name} ${i.description} ${i.draft?.name ?? ""}`.toLocaleLowerCase().includes(search.value.trim().toLocaleLowerCase())));
@@ -36,7 +36,7 @@ function languageLabel(l: LanguageStatus) {
   if (l.missing + l.stale) return `${l.missing + l.stale} ${l.missing + l.stale === 1 ? 'texto pendiente' : 'textos pendientes'}`;
   return l.unpublished ? "Listo para publicar" : l.published_at && l.enabled ? "Publicado" : "Actualizado";
 }
-function itemLabel(i: TranslationSource) { return i.type === "menu" ? "Título y bienvenida" : i.type === "category" ? "Categoría" : "Producto"; }
+function itemLabel(i: TranslationSource) { return i.type === 'restaurant' ? 'Presentación del restaurante' : i.type === "menu" ? "Título y bienvenida" : i.type === "category" ? "Categoría" : "Producto"; }
 function confirm(text: string, action: () => Promise<void>) { confirmText.value = text; confirmAction.value = action; showConfirm.value = true; }
 async function acceptConfirm() { const action = confirmAction.value; showConfirm.value = false; confirmAction.value = null; await action?.(); }
 
@@ -57,7 +57,17 @@ async function load(initial = false) {
     if (m) menu.value = m.menu;
     if (!otherLanguages.value.some((l) => l.code === selected.value)) selected.value = otherLanguages.value[0]?.code ?? "";
     const jobLanguage = next.languages.find((l) => l.code === next.job?.language_code);
-    if (next.job?.status === "failed" && jobLanguage && next.job.language_code !== next.sourceLanguage && jobLanguage.missing + jobLanguage.stale > 0) error.value = next.job.error_code === "CX_CHANGED" ? "La carta cambió durante la traducción. No se han sobrescrito tus textos. Vuelve a actualizar." : "No se ha podido completar la traducción. Los textos anteriores siguen intactos; puedes intentarlo de nuevo.";
+    if (next.job?.status === "failed") {
+      const failures: Record<string, string> = {
+        CX_CHANGED: "La carta cambió durante la traducción. Vuelve a actualizar.",
+        SUSPICIOUS_TRANSLATION: "La traducción no ha superado la revisión automática de calidad. Puedes regenerarla o editarla manualmente.",
+        INVALID_PROVIDER_OUTPUT: "El proveedor ha devuelto una respuesta incompleta. Puedes volver a intentarlo.",
+        GROQ_RATE_LIMIT: "El proveedor de traducciones ha alcanzado su límite temporal. Espera unos minutos y vuelve a intentarlo.",
+        GROQ_TIMEOUT: "El proveedor ha tardado demasiado en responder. Puedes volver a intentarlo.",
+        TRANSLATION_POLICY_CHANGED: "El sistema de traducción se ha actualizado. Vuelve a actualizar los textos.",
+      };
+      error.value = `${failures[next.job.error_code ?? ''] ?? 'No se ha podido completar la traducción.'} Los textos anteriores y tus correcciones manuales siguen intactos.`;
+    }
     if (next.job?.status === "completed" && (previousJob?.id !== next.job.id || ["queued", "processing"].includes(previousJob?.status ?? ""))) success.value = jobLanguage && jobLanguage.missing + jobLanguage.stale > 0 ? "La traducción automática ha terminado. Revisa los textos pendientes antes de publicar." : "Traducción lista. Revísala y publícala para tus clientes.";
     if (jobRunning.value) error.value = "";
     if (jobRunning.value) schedulePoll();
@@ -103,12 +113,12 @@ async function action(path: string, method: "POST" | "PATCH" | "PUT" | "DELETE",
   } catch (err) { if (!disposed && requestedId === menuId.value) error.value = message(err); }
   finally { if (requestedId === menuId.value) busy.value = false; }
 }
-function translate(l: LanguageStatus, replaceManual = false) {
+function translate(l: LanguageStatus, regenerate = false) {
   if (dirty.value) return;
   selected.value = l.code;
-  if (replaceManual && l.manualStale) {
-    confirm(`Se regenerarán ${l.manualStale} textos corregidos a mano cuyo original ha cambiado. Se sustituirán tus correcciones en el borrador; la versión pública se conserva hasta que publiques.`, () => action(`/${l.code}/translate`, "POST", { replaceManual: true }));
-  } else void action(`/${l.code}/translate`, "POST", { replaceManual: false });
+  if (regenerate) {
+    confirm(`Se regenerarán los textos automáticos en ${l.name.toLocaleLowerCase()}. Todas tus correcciones manuales se conservarán. La carta pública no cambiará hasta que publiques el idioma.`, () => action(`/${l.code}/translate`, "POST", { regenerate: true }));
+  } else void action(`/${l.code}/translate`, "POST", {});
 }
 function changeSource(event: Event) {
   const value = (event.target as HTMLSelectElement).value;
@@ -119,7 +129,7 @@ function changeSource(event: Event) {
 function edit(i: TranslationSource) {
   if (locked.value) return;
   editing.value = i;
-  form.name = i.draft?.name ?? i.name; form.description = i.draft?.description ?? i.description; form.welcome_text = i.draft?.welcome_text ?? i.welcome_text;
+  form.name = i.type === 'restaurant' ? i.name : i.draft?.name ?? i.name; form.description = i.draft?.description ?? i.description; form.welcome_text = i.draft?.welcome_text ?? i.welcome_text;
 }
 function closeEditor() {
   if (busy.value) return;
@@ -157,7 +167,7 @@ onBeforeUnmount(() => window.removeEventListener("beforeunload", beforeUnload));
         <select id="source-language" :value="status.sourceLanguage" :disabled="locked || dirty" class="mt-3 min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-base sm:max-w-xs" @change="changeSource">
           <option v-for="l in status.languages" :key="l.code" :value="l.code">{{ l.name }}</option>
         </select>
-        <p class="mt-2 text-sm text-slate-500">Tus productos y categorías originales no se modifican al traducir.</p>
+        <p class="mt-2 text-sm text-slate-500">Los originales no se modifican. También puedes generar y revisar una versión corregida en su propio idioma.</p>
       </section>
       <section class="ui-panel language-list divide-y divide-slate-100" aria-label="Otros idiomas">
         <article v-for="l in otherLanguages" :key="l.code" class="language-row py-4 first:pt-0 last:pb-0">
@@ -172,7 +182,8 @@ onBeforeUnmount(() => window.removeEventListener("beforeunload", beforeUnload));
           <div class="mt-3 flex flex-wrap gap-2">
             <button :disabled="locked || dirty || l.missing + l.stale > 0" class="ui-secondary" @click="action(`/${l.code}/publish`, 'POST')">Publicar {{ l.name.toLocaleLowerCase() }}</button>
             <button v-if="l.published_at" :disabled="locked || dirty" class="ui-quiet" @click="action(`/${l.code}`, 'PATCH', { enabled: !l.enabled })">{{ l.enabled ? 'Ocultar idioma' : 'Mostrar idioma' }}</button>
-            <button v-if="l.manualStale" :disabled="locked || dirty" class="ui-quiet" @click="translate(l, true)">Regenerar correcciones pendientes</button>
+            <button v-if="l.total > l.missing" :disabled="locked || dirty" class="ui-quiet" @click="translate(l, true)">Regenerar textos automáticos</button>
+            <span v-if="l.manualStale" class="text-sm text-amber-800">{{ l.manualStale }} correcciones manuales necesitan revisión; no se sobrescribirán.</span>
           </div>
         </article>
       </section>
@@ -186,7 +197,7 @@ onBeforeUnmount(() => window.removeEventListener("beforeunload", beforeUnload));
           <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ itemLabel(i) }}</span>
           <h3 class="mt-1 font-semibold break-words">{{ i.name }}</h3><p v-if="i.description" class="mt-1 whitespace-pre-line break-words text-sm text-slate-500">{{ i.description }}</p>
           <div class="mt-3 rounded-lg bg-slate-50 p-3"><p class="break-words font-medium">{{ i.draft?.name || 'Todavía sin traducir' }}</p><p v-if="i.draft?.description" class="mt-1 whitespace-pre-line break-words text-sm">{{ i.draft.description }}</p><p v-if="i.draft?.welcome_text" class="mt-1 whitespace-pre-line break-words text-sm">{{ i.draft.welcome_text }}</p><p v-if="i.draft && i.draft.source_hash !== i.source_hash" class="mt-2 text-sm font-medium text-amber-800">El original ha cambiado. Revisa esta traducción.</p><p v-if="i.draft?.is_manual" class="mt-1 text-xs text-slate-500">Corregido a mano</p></div>
-          <div class="mt-3 flex flex-wrap gap-2"><button class="ui-secondary" :disabled="locked" @click="edit(i)"><Pencil :size="16" /> Editar traducción</button><button v-if="i.draft" class="ui-quiet text-red-700" :disabled="locked" @click="deleteTranslation(i)">Eliminar traducción</button></div>
+          <div class="mt-3 flex flex-wrap gap-2"><button class="ui-secondary" :disabled="locked" @click="edit(i)"><Pencil :size="16" /> Editar traducción</button><button v-if="i.draft && i.type !== 'restaurant'" class="ui-quiet text-red-700" :disabled="locked" @click="deleteTranslation(i)">Eliminar traducción</button></div>
         </article>
       </section>
     </template>
@@ -194,7 +205,7 @@ onBeforeUnmount(() => window.removeEventListener("beforeunload", beforeUnload));
     <div v-if="editing" class="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/50 p-2 sm:items-center sm:p-5" @click.self="closeEditor">
       <form v-dialog-accessibility="closeEditor" role="dialog" aria-modal="true" aria-labelledby="translation-dialog-title" class="flex max-h-[calc(100dvh-1rem)] w-full max-w-xl flex-col overflow-hidden rounded-2xl bg-white" @submit.prevent="save">
         <header class="flex shrink-0 items-center justify-between border-b border-slate-100 p-4"><h2 id="translation-dialog-title" class="font-semibold">Editar {{ selectedStatus?.name.toLocaleLowerCase() }}</h2><button type="button" class="ui-quiet p-2" aria-label="Cerrar" :disabled="busy" @click="closeEditor"><X :size="20" /></button></header>
-        <div class="space-y-4 overflow-y-auto p-4"><div class="rounded-lg bg-slate-50 p-3 text-sm text-slate-600"><p class="font-semibold">Texto original</p><p class="mt-1 break-words">{{ editing.name }}</p><p v-if="editing.description" class="mt-1 whitespace-pre-line break-words">{{ editing.description }}</p><p v-if="editing.welcome_text" class="mt-1 whitespace-pre-line break-words">{{ editing.welcome_text }}</p></div><div><label for="translated-name" class="mb-2 block font-medium">Nombre</label><input id="translated-name" v-model="form.name" required maxlength="240" class="min-h-11 w-full rounded-lg border border-slate-300 px-3 text-base" /></div><div v-if="editing.type !== 'category'"><label for="translated-description" class="mb-2 block font-medium">Descripción</label><textarea id="translated-description" v-model="form.description" rows="4" maxlength="2000" class="w-full rounded-lg border border-slate-300 p-3 text-base" /><p class="mt-1 text-sm text-slate-500">Si la dejas vacía, se mostrará el texto original.</p></div><div v-if="editing.type === 'menu'"><label for="translated-welcome" class="mb-2 block font-medium">Bienvenida publicada</label><textarea id="translated-welcome" v-model="form.welcome_text" rows="2" maxlength="1000" class="w-full rounded-lg border border-slate-300 p-3 text-base" /></div><p v-if="error" role="alert" class="text-sm text-red-700">{{ error }}</p></div>
+        <div class="space-y-4 overflow-y-auto p-4"><div class="rounded-lg bg-slate-50 p-3 text-sm text-slate-600"><p class="font-semibold">Texto original</p><p class="mt-1 break-words">{{ editing.name }}</p><p v-if="editing.description" class="mt-1 whitespace-pre-line break-words">{{ editing.description }}</p><p v-if="editing.welcome_text" class="mt-1 whitespace-pre-line break-words">{{ editing.welcome_text }}</p></div><div><label for="translated-name" class="mb-2 block font-medium">Nombre</label><input id="translated-name" v-model="form.name" :readonly="editing.type === 'restaurant'" required maxlength="240" class="min-h-11 w-full rounded-lg border border-slate-300 px-3 text-base" /></div><div v-if="editing.type !== 'category'"><label for="translated-description" class="mb-2 block font-medium">Descripción</label><textarea id="translated-description" v-model="form.description" :required="Boolean(editing.description.trim())" rows="4" :maxlength="editing.type === 'restaurant' ? 500 : 2000" class="w-full rounded-lg border border-slate-300 p-3 text-base" /><p class="mt-1 text-sm text-slate-500">Traduce toda la descripción; conserva ingredientes, cantidades e información sobre alérgenos.</p></div><div v-if="editing.type === 'menu' || editing.type === 'restaurant'"><label for="translated-welcome" class="mb-2 block font-medium">{{ editing.type === 'restaurant' ? 'Sobre nosotros' : 'Bienvenida publicada' }}</label><textarea id="translated-welcome" v-model="form.welcome_text" :required="Boolean(editing.welcome_text.trim())" rows="2" :maxlength="editing.type === 'restaurant' ? 3000 : 1000" class="w-full rounded-lg border border-slate-300 p-3 text-base" /></div><p v-if="error" role="alert" class="text-sm text-red-700">{{ error }}</p></div>
         <footer class="flex shrink-0 flex-wrap justify-end gap-2 border-t border-slate-100 p-4"><button type="button" :disabled="busy" class="ui-secondary" @click="closeEditor">Cancelar</button><button type="submit" :disabled="busy || !form.name.trim()" class="ui-primary">{{ busy ? 'Guardando…' : 'Guardar traducción' }}</button></footer>
       </form>
     </div>

@@ -68,6 +68,35 @@ const checkoutSuccess = computed(() => route.query.checkout === "success");
 
 const checkoutCancelled = computed(() => route.query.checkout === "cancelled");
 
+// Stripe can deliver the webhook after the browser has returned. Poll only
+// subscription reads, with a deadline, and discard replies from an old route.
+let syncTimer: ReturnType<typeof setTimeout> | undefined;
+let syncGeneration = 0;
+let billingMounted = false;
+function stopBillingSync() {
+  syncGeneration++;
+  if (syncTimer) clearTimeout(syncTimer);
+}
+function startBillingSync() {
+  stopBillingSync();
+  if (!billingMounted || !checkoutSuccess.value || active.value) return;
+  const generation = syncGeneration;
+  const id = businessId.value;
+  const deadline = Date.now() + 60_000;
+  async function poll() {
+    if (generation !== syncGeneration || id !== businessId.value || Date.now() >= deadline) return;
+    try {
+      const current = await getSubscription(id);
+      if (generation !== syncGeneration || id !== businessId.value) return;
+      subscription.value = current;
+      if (hasAccess(current)) return;
+    } catch { /* Keep the manual refresh available after transient failures. */ }
+    if (generation === syncGeneration && Date.now() < deadline) syncTimer = setTimeout(poll, 2000);
+  }
+  syncTimer = setTimeout(poll, 2000);
+}
+onBeforeUnmount(() => { billingMounted = false; stopBillingSync(); });
+
 const status = computed(() => {
   if (subscription.value && subscription.value.billing_compatibility !== 'current') return {
     title: 'Referencia de facturación anterior', description: 'La suscripción guardada pertenece a otro entorno o todavía no está verificada. No concede acceso. Puedes iniciar una contratación; se conservará su historial.', color: 'bg-amber-50 text-amber-700',
@@ -161,6 +190,8 @@ function formatDate(value?: string | null): string {
 }
 
 async function loadBilling() {
+  stopBillingSync();
+  const id = businessId.value;
   loading.value = true;
   errorMessage.value = "";
 
@@ -169,23 +200,33 @@ async function loadBilling() {
       apiFetch<{
         success: boolean;
         business: Business;
-      }>(`/api/businesses/${encodeURIComponent(businessId.value)}`),
+      }>(`/api/businesses/${encodeURIComponent(id)}`),
 
-      getSubscription(businessId.value),
+      getSubscription(id),
     ]);
 
     if (!businessResponse.success || !businessResponse.business) {
       throw new Error("No se pudo obtener el establecimiento.");
     }
 
+    if (!billingMounted || id !== businessId.value) return;
     business.value = businessResponse.business;
     subscription.value = subscriptionResponse;
+    if (checkoutSuccess.value && subscriptionResponse?.status === 'checkout_pending') {
+      try {
+        await apiFetch('/api/subscriptions/checkout/reconcile', { method: 'POST', body: { businessId: id } });
+        const recovered = await getSubscription(id);
+        if (billingMounted && id === businessId.value) subscription.value = recovered;
+      } catch (error) {
+        if (billingMounted && id === businessId.value) errorMessage.value = getErrorMessage(error, 'La activación sigue pendiente. Actualiza el estado o contacta con soporte.');
+      }
+    }
   } catch (error) {
     console.error("No se pudo cargar la facturación.");
 
-    errorMessage.value = getErrorMessage(error, "No se pudo cargar la facturación.");
+    if (billingMounted && id === businessId.value) errorMessage.value = getErrorMessage(error, "No se pudo cargar la facturación.");
   } finally {
-    loading.value = false;
+    if (billingMounted && id === businessId.value) { loading.value = false; startBillingSync(); }
   }
 }
 
@@ -244,8 +285,8 @@ async function manageBilling() {
   }
 }
 
-watch(businessId, loadBilling);
-onMounted(loadBilling);
+watch(() => `${businessId.value}:${route.query.checkout ?? ''}`, loadBilling);
+onMounted(() => { billingMounted = true; void loadBilling(); });
 </script>
 
 <template>
@@ -266,7 +307,7 @@ onMounted(loadBilling);
         v-if="checkoutSuccess && !active"
         role="status"
         class="rounded-xl border border-blue-200 bg-blue-50 p-5 text-sm text-blue-800">
-        Has vuelto del pago seguro. Si tu suscripción todavía no aparece activa, pulsa Actualizar estado. El acceso se habilitará cuando confirmemos la contratación.
+        Has vuelto del pago seguro. Estamos comprobando automáticamente la activación. Si sigue pendiente, pulsa Actualizar estado. El acceso se habilitará cuando confirmemos la contratación.
       </div>
 
       <div

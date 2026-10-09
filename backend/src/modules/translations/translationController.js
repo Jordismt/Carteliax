@@ -41,8 +41,8 @@ export function translationAction(action, { store = repository, schedule = sched
         if (!config.GROQ_API_KEY) throw new TranslationError("GROQ_NOT_CONFIGURED", "La traducción automática no está disponible. Puedes editar los textos manualmente.", 503);
         const current = await store.status(menuId, actor);
         const source = current.translations.find((t) => t.language === language)?.items ?? current.items;
-        makeBatches(planTranslation(source, body.replaceManual));
-        const job = await store.enqueue(menuId, actor, language, body.replaceManual);
+        makeBatches(planTranslation(source, body.regenerate));
+        const job = await store.enqueue(menuId, actor, language, body.regenerate);
         if (!job.unchanged) schedule();
         return res.status(job.unchanged ? 200 : 202).json({ success: true, job: job.unchanged ? null : job, message: job.unchanged ? "Los textos automáticos están actualizados. Revisa los cambios manuales pendientes, si los hay." : "Traducción iniciada." });
       }

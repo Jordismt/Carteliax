@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { requireAuth } from "../../middlewares/requireAuth.js";
 
-import { getSubscription, createCheckout, createPortal, cancelPendingCheckout } from "./subscriptionController.js";
+import { getSubscription, createCheckout, createPortal, cancelPendingCheckout, reconcileCheckout } from "./subscriptionController.js";
 
 const router = Router();
 
@@ -15,6 +15,7 @@ router.get("/:businessId", getSubscription);
 // Crear una sesión de Stripe Checkout.
 router.post("/checkout", createCheckout);
 router.post("/checkout/cancel", cancelPendingCheckout);
+router.post("/checkout/reconcile", reconcileCheckout);
 
 // Abrir el portal de facturación de Stripe.
 router.post("/portal", createPortal);
