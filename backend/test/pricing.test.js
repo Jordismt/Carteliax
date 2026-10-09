@@ -9,6 +9,37 @@ const { createCheckout } = await import('../src/modules/subscriptions/subscripti
 const { supabaseAdmin } = await import('../src/infrastructure/database/supabase.js');
 const price={active:true,livemode:false,tax_behavior:'inclusive',unit_amount:1749,currency:'eur',recurring:{interval:'month',interval_count:1}};
 const rate={active:true,livemode:false,percentage:21,inclusive:true,tax_type:'vat',country:'ES'};
+test('every configuration rejection identifies the exact failed check', async t => {
+ const prices=[['PRICE_INACTIVE',{active:false}],['PRICE_MODE_MISMATCH',{livemode:true}],['PRICE_CURRENCY',{currency:'usd'}],['PRICE_AMOUNT',{unit_amount:1800}],['PRICE_INTERVAL',{recurring:null}],['PRICE_INTERVAL_COUNT',{recurring:{interval:'month',interval_count:2}}],['PRICE_TAX_BEHAVIOR',{tax_behavior:'unspecified'}]];
+ const rates=[['VAT_INACTIVE',{active:false}],['VAT_MODE_MISMATCH',{livemode:true}],['VAT_PERCENTAGE',{percentage:20}],['VAT_NOT_INCLUSIVE',{inclusive:false}],['VAT_TYPE',{tax_type:null}],['VAT_COUNTRY',{country:null}]];
+ for(const [reason,patch] of prices) await t.test(reason,async t=>{
+  t.mock.method(stripe.prices,'retrieve',async()=>({...price,...patch}));
+  t.mock.method(stripe.taxRates,'retrieve',async()=>{throw Error('Must reject before tax lookup')});
+  await assert.rejects(verifyCommercialPrice(),{code:'BILLING_CONFIGURATION',status:503,billingReason:reason});
+ });
+ for(const [reason,patch] of rates) await t.test(reason,async t=>{
+  t.mock.method(stripe.prices,'retrieve',async()=>price);t.mock.method(stripe.taxRates,'retrieve',async()=>({...rate,...patch}));
+  await assert.rejects(verifyCommercialPrice(),{code:'BILLING_CONFIGURATION',status:503,billingReason:reason});
+ });
+ const customers=[['CUSTOMER_DELETED',{deleted:true}],['CUSTOMER_MODE_MISMATCH',{livemode:true}],['CUSTOMER_TAX_EXEMPT',{tax_exempt:'exempt'}],['CUSTOMER_BALANCE',{balance:1}],['CUSTOMER_CREDIT_BALANCE',{invoice_credit_balance:{eur:1}}],['CUSTOMER_DISCOUNT',{discounts:['discount']}]];
+ for(const [reason,patch] of customers) await t.test(reason,async t=>{
+  t.mock.method(stripe.customers,'retrieve',async()=>({livemode:false,tax_exempt:'none',balance:0,...patch}));
+  t.mock.method(stripe.invoiceItems,'list',async()=>{throw Error('Must reject before invoice lookup')});
+  await assert.rejects(verifyReusedCustomer('cus_fixture'),{code:'BILLING_CONFIGURATION',status:503,billingReason:reason});
+ });
+ await t.test('CUSTOMER_PENDING_INVOICE_ITEMS',async t=>{
+  t.mock.method(stripe.customers,'retrieve',async()=>({livemode:false,tax_exempt:'none',balance:0}));t.mock.method(stripe.invoiceItems,'list',async()=>({data:[{}]}));
+  await assert.rejects(verifyReusedCustomer('cus_fixture'),{billingReason:'CUSTOMER_PENDING_INVOICE_ITEMS'});
+ });
+});
+test('read-only diagnostic checks expected mode before contacting Stripe', async t=>{
+ const {checkBillingConfig}=await import('../scripts/check-billing-config.js');
+ let calls=0;t.mock.method(stripe.prices,'retrieve',async()=>{calls++;return price});t.mock.method(stripe.taxRates,'retrieve',async()=>rate);
+ t.mock.method(stripe.checkout.sessions,'create',async()=>{throw Error('Diagnostic must never create Checkout')});
+ t.mock.method(supabaseAdmin,'from',()=>{throw Error('Diagnostic must never access database')});
+ await assert.rejects(checkBillingConfig('live'),{code:'DIAGNOSTIC_MODE_MISMATCH'});assert.equal(calls,0);
+ assert.deepEqual(await checkBillingConfig('test'),{mode:'test',commercialConfiguration:'PASS',customer:'NOT_CHECKED'});
+});
 test('commercial plan is exactly EUR 17.49 per month, IVA inclusive and seven-day trial',()=>{
  assert.equal(COMMERCIAL_PLAN.monthlyAmount,17.49);assert.equal(COMMERCIAL_PLAN.monthlyPrice,'17,49 €');assert.equal(COMMERCIAL_PLAN.monthlyLabel,'17,49 €/mes');assert.equal(COMMERCIAL_PLAN.taxLabel,'IVA incluido (21 %)');assert.equal(COMMERCIAL_PLAN.trialDays,7);
 });
@@ -24,7 +55,7 @@ test('missing VAT configuration blocks Checkout without reserving or calling Str
   stripe.prices.retrieve=async()=>({active:true,livemode:false,unit_amount:1749,currency:'eur',tax_behavior:'inclusive',recurring:{interval:'month',interval_count:1}});
   let calls=0;stripe.taxRates.retrieve=async()=>{calls++;throw Error('unexpected tax request')};stripe.checkout.sessions.create=async()=>{calls++;throw Error('unexpected Checkout')};
   const state=fixture();state.subscriptions=[];supabaseAdmin.from=memoryDb(state).from;
-  await assert.rejects(verifyCommercialPrice(),{code:'BILLING_CONFIGURATION'});
+  await assert.rejects(verifyCommercialPrice(),{code:'BILLING_CONFIGURATION',billingReason:'VAT_RATE_MISSING'});
   const res=response();await createCheckout({body:{businessId:ids.a1},user:{id:ids.a}},res);
   assert.equal(res.statusCode,503);assert.equal(calls,0);assert.equal(state.subscriptions.length,0);
  `],{cwd:new URL('../',import.meta.url),stdio:'pipe'});
