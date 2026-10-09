@@ -13,7 +13,7 @@ Comprobar las variables del proyecto **backend**, objetivo **Production**, y la 
 | `STRIPE_MODE` | `live` explícito para producción; el valor por defecto es `test`. |
 | `STRIPE_SECRET_KEY` | Clave `sk_live_` o `rk_live_`, misma cuenta que los objetos. No mostrar su valor. La incompatibilidad clave/modo impide arrancar mediante Zod; no genera este error personalizado. Una clave restringida necesita permisos de lectura para Prices, Tax Rates, Customers e Invoice Items para estas verificaciones. |
 | `STRIPE_PRICE_ID` | `price_` de LIVE, activo, EUR, `unit_amount=1749`, recurrente mensual, `interval_count=1`, `tax_behavior=inclusive`. |
-| `STRIPE_VAT_TAX_RATE_ID` | `txr_` de LIVE, activo, `percentage=21`, `inclusive=true`, `tax_type=vat`, `country=ES`. Ausente o cadena vacía permite arrancar, pero bloquea nuevos Checkout. |
+| `STRIPE_VAT_TAX_RATE_ID` | `txr_` de LIVE, activo, `percentage=21`, `inclusive=true`, `country=ES` y `tax_type=vat`, o `tax_type=null` con `display_name` igual a IVA/VAT (ignorando mayúsculas y espacios exteriores). Ausente o cadena vacía permite arrancar, pero bloquea nuevos Checkout. |
 | `STRIPE_WEBHOOK_SECRET` | Se valida su prefijo al arrancar; la firma se verifica en el webhook. Un secreto de otro endpoint/entorno afecta webhooks, pero no es una condición de este error personalizado. |
 | `FRONTEND_URL` | URL válida y HTTPS en producción. No produce este error personalizado. |
 
@@ -35,7 +35,7 @@ Estos requisitos reflejan la política fiscal fija del código; no certifican su
 | `VAT_MODE_MISMATCH` | Tax Rate de otro modo. Revisar cuenta y objeto LIVE. |
 | `VAT_PERCENTAGE` | Porcentaje distinto de 21. |
 | `VAT_NOT_INCLUSIVE` | IVA no incluido. |
-| `VAT_TYPE` | `tax_type` distinto de `vat`, incluido `null`. Llamar al impuesto «IVA» o «VAT» no rellena necesariamente este campo. |
+| `VAT_TYPE` | `tax_type` explícitamente incompatible, o `null` sin etiqueta IVA/VAT. El fallback manual exige que todas las demás comprobaciones fiscales pasen. |
 | `VAT_COUNTRY` | `country` distinto de `ES`, incluido `null`. La etiqueta `jurisdiction` no sustituye `country`. |
 | `CUSTOMER_DELETED` | Cliente reutilizado eliminado. Revisar vínculo sin borrar datos. |
 | `CUSTOMER_MODE_MISMATCH` | Cliente reutilizado de otro modo. Reconciliar referencias e historial. |
@@ -45,7 +45,7 @@ Estos requisitos reflejan la política fiscal fija del código; no certifican su
 | `CUSTOMER_DISCOUNT` | Descuento aplicado al cliente. Revisar sin eliminarlo automáticamente. |
 | `CUSTOMER_PENDING_INVOICE_ITEMS` | Conceptos pendientes de facturación. Revisar sin borrarlos ni facturarlos automáticamente. |
 
-Stripe permite `country` y `tax_type` nulos: https://docs.stripe.com/api/tax_rates/object. La creación permite indicar ambos: https://docs.stripe.com/api/tax_rates/create. No se han relajado las validaciones ni modificado objetos remotos. Para atributos que Stripe no permita cambiar, preparar un objeto nuevo para futuras contrataciones con autorización; preservar los objetos y contratos existentes.
+Stripe permite `country` y `tax_type` nulos: https://docs.stripe.com/api/tax_rates/object. La creación permite indicar ambos: https://docs.stripe.com/api/tax_rates/create. Se admite el tipo nulo de los impuestos manuales del Dashboard únicamente con etiqueta IVA/VAT y las restantes comprobaciones fiscales satisfechas. No se han modificado objetos remotos. Para atributos que Stripe no permita cambiar, preparar un objeto nuevo para futuras contrataciones con autorización; preservar los objetos y contratos existentes.
 
 ## Verificación de solo lectura
 

@@ -26,8 +26,14 @@ export async function verifyCommercialPrice() {
   if (taxRate.livemode !== STRIPE_LIVE_MODE) throw billingConfigurationError('VAT_MODE_MISMATCH');
   if (taxRate.percentage !== 21) throw billingConfigurationError('VAT_PERCENTAGE');
   if (taxRate.inclusive !== true) throw billingConfigurationError('VAT_NOT_INCLUSIVE');
-  if (taxRate.tax_type !== 'vat') throw billingConfigurationError('VAT_TYPE');
   if (taxRate.country !== 'ES') throw billingConfigurationError('VAT_COUNTRY');
+  // Dashboard manual VAT rates can have a null tax_type. Only the configured
+  // rate, already verified for mode, activity, country, percentage and inclusion,
+  // may use that fallback, and its Stripe invoice label must identify VAT.
+  const vatLabel = typeof taxRate.display_name === 'string'
+    ? taxRate.display_name.trim().toUpperCase() : '';
+  const dashboardVat = taxRate.tax_type === null && ['IVA', 'VAT'].includes(vatLabel);
+  if (taxRate.tax_type !== 'vat' && !dashboardVat) throw billingConfigurationError('VAT_TYPE');
   return { price, taxRate };
 }
 

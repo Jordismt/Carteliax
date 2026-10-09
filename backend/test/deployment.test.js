@@ -25,6 +25,13 @@ test('standard and restricted Stripe keys preserve mode, price guards and signed
       stripe.prices.retrieve=async()=>({active:true,livemode:${mode === 'live'},unit_amount:1749,currency:'eur',tax_behavior:'inclusive',recurring:{interval:'month',interval_count:1}});
       stripe.taxRates.retrieve=async()=>({active:true,livemode:${mode === 'live'},percentage:21,inclusive:true,tax_type:'vat',country:'ES'});
       await verifyCommercialPrice();
+      // Real SDK, mocked reads: Dashboard manual rates in either configured mode.
+      stripe.taxRates.retrieve=async()=>({active:true,livemode:${mode === 'live'},percentage:21,inclusive:true,tax_type:null,country:'ES',display_name:'IVA'});
+      await verifyCommercialPrice();
+      stripe.taxRates.retrieve=async()=>({active:true,livemode:${mode !== 'live'},percentage:21,inclusive:true,tax_type:null,country:'ES',display_name:'IVA'});
+      await assert.rejects(verifyCommercialPrice(),{billingReason:'VAT_MODE_MISMATCH'});
+      stripe.taxRates.retrieve=async()=>({active:true,livemode:${mode === 'live'},percentage:21,inclusive:true,tax_type:'sales_tax',country:'ES',display_name:'IVA'});
+      await assert.rejects(verifyCommercialPrice(),{billingReason:'VAT_TYPE'});
       const {stripeWebhook}=await import('./src/modules/subscriptions/stripeWebhookController.js');
       for(const matching of [true,false]) {
         const payload=JSON.stringify({id:'evt_fixture',type:'qa.unsupported',livemode:matching ? ${mode === 'live'} : ${mode !== 'live'},data:{object:{}}});
