@@ -177,7 +177,7 @@ async function handleRegister() {
               <input v-model="acceptedTerms" type="checkbox" required class="mt-1 accent-emerald-600" />
 
               <span class="text-sm leading-relaxed text-slate-500">
-                Acepto las condiciones de uso y la política de privacidad.
+                Acepto las <NuxtLink to="/terms" class="font-semibold text-emerald-700 underline">condiciones de uso</NuxtLink> y la <NuxtLink to="/privacy" class="font-semibold text-emerald-700 underline">política de privacidad</NuxtLink>.
               </span>
             </label>
 

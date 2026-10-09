@@ -52,19 +52,29 @@ const loading = ref(true);
 const processing = ref(false);
 const errorMessage = ref("");
 
-const active = computed(() => hasAccess(subscription.value));
+const accessNow = ref(Date.now());
+let accessTimer: ReturnType<typeof setInterval> | undefined;
+onMounted(() => { accessTimer = setInterval(() => { accessNow.value = Date.now(); },1000); });
+onBeforeUnmount(() => { if (accessTimer) clearInterval(accessTimer); });
+const active = computed(() => hasAccess(subscription.value, accessNow.value));
 
 const showCheckout = computed(() => canStartCheckout(subscription.value));
 
 const showPortal = computed(() => canManageBilling(subscription.value));
 
-const trialEligible = computed(() => !subscription.value?.trial_used_at);
+const trialEligible = computed(() => subscription.value?.billing_compatibility !== "current" || !subscription.value?.trial_used_at);
 
 const checkoutSuccess = computed(() => route.query.checkout === "success");
 
 const checkoutCancelled = computed(() => route.query.checkout === "cancelled");
 
 const status = computed(() => {
+  if (subscription.value && subscription.value.billing_compatibility !== 'current') return {
+    title: 'Referencia de facturación anterior', description: 'La suscripción guardada pertenece a otro entorno o todavía no está verificada. No concede acceso. Puedes iniciar una contratación; se conservará su historial.', color: 'bg-amber-50 text-amber-700',
+  };
+  if (['active','trialing'].includes(subscription.value?.status ?? '') && !active.value) return {
+    title: subscription.value?.status === 'trialing' ? 'Prueba gratuita finalizada' : 'Suscripción pendiente de sincronización', description: 'No hay un período de acceso válido. Actualiza el estado o gestiona la facturación para regularizar la suscripción.', color: 'bg-amber-50 text-amber-700',
+  };
   switch (subscription.value?.status) {
     case "active":
       return {
@@ -171,7 +181,7 @@ async function loadBilling() {
     business.value = businessResponse.business;
     subscription.value = subscriptionResponse;
   } catch (error) {
-    console.error("Error cargando facturación:", error);
+    console.error("No se pudo cargar la facturación.");
 
     errorMessage.value = getErrorMessage(error, "No se pudo cargar la facturación.");
   } finally {

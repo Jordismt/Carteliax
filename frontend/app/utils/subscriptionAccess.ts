@@ -1,11 +1,11 @@
-/** Mirrors the backend dates, including the existing legacy active/null-period rule. */
+/** Access is asserted by the backend in its configured Stripe environment. */
 export function subscriptionHasAccess(subscription: {
   status: string;
   trial_ends_at: string | null;
   current_period_end: string | null;
+  billing_access?: boolean;
 } | null, now = Date.now()): boolean {
-  if (!subscription) return false;
-  if (subscription.status === 'trialing') return !!subscription.trial_ends_at && new Date(subscription.trial_ends_at).getTime() > now;
-  if (subscription.status === 'active') return !subscription.current_period_end || new Date(subscription.current_period_end).getTime() > now;
-  return false;
+  if (!subscription?.billing_access || !subscription.current_period_end || Date.parse(subscription.current_period_end) <= now || !Number.isFinite(Date.parse(subscription.current_period_end))) return false;
+  if (subscription.status === 'active') return true;
+  return subscription.status === 'trialing' && !!subscription.trial_ends_at && Date.parse(subscription.trial_ends_at) > now;
 }

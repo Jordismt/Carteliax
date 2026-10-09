@@ -81,6 +81,8 @@ async function handleLogin() {
           </button>
         </form>
 
+        <p class="mt-5 text-center text-sm"><NuxtLink to="/forgot-password" class="font-semibold text-emerald-700 hover:underline">¿Has olvidado tu contraseña?</NuxtLink></p>
+
         <p class="mt-8 text-center text-sm text-slate-500">
           ¿Todavía no tienes una cuenta?
 

@@ -1,3 +1,4 @@
+import { subscriptionHasAccess } from "../modules/subscriptions/subscriptionAccess.js";
 import { z } from "zod";
 import { logSafeError } from "../utils/logSafeError.js";
 import { supabaseAdmin } from "../infrastructure/database/supabase.js";
@@ -30,12 +31,9 @@ export function requireActiveSubscription(resource) {
       if (businessError) throw businessError;
       if (!business) return res.status(403).json({ success: false, message: "No tienes acceso a este establecimiento." });
       const { data: subscription, error: subscriptionError } = await supabaseAdmin.from("subscriptions")
-        .select("status, trial_ends_at, current_period_end").eq("business_id", businessId).maybeSingle();
+        .select("status, trial_ends_at, current_period_end, stripe_livemode, stripe_customer_id, stripe_subscription_id").eq("business_id", businessId).maybeSingle();
       if (subscriptionError) throw subscriptionError;
-      const now = Date.now();
-      const trialValid = subscription?.status === "trialing" && !!subscription.trial_ends_at && new Date(subscription.trial_ends_at).getTime() > now;
-      const activeValid = subscription?.status === "active" && (!subscription.current_period_end || new Date(subscription.current_period_end).getTime() > now);
-      if (!trialValid && !activeValid) return res.status(402).json({ success: false, code: "SUBSCRIPTION_REQUIRED", businessId, message: "Activa la prueba gratuita o contrata Carteliax para gestionar este establecimiento." });
+      if (!subscriptionHasAccess(subscription)) return res.status(402).json({ success: false, code: "SUBSCRIPTION_REQUIRED", businessId, message: "Activa la prueba gratuita o regulariza la suscripción para gestionar este establecimiento." });
       req.billingBusinessId = businessId;
       return next();
     } catch (error) {

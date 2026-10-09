@@ -13,6 +13,9 @@ export type SubscriptionStatus =
   | "paused";
 
 export interface BusinessSubscription {
+  billing_access?: boolean;
+  billing_compatibility?: "current" | "historical" | "unverified";
+  stripe_livemode?: boolean | null;
   id?: string;
   business_id?: string;
   status: SubscriptionStatus;
@@ -103,16 +106,16 @@ export function useSubscription() {
     });
   }
 
-  function hasAccess(subscription: BusinessSubscription | null): boolean {
-    return subscriptionHasAccess(subscription);
+  function hasAccess(subscription: BusinessSubscription | null, now = Date.now()): boolean {
+    return subscriptionHasAccess(subscription, now);
   }
 
   function canManageBilling(subscription: BusinessSubscription | null): boolean {
-    return Boolean(subscription?.stripe_customer_id);
+    return Boolean(subscription?.stripe_customer_id && subscription.billing_compatibility === "current");
   }
 
   function canStartCheckout(subscription: BusinessSubscription | null): boolean {
-    if (!subscription) {
+    if (!subscription || subscription.billing_compatibility !== "current") {
       return true;
     }
 

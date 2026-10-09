@@ -1,9 +1,11 @@
+import { subscriptionHasAccess } from "./subscriptionAccess.js";
+import { definitiveCheckoutFailure, historicalReference, recoverCheckout, billingError } from "./checkoutRecovery.js";
 import { logSafeError } from "../../utils/logSafeError.js";
 import { randomUUID } from "node:crypto";
 
 import { supabaseAdmin } from "../../infrastructure/database/supabase.js";
 
-import { stripe, PRICE_ID, FRONTEND_URL, verifyCommercialPrice, verifyReusedCustomer, VAT_TAX_RATE_ID } from "./stripeService.js";
+import { stripe, PRICE_ID, FRONTEND_URL, verifyCommercialPrice, verifyReusedCustomer, VAT_TAX_RATE_ID, STRIPE_LIVE_MODE } from "./stripeService.js";
 
 // ==========================================
 // CONFIGURACIÓN
@@ -20,10 +22,10 @@ const BLOCKED_STATUSES = new Set(["active", "trialing", "past_due", "unpaid", "p
 function respondError(res, error) {
   logSafeError("SUBSCRIPTIONS", error);
 
-  return res.status(error?.code === "BILLING_CONFIGURATION" ? 503 : 500).json({
+  return res.status(error?.status ?? (error?.code === "BILLING_CONFIGURATION" ? 503 : 500)).json({
     success: false,
-    ...(error?.code === "BILLING_CONFIGURATION" ? { code: "BILLING_CONFIGURATION" } : {}),
-    message: error?.code === "BILLING_CONFIGURATION" ? "La facturación no está configurada correctamente. Contacta con soporte." : "No se pudo procesar la solicitud.",
+    ...(error?.status || error?.code === "BILLING_CONFIGURATION" ? { code: error.code } : {}),
+    message: error?.status ? error.message : error?.code === "BILLING_CONFIGURATION" ? "La facturación no está configurada correctamente. Contacta con soporte." : "No se pudo procesar la solicitud.",
   });
 }
 
@@ -93,7 +95,12 @@ async function retrieveRemoteSubscription(existing) {
     return null;
   }
 
-  return stripe.subscriptions.retrieve(existing.stripe_subscription_id);
+  if (existing.stripe_livemode != null && existing.stripe_livemode !== STRIPE_LIVE_MODE) return null;
+  try {
+    const remote = await stripe.subscriptions.retrieve(existing.stripe_subscription_id);
+    if (remote.livemode !== STRIPE_LIVE_MODE) return null;
+    return remote;
+  } catch (error) { if (historicalReference(error)) return null; throw error; }
 }
 
 // ==========================================
@@ -141,6 +148,10 @@ export async function getSubscription(req, res) {
         id: subscription.id,
         business_id: subscription.business_id,
         status: subscription.status,
+        billing_access: subscriptionHasAccess(subscription),
+        stripe_livemode: subscription.stripe_livemode,
+        billing_compatibility: subscription.stripe_livemode == null ? 'unverified' : subscription.stripe_livemode === STRIPE_LIVE_MODE ? 'current' : 'historical',
+
 
         stripe_customer_id: subscription.stripe_customer_id,
 
@@ -223,29 +234,27 @@ export async function createCheckout(req, res) {
     // 4. COMPROBAR CHECKOUT PENDIENTE
     // ======================================
 
-    if (
-      existing?.status === "checkout_pending" &&
-      existing.checkout_expires_at &&
-      new Date(existing.checkout_expires_at).getTime() > Date.now()
-    ) {
-      return res.status(409).json({
-        success: false,
-        message:
-          "Ya existe un proceso de contratación pendiente. Espera a que caduque antes de intentarlo de nuevo.",
+    const compatible = existing?.stripe_livemode === STRIPE_LIVE_MODE || Boolean(remote);
+    if (existing?.status === 'checkout_pending') {
+      if (existing.stripe_livemode !== STRIPE_LIVE_MODE) throw billingError('BILLING_ENVIRONMENT_MISMATCH', 'El intento pertenece a un entorno anterior. Contacta con soporte.');
+      const previousSession = await recoverCheckout(stripe, existing, Date.now(), () => {
+        reservedAttempt = {businessId,attemptId:existing.checkout_attempt_id};
+        stripeRequestStarted = true;
       });
-    }
-
-    // Never start a second payment while an older session may already be paid.
-    if (existing?.status === "checkout_pending") {
-      if (!existing.checkout_session_id) return res.status(409).json({ success: false, message: "Hay un pago pendiente de reconciliación. Contacta con soporte." });
-      const previousSession = await stripe.checkout.sessions.retrieve(existing.checkout_session_id);
-      if (previousSession.status !== "expired") return res.status(409).json({ success: false, message: "El Checkout anterior sigue abierto o completado. Actualiza el estado." });
+      if (previousSession.status === 'open') {
+        const { error } = await supabaseAdmin.from('subscriptions').update({checkout_session_id:previousSession.id}).eq('business_id',businessId).eq('checkout_attempt_id',existing.checkout_attempt_id);
+        if (error) throw error;
+        return res.json({success:true,url:previousSession.url});
+      }
+      if (previousSession.status !== 'expired') throw billingError('CHECKOUT_COMPLETED', 'El Checkout ya está completado. Actualiza el estado; no inicies otro pago.');
     }
     await verifyCommercialPrice();
-    if (existing?.stripe_customer_id) await verifyReusedCustomer(existing.stripe_customer_id);
+    if (compatible && existing?.stripe_customer_id) await verifyReusedCustomer(existing.stripe_customer_id);
     const attemptId = randomUUID();
     const expiresAt = Math.floor(Date.now() / 1000) + CHECKOUT_DURATION_SECONDS;
-    const reservation = { business_id: businessId, status: "checkout_pending", checkout_attempt_id: attemptId, checkout_expires_at: new Date(expiresAt * 1000).toISOString(), checkout_session_id: null };
+    const reservation = { business_id: businessId, status: "checkout_pending", checkout_attempt_id: attemptId, checkout_expires_at: new Date(expiresAt * 1000).toISOString(), checkout_session_id: null, stripe_livemode: STRIPE_LIVE_MODE,
+      checkout_request: null, checkout_requested_at: null,
+      ...(!compatible ? {stripe_customer_id:null,stripe_subscription_id:null,trial_used_at:null,trial_ends_at:null,current_period_end:null,stripe_event_created:0} : {}) };
     let reserveQuery;
     if (!existing) reserveQuery = supabaseAdmin.from("subscriptions").insert(reservation);
     else {
@@ -269,13 +278,13 @@ export async function createCheckout(req, res) {
     // 6. COMPROBAR PRUEBA GRATUITA
     // ======================================
 
-    const trialAllowed = !existing?.trial_used_at;
+    const trialAllowed = !compatible || !existing?.trial_used_at;
 
     // ======================================
     // 7. REUTILIZAR CLIENTE DE STRIPE
     // ======================================
 
-    const customerOptions = existing?.stripe_customer_id
+    const customerOptions = compatible && existing?.stripe_customer_id
       ? {
           customer: existing.stripe_customer_id,
         }
@@ -290,9 +299,7 @@ export async function createCheckout(req, res) {
     // 8. CREAR SESIÓN DE STRIPE
     // ======================================
 
-    stripeRequestStarted = true;
-    const session = await stripe.checkout.sessions.create(
-      {
+    const checkoutRequest = {
         mode: "subscription",
 
         ...customerOptions,
@@ -336,11 +343,13 @@ export async function createCheckout(req, res) {
         cancel_url: `${FRONTEND_URL}/billing/${businessId}?checkout=cancelled`,
 
         expires_at: expiresAt,
-      },
-      {
-        idempotencyKey: `checkout_${businessId}_${attemptId}`,
-      },
-    );
+      };
+    const { error: requestError } = await supabaseAdmin.from('subscriptions')
+      .update({checkout_request:checkoutRequest,checkout_requested_at:new Date().toISOString()})
+      .eq('business_id',businessId).eq('checkout_attempt_id',attemptId);
+    if (requestError) throw requestError;
+    stripeRequestStarted = true;
+    const session = await stripe.checkout.sessions.create(checkoutRequest, {idempotencyKey:`checkout_${businessId}_${attemptId}`});
 
     if (!session.url) {
       throw new Error("Stripe no ha devuelto la URL de Checkout.");
@@ -368,7 +377,7 @@ export async function createCheckout(req, res) {
     // Any Stripe request may have committed despite a lost response.
     // Keep its reservation until reconciliation; never blindly retry a payment.
 
-    if (reservedAttempt && !stripeRequestStarted) {
+    if (reservedAttempt && (!stripeRequestStarted || definitiveCheckoutFailure(error))) {
       try {
         const { data: current } = await supabaseAdmin
           .from("subscriptions")
@@ -376,17 +385,18 @@ export async function createCheckout(req, res) {
           .eq("business_id", reservedAttempt.businessId)
           .maybeSingle();
 
-        if (current?.checkout_attempt_id === reservedAttempt.attemptId && !current.stripe_subscription_id) {
+        if (current?.checkout_attempt_id === reservedAttempt.attemptId) {
           const { error: cleanupError } = await supabaseAdmin
             .from("subscriptions")
             .update({
-              status: reservedAttempt.previousStatus,
+              status: "inactive",
+              checkout_request: null, checkout_requested_at: null,
               checkout_attempt_id: null,
               checkout_expires_at: null,
               checkout_session_id: null,
             })
             .eq("business_id", reservedAttempt.businessId)
-            .eq("checkout_attempt_id", reservedAttempt.attemptId);
+            .eq("checkout_attempt_id", reservedAttempt.attemptId).eq("status", "checkout_pending");
 
           if (cleanupError) {
             logSafeError("CHECKOUT_CLEANUP", cleanupError);
@@ -397,6 +407,9 @@ export async function createCheckout(req, res) {
       }
     }
 
+    if (error?.status) return respondError(res,error);
+    if (stripeRequestStarted && !definitiveCheckoutFailure(error)) return respondError(res, billingError('CHECKOUT_RECOVERY_PENDING', 'No se ha podido confirmar Checkout. Vuelve a intentarlo para recuperar la misma sesión.', 503));
+    if (definitiveCheckoutFailure(error)) return respondError(res, billingError('CHECKOUT_REJECTED', 'Stripe ha rechazado la solicitud de Checkout. Puedes volver a intentarlo.', 422));
     return respondError(res, error);
   }
 }
@@ -415,26 +428,19 @@ export async function cancelPendingCheckout(req, res) {
     if (!existing || existing.status !== "checkout_pending") {
       return res.json({ success: true });
     }
+    if (existing.stripe_livemode !== STRIPE_LIVE_MODE) throw billingError("BILLING_ENVIRONMENT_MISMATCH", "El intento pertenece a un entorno anterior. Contacta con soporte.");
     if (existing.stripe_subscription_id) {
-      const remote = await stripe.subscriptions.retrieve(existing.stripe_subscription_id);
-      if (BLOCKED_STATUSES.has(remote.status)) {
+      const remote = await retrieveRemoteSubscription(existing);
+      if (remote && BLOCKED_STATUSES.has(remote.status)) {
         return res.status(409).json({ success: false, message: "La suscripción ya existe. Actualiza la página." });
       }
     }
-    if (existing.checkout_session_id) {
-      const session = await stripe.checkout.sessions.retrieve(existing.checkout_session_id);
-      if (session.status === "complete") {
-        return res.status(409).json({ success: false, message: "Stripe ha completado el Checkout. Actualiza el estado." });
-      }
-      if (session.status === "open") {
-        await stripe.checkout.sessions.expire(session.id);
-      }
-    } else {
-      // Local expiry cannot prove that a legacy session was never paid.
-      return res.status(409).json({ success: false, message: "No se puede confirmar el estado del pago. Contacta con soporte para reconciliar este intento." });
-    }
+    const session = await recoverCheckout(stripe, existing);
+    if (session.status === 'complete') throw billingError('CHECKOUT_COMPLETED', 'Stripe ha completado el Checkout. Actualiza el estado.');
+    if (session.status === 'open') await stripe.checkout.sessions.expire(session.id);
+    else if (session.status !== 'expired') throw billingError('CHECKOUT_RECONCILIATION_REQUIRED','No se puede confirmar el estado del intento.');
     let clearQuery = supabaseAdmin.from("subscriptions")
-      .update({ status: "inactive", checkout_attempt_id: null, checkout_expires_at: null, checkout_session_id: null })
+      .update({ status: "inactive", checkout_attempt_id: null, checkout_expires_at: null, checkout_session_id: null, checkout_request:null, checkout_requested_at:null })
       .eq("business_id", businessId)
       .eq("status", "checkout_pending");
     clearQuery = existing.checkout_attempt_id == null ? clearQuery.is("checkout_attempt_id", null) : clearQuery.eq("checkout_attempt_id", existing.checkout_attempt_id);
@@ -496,6 +502,10 @@ export async function createPortal(req, res) {
 
     if (await customerIsShared(existing.stripe_customer_id, businessId)) return res.status(409).json({ success: false, message: "La cuenta de facturación está compartida. Contacta con soporte antes de abrir el portal." });
 
+    if (existing.stripe_livemode !== STRIPE_LIVE_MODE) throw billingError('BILLING_ENVIRONMENT_MISMATCH', 'Esta referencia de facturación es histórica o no está verificada. Inicia una contratación en el entorno actual.');
+    try { const customer = await stripe.customers.retrieve(existing.stripe_customer_id);
+      if (customer.deleted || customer.livemode !== STRIPE_LIVE_MODE) throw billingError('BILLING_ENVIRONMENT_MISMATCH', 'La cuenta de facturación no pertenece al entorno actual.');
+    } catch (error) { if (historicalReference(error)) throw billingError('BILLING_REFERENCE_UNAVAILABLE','La cuenta de facturación ya no está disponible en el entorno actual.'); throw error; }
     const session = await stripe.billingPortal.sessions.create({
       customer: existing.stripe_customer_id,
 

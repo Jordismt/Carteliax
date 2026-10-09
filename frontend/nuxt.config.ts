@@ -4,7 +4,10 @@ export default defineNuxtConfig({
   compatibilityDate: "2026-09-30",
 
   devtools: {
-    enabled: true,
+    // DevTools 3 imports an API removed by the security-fixed simple-git 4.
+    // Keep the corrected dependency and disable this optional development module
+    // until a stable compatible DevTools release is available.
+    enabled: false,
   },
 
   app: {

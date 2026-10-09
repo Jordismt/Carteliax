@@ -2,6 +2,13 @@
 export function uiError(error: unknown, fallback: string): string {
   const e = error as { statusCode?: number; status?: number; data?: { code?: string; message?: string } } | null;
   const known: Record<string, string> = {
+    CHECKOUT_RECONCILIATION_REQUIRED: 'No se puede confirmar el intento anterior. Contacta con soporte para reconciliarlo.',
+    CHECKOUT_RECOVERY_PENDING: 'No se ha podido confirmar Checkout. Vuelve a intentarlo para recuperar la misma sesión.',
+    CHECKOUT_COMPLETED: 'El Checkout ya está completado. Actualiza el estado; no inicies otro pago.',
+    CHECKOUT_REJECTED: 'Stripe ha rechazado la solicitud. Puedes volver a intentarlo.',
+    BILLING_ENVIRONMENT_MISMATCH: 'La referencia pertenece a otro entorno o no está verificada. Revisa la facturación.',
+    BILLING_REFERENCE_UNAVAILABLE: 'La cuenta de facturación no está disponible en el entorno actual.',
+    BILLING_CONFIGURATION: 'La facturación no está configurada correctamente. Contacta con soporte.',
     CX_BUSY: 'Ya se está traduciendo este establecimiento. Espera a que termine.',
     CX_LIMIT: 'Has alcanzado el límite de traducciones. Inténtalo más tarde.',
     CX_CHANGED: 'El contenido ha cambiado. Recarga y revisa la traducción.',
