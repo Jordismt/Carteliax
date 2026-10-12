@@ -101,6 +101,7 @@ const displayCategories = computed<PreviewCategory[]>(() =>
 );
 
 const activeCategoryId = ref("");
+const previewRoot = ref<HTMLElement>();
 
 watch(
   displayCategories,
@@ -163,7 +164,7 @@ const themeStyles = computed(() => ({
 
   "--menu-radius": `${props.theme.layout.borderRadius}px`,
 
-  "--menu-heading": `"${props.theme.typography.heading}", sans-serif`,
+  "--menu-heading": `"${props.theme.typography.heading}", ${["Playfair Display", "Lora"].includes(props.theme.typography.heading) ? "Georgia, serif" : "sans-serif"}`,
 
   "--menu-body": `"${props.theme.typography.body}", sans-serif`,
 }));
@@ -172,19 +173,23 @@ const themeStyles = computed(() => ({
 // UTILIDADES
 // ==========================================
 
-const currencyFormatter = new Intl.NumberFormat("es-ES", {
+const currencyFormatter = computed(() => new Intl.NumberFormat(props.language === "val" ? "ca-ES" : props.language || "es-ES", {
   style: "currency",
   currency: "EUR",
-});
+}));
 
 function money(price: number | string): string {
   const value = Number(price);
 
-  return currencyFormatter.format(Number.isFinite(value) ? value : 0);
+  return currencyFormatter.value.format(Number.isFinite(value) ? value : 0);
 }
 
 function selectCategory(categoryId: string) {
   activeCategoryId.value = categoryId;
+  nextTick(() => {
+    const heading = previewRoot.value?.querySelector('.category-heading');
+    if (heading && heading.getBoundingClientRect().top < 0) heading.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  });
 }
 
 function categoryProductLabel(count: number) {
@@ -220,6 +225,7 @@ function canShowImage(id: string, url: string | null) {
 
 <template>
   <div
+    ref="previewRoot"
     class="menu-preview"
     :class="[
       `template-${theme.template}`,
@@ -379,13 +385,14 @@ function canShowImage(id: string, url: string | null) {
 
         <div
           v-if="currentCategory.products.length"
+          :key="currentCategory.id"
           class="products"
           :class="{
             'products-cards': isCards,
             'products-list': isList,
             'products-compact': isCompact,
           }">
-          <article v-for="product in currentCategory.products" :key="product.id" class="product">
+          <article v-for="(product, index) in currentCategory.products" :key="product.id" class="product" :style="{ '--product-order': index % 6 }">
             <!-- =============================
                  IMAGEN
             ============================== -->
@@ -1593,4 +1600,73 @@ function canShowImage(id: string, url: string | null) {
     transition: none;
   }
 }
+/* Premium public menus and the exact same preview: all user theme tokens retained. */
+.menu-preview{background-image:radial-gradient(ellipse at 0% 0%,color-mix(in srgb,var(--menu-primary) 5%,transparent),transparent 55%)}
+.restaurant-header{padding:40px 24px 34px;position:relative}
+.restaurant-name{font-size:clamp(34px,8cqi,64px);font-weight:500;letter-spacing:-.055em;line-height:1.1;text-wrap:balance;animation:menu-masthead .85s cubic-bezier(.16,1,.3,1) both}
+.restaurant-welcome{font-size:14px;line-height:1.8;max-width:560px;margin-inline:auto}
+.restaurant-logo,.restaurant-icon{width:70px;height:70px;border-radius:50%;margin-bottom:24px}
+.cover{height:300px;overflow:hidden;border-radius:0 0 max(0px,calc(var(--menu-radius)*2)) max(0px,calc(var(--menu-radius)*2))}
+.cover-image{animation:menu-photo 1.1s cubic-bezier(.16,1,.3,1) both}
+.categories-wrapper{padding-block:12px;border-top:1px solid var(--menu-secondary);border-bottom:1px solid var(--menu-secondary)}
+.category-button{border-radius:100px;min-height:46px;padding:12px 20px;font-size:12px;transition:background .25s,color .25s,transform .25s}
+.category-button:active{transform:scale(.97)}
+.category-button.active{box-shadow:none}
+.menu-content{padding-top:30px}
+.category-heading{scroll-margin-top:20px;animation:menu-masthead .55s cubic-bezier(.16,1,.3,1) both}
+.category-title{font-size:32px;letter-spacing:-.04em;font-weight:500}
+.category-count{font-size:11px}
+.product{border:1px solid var(--menu-secondary);box-shadow:none;animation:menu-dish .6s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--product-order,0)*35ms);transition:transform .3s,box-shadow .3s}
+.product-image img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.product-information{padding:22px}
+.product-name{font-size:20px;font-weight:500;line-height:1.35;text-wrap:pretty}
+.product-price{color:var(--menu-text);font-size:15px;font-weight:600;line-height:1.8}
+.product-description{font-size:14px;line-height:1.8;white-space:pre-line}
+.allergen{padding:4px 7px;border-radius:3px;font-size:11px;background:transparent}
+.products-cards{gap:20px}
+.products-cards .product-image{height:230px}
+.products-list .product{background:transparent;border-width:0 0 1px;border-radius:var(--menu-radius)}
+.products-list .product-image{width:110px;min-height:140px;border-radius:max(0px,calc(var(--menu-radius)*.65))}
+.products-list .product-information{padding:20px 0 20px 18px}
+.products-list .product:not(:has(.product-image)) .product-information{padding-left:0}
+.products-compact .product{background:transparent;border-width:0 0 1px;border-radius:var(--menu-radius)}
+.products-compact .product-name{font-size:16px}
+.products-compact .product-price{font-size:14px}
+.products-compact .product-information{padding-block:14px}
+.template-modern .products-cards .product:nth-child(3n+1) .product-image{height:280px}
+.template-modern .product{box-shadow:none}
+.template-minimal .restaurant-header{text-align:left;padding-inline:24px}
+.template-minimal .restaurant-logo,.template-minimal .restaurant-icon{margin-left:0}
+.template-minimal .restaurant-eyebrow,.template-minimal .header-decoration{justify-content:flex-start}
+.template-minimal .restaurant-welcome{margin-left:0;text-align:left}
+.template-minimal .category-button{border-radius:0;border-width:0 0 1px}
+.template-minimal .product{border-width:0 0 1px;background:transparent;box-shadow:none}
+.template-minimal .category-title{font-weight:400}
+.template-premium .restaurant-header{padding-block:54px 46px}
+.template-premium .restaurant-name{font-size:clamp(38px,9cqi,74px);font-style:italic;font-weight:400;letter-spacing:-.045em}
+.template-premium .header-decoration{margin-top:28px}
+.template-premium .product{background:transparent;border-width:0 0 1px;border-radius:var(--menu-radius)}
+.template-premium .products-cards .product-image{height:270px;border-radius:130px 130px 0 0}
+.template-premium .product-information{padding:22px 0}
+.template-premium .products-list .product-information{padding-left:18px}
+.template-premium .product-name{font-weight:400;font-size:23px}
+.template-premium .product-price{border-bottom:1px solid var(--menu-secondary);font-weight:400}
+.template-premium .category-button{border-radius:2px;background:transparent}
+.template-premium .category-underline{height:1px;width:70px}
+.template-mediterranean{background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,color-mix(in srgb,var(--menu-text) 2%,transparent) 3px,color-mix(in srgb,var(--menu-text) 2%,transparent) 4px)}
+.template-mediterranean .restaurant-name{font-size:clamp(38px,9cqi,66px);font-weight:400}
+.template-mediterranean .restaurant-header{border-bottom:3px double var(--menu-secondary)}
+.template-mediterranean .category-heading{padding-bottom:22px;border-bottom:3px double var(--menu-secondary)}
+.template-mediterranean .products-cards .product{border:0;background:transparent}
+.template-mediterranean .products-cards .product-image{border-radius:100px 100px 4px 4px}
+.template-mediterranean .product-information{padding:20px 0}
+.template-mediterranean .products-list .product-information{padding-left:18px}
+.template-mediterranean .product-price{font-family:var(--menu-heading);font-size:19px}
+@media(hover:hover){.products-cards .product:hover{transform:translateY(-3px)}.product:hover .product-image img{transform:scale(1.045)}}
+@keyframes menu-masthead{from{clip-path:inset(0 0 100%);transform:translateY(15px)}to{clip-path:inset(0);transform:translateY(0)}}
+@keyframes menu-photo{from{transform:scale(1.06);opacity:.4}to{transform:scale(1);opacity:1}}
+@keyframes menu-dish{from{transform:translateY(18px);opacity:.4}to{transform:translateY(0);opacity:1}}
+@container(min-width:520px){.cover{height:400px}.restaurant-header{padding:54px 40px}.template-minimal .restaurant-header{padding-inline:40px}.category-title{font-size:40px}.products-cards{gap:28px}.products-cards .product-image{height:260px}.product-name{font-size:22px}.template-premium .restaurant-name{font-size:64px}.template-premium .category-title{font-size:40px}.products-list .product-image{width:160px;min-height:180px}}
+@container(max-width:359px){.product-name{font-size:18px}.products-list .product-image{width:78px;min-height:110px}.products-list .product-information{padding-left:12px}.product-information{padding:18px}.restaurant-header{padding-inline:18px}.restaurant-name{font-size:34px}}
+@media(prefers-reduced-motion:reduce){.menu-preview *,.menu-preview *::before,.menu-preview *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>

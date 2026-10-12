@@ -7,6 +7,7 @@ const localized = computed(() => localizePublicMenu(props.data.categories, props
 const copy = computed(() => PUBLIC_MENU_COPY[props.language] ?? PUBLIC_MENU_COPY.es!);
 const active = ref('');
 const root = ref<HTMLElement>();
+const { refreshMotion } = useRestaurantMotion(root);
 let observer: IntersectionObserver | undefined;
 function categoryId(id: string) { return `dish-category-${id}`; }
 function observe() {
@@ -32,11 +33,11 @@ watch(active, id => nextTick(() => {
   if (left < rail.scrollLeft || left + link.offsetWidth > rail.scrollLeft + rail.clientWidth) rail.scrollTo({ left: Math.max(0, left - 16), behavior: 'auto' });
 }));
 onMounted(observe);
-watch(() => props.data.menu.id, () => nextTick(observe));
+watch(() => props.data.menu.id, () => { nextTick(observe); refreshMotion(); });
 onBeforeUnmount(() => observer?.disconnect());
 </script>
 <template>
-  <div ref="root" class="restaurant-menu-content">
+  <div ref="root" class="restaurant-menu-content" :class="`menu-layout-${localized.theme.layout.productStyle}`" :style="{ '--dish-radius': `${localized.theme.layout.borderRadius}px` }">
     <p v-if="localized.menuText?.description || data.menu.description" class="menu-intro">{{ localized.menuText?.description || data.menu.description }}</p>
     <p v-if="localized.theme.branding.welcomeText" class="menu-intro">{{ localized.theme.branding.welcomeText }}</p>
     <nav v-if="localized.categories.length > 1" class="category-rail" :aria-label="copy.categories">
@@ -45,8 +46,8 @@ onBeforeUnmount(() => observer?.disconnect());
     <div v-if="!localized.categories.length" class="restaurant-empty"><BookOpen :size="28" aria-hidden="true" /><h3>{{ copy.preparing }}</h3><p>{{ copy.empty }}</p></div>
     <div class="menu-categories">
       <section v-for="(category, index) in localized.categories" :id="categoryId(category.id)" :key="`${data.menu.id}-${category.id}`" :data-category="category.id" class="dish-category" :aria-labelledby="`heading-${categoryId(category.id)}`">
-        <header class="dish-category-heading"><span class="category-number" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span><h3 :id="`heading-${categoryId(category.id)}`">{{ category.name }}</h3><span class="dish-count">{{ category.products.length }} {{ category.products.length === 1 ? copy.dish : copy.dishes }}</span></header>
-        <div v-if="category.products.length" class="dish-grid"><PublicRestaurantProduct v-for="product in category.products" :key="product.id" :product="product" :layout="localized.theme.layout" :language="language" :allergen-label="copy.allergens!" /></div>
+        <header class="dish-category-heading" data-reveal="heading"><span class="category-number" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span><h3 :id="`heading-${categoryId(category.id)}`">{{ category.name }}</h3><span class="dish-count">{{ category.products.length }} {{ category.products.length === 1 ? copy.dish : copy.dishes }}</span></header>
+        <div v-if="category.products.length" class="dish-grid"><PublicRestaurantProduct v-for="(product, productIndex) in category.products" :style="{ '--dish-order': productIndex % 6 }" data-reveal="dish" :key="product.id" :product="product" :layout="localized.theme.layout" :language="language" :allergen-label="copy.allergens!" /></div>
         <p v-else class="category-empty">{{ copy.emptyCategory }}</p>
       </section>
     </div>

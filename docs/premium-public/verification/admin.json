@@ -1,0 +1,14 @@
+{
+  "results": [
+    "Crear una sola carta → contenido → diseño → revisión → publicación consciente",
+    "Editar carta publicada, guardar borrador y revisar sin repetir creación",
+    "Publicar desde listado abre revisión; retirar publicación conserva su acción",
+    "Error de publicación conserva borrador e identificadores",
+    "Cambios en otra pestaña requieren actualizar revisión",
+    "Volver a Información conserva el ID y el estado de borrador",
+    "Personalizar miniweb y volver a la carta protege cambios pendientes"
+  ],
+  "errors": [],
+  "externalServices": "mocked",
+  "date": "2026-10-12T11:47:24.745Z"
+}

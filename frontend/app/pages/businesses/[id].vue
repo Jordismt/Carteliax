@@ -65,7 +65,8 @@ const { $supabase } = useNuxtApp();
 // ==========================================
 
 const business = ref<Business | null>(null);
-const settingsSection = ref('general');
+const settingsSection = ref(route.query.section === 'web' ? 'web' : 'general');
+const returnMenu = computed(() => typeof route.query.fromMenu === 'string' && /^[a-f0-9-]{36}$/i.test(route.query.fromMenu) ? route.query.fromMenu : '');
 async function submitSettings(event: Event) {
   if (saving.value || uploadingLogo.value || deletingLogo.value || coverBusy.value) return;
   const element = event.target as HTMLFormElement;
@@ -110,6 +111,13 @@ const form = reactive({
 
 const origin = ref("");
 const copied = ref(false);
+const savedIdentity = ref('');
+const identityUnsaved = computed(() => !!savedIdentity.value && savedIdentity.value !== JSON.stringify(form));
+onBeforeRouteLeave(() => {
+  if (!returnMenu.value) return;
+  if (saving.value || coverBusy.value || uploadingLogo.value || deletingLogo.value) return false;
+  if (identityUnsaved.value) return window.confirm('Tienes cambios de identidad sin guardar. ¿Quieres salir y descartarlos?');
+});
 const coverBusy = ref(false);
 const previewOpen = ref(false);
 const previewMenu = ref<PublicSiteResponse['currentMenu']>(null);
@@ -181,6 +189,7 @@ async function loadBusiness() {
 
     form.default_language = response.business.default_language;
     form.public_profile = { ...emptyPublicProfile(), ...response.business.public_profile };
+    savedIdentity.value = JSON.stringify(form);
   } catch (error) {
     console.error("Error cargando establecimiento:", error);
 
@@ -202,6 +211,7 @@ async function saveBusiness() {
   }
 
   saving.value = true;
+  const identitySnapshot = JSON.stringify(form);
   clearMessages();
 
   try {
@@ -221,6 +231,7 @@ async function saveBusiness() {
 
     business.value = response.business;
 
+    savedIdentity.value = identitySnapshot;
     successMessage.value = "Los cambios se han guardado correctamente.";
   } catch (error) {
     console.error("Error guardando establecimiento:", error);
@@ -433,6 +444,7 @@ onMounted(loadBusiness);
     <UiSkeleton v-if="loading" label="Cargando configuración…" />
     <UiNotice v-else-if="!business" tone="danger">{{ errorMessage }}<button type="button" class="ui-quiet underline" @click="loadBusiness">Reintentar</button></UiNotice>
     <template v-else>
+      <div v-if="returnMenu" class="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-100 bg-emerald-50 p-4"><p class="text-sm text-emerald-900">Personaliza la identidad compartida de tu restaurante y guarda los cambios antes de continuar.</p><NuxtLink :to="`/menus/${returnMenu}/design`" class="ui-secondary"><ArrowLeft :size="17" /> Volver al diseño de la carta</NuxtLink></div>
       <UiPageHeader :title="business.name" description="Los datos y la identidad de tu restaurante." eyebrow="CONFIGURACIÓN"><NuxtLink :to="billingUrl" class="ui-secondary"><CreditCard :size="17" /> Gestionar facturación</NuxtLink></UiPageHeader>
       <div class="settings-status"><span>Suscripción del establecimiento</span><SubscriptionBadge :subscription="subscription" :loading="subscriptionLoading" /></div>
       <nav class="settings-navigation" aria-label="Secciones del establecimiento"><button v-for="section in settingsSections" :key="section.id" type="button" :aria-pressed="settingsSection === section.id" :aria-controls="`settings-${section.id}`" @click="settingsSection = section.id">{{ section.label }}</button></nav>

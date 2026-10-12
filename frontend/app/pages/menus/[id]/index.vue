@@ -3,6 +3,7 @@ import { uiError } from "~/utils/uiErrors";
 import { publicMenuPath } from "~/utils/publicUrls";
 import {
   ArrowLeft,
+  ArrowRight,
   Plus,
   Pencil,
   Trash2,
@@ -361,11 +362,13 @@ onMounted(loadEditor);
           </div>
           <h1 class="ui-title break-words">{{ menu.name }}</h1>
         </div>
-        <a :href="publicMenuPath(menu.business_id, menu.slug, menu.public_slug)" target="_blank" rel="noopener noreferrer" class="ui-secondary"><Eye :size="17" /> Ver carta</a>
+        <a v-if="menu.is_published && menu.public_ready !== false" :href="publicMenuPath(menu.business_id, menu.slug, menu.public_slug)" target="_blank" rel="noopener noreferrer" class="ui-secondary"><Eye :size="17" /> Ver carta</a>
       </section>
 
+      <MenusCreationProgress v-if="menu && !menu.is_published" :menu-id="menuId" :business-id="menu.business_id" :step="2" />
+      <div v-if="menu && !menu.is_published" class="mb-5 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-emerald-100 bg-emerald-50 p-5"><div><strong class="text-emerald-900">Dale forma a tu carta</strong><p class="mt-1 text-sm text-emerald-800">Añade categorías y platos. Cada cambio se guarda al confirmar; puedes continuar después.</p></div><NuxtLink :to="`/menus/${menuId}/design`" class="ui-primary">Continuar al diseño <ArrowRight :size="17" /></NuxtLink></div>
       <UiMenuNavigation v-if="menu" :menu-id="menuId" />
-      <UiNotice v-if="menu" tone="info"><strong>{{ menu.is_published && menu.public_ready === false ? 'La publicación está incompleta. Pulsa Completar publicación en Mis cartas o publica el diseño desde Personalización.' : menu.is_published ? 'Esta carta está publicada.' : 'Esta carta todavía es un borrador.' }}</strong> Los productos, precios y disponibilidad se actualizan al guardar. Los cambios de diseño y los idiomas se publican desde sus secciones.</UiNotice>
+      <UiNotice v-if="menu" tone="info"><strong>{{ menu.is_published && menu.public_ready === false ? 'La publicación está incompleta. Abre Revisión y publicación para comprobarla.' : menu.is_published ? 'Esta carta está publicada.' : 'Esta carta todavía es un borrador.' }}</strong> Los productos, precios y disponibilidad se actualizan al guardar. Los cambios de diseño y los idiomas se publican desde sus secciones.</UiNotice>
       <!-- Notificaciones -->
       <div
         v-if="successMessage"
@@ -568,6 +571,7 @@ onMounted(loadEditor);
           <!-- Gestor de platos -->
           <section class="min-w-0 space-y-4">
             <ProductManager
+          :guided-creation="!menu.is_published"
               v-if="categories.length"
               :business-id="menu.business_id"
               :categories="categories"

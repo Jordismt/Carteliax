@@ -171,6 +171,9 @@ async function loadBusinesses() {
 
     if (selectedBusinessId.value) {
       await loadMenus();
+      const editId = typeof route.query.edit === 'string' ? route.query.edit : '';
+      const requestedMenu = menus.value.find(m => m.id === editId);
+      if (requestedMenu) openEdit(requestedMenu);
     } else {
       menus.value = [];
     }
@@ -251,7 +254,6 @@ async function saveMenu() {
         body: {
           name: form.name.trim(),
           description: form.description.trim() || null,
-          is_published: form.is_published,
         },
       });
 
@@ -272,8 +274,11 @@ async function saveMenu() {
       });
 
       menus.value.push(response.menu);
+      showForm.value = false;
+      resetForm();
+      await navigateTo(`/menus/${response.menu.id}`);
+      return;
 
-      successMessage.value = "Carta creada correctamente.";
     }
 
     showForm.value = false;
@@ -287,6 +292,10 @@ async function saveMenu() {
 
 async function togglePublished(menu: Menu) {
   if (actionBusy.value) return;
+  if (!menu.is_published || menu.public_ready === false) {
+    await navigateTo(`/menus/${menu.id}/review`);
+    return;
+  }
   publishingId.value = menu.id;
   clearMessages();
 
@@ -297,7 +306,7 @@ async function togglePublished(menu: Menu) {
     }>(`/api/menus/${menu.id}`, {
       method: "PATCH",
       body: {
-        is_published: !menu.is_published || menu.public_ready === false,
+        is_published: false,
       },
     });
 
@@ -492,6 +501,8 @@ onMounted(loadBusinesses);
           </button>
         </div>
 
+        <MenusCreationProgress v-if="!editingId" :step="1" class="mt-5" />
+        <p v-if="!editingId" class="mt-4 text-sm text-slate-500">{{ selectedBusiness?.name }} · Primero guardaremos un borrador. Después añadirás los platos, elegirás el diseño y revisarás la publicación.</p>
         <form :aria-busy="saving" class="mt-7 space-y-5" @submit.prevent="saveMenu">
           <div>
             <label for="menu-name" class="mb-2 block text-sm font-semibold"> Nombre </label>
@@ -538,11 +549,7 @@ onMounted(loadBusinesses);
               class="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500" />
           </div>
 
-          <label v-if="editingId" class="flex items-center gap-3 rounded-xl bg-slate-50 p-4">
-            <input v-model="form.is_published" type="checkbox" class="h-5 w-5 accent-emerald-600" />
-
-            <span class="text-sm font-semibold"> Marcar carta como publicada </span>
-          </label>
+          <p v-if="editingId" class="text-sm text-slate-500">La publicación se gestiona desde la revisión final de la carta. Guardar estos datos conserva su estado actual.</p>
 
           <p v-if="formError" role="alert" class="rounded-xl bg-red-50 p-3 text-sm text-red-700">
             {{ formError }}
@@ -563,7 +570,7 @@ onMounted(loadBusinesses);
               class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white hover:bg-emerald-700 disabled:opacity-50">
               <LoaderCircle v-if="saving" :size="18" class="animate-spin" />
 
-              {{ saving ? "Guardando..." : editingId ? "Guardar cambios" : "Crear carta" }}
+              {{ saving ? "Guardando..." : editingId ? "Guardar cambios" : "Guardar y añadir platos" }}
             </button>
           </div>
         </form>

@@ -27,6 +27,7 @@ const props = defineProps<{
   businessId: string;
   categories: Category[];
   initialCategoryId?: string;
+  guidedCreation?: boolean;
 }>();
 const emit = defineEmits<{
   categoryChange: [categoryId: string];
@@ -316,7 +317,7 @@ function openCreate(categoryId?: string) {
   editingId.value = null;
   loadingEdit.value = false;
   showAdvanced.value = false;
-  createCategoryId.value = categoryId ?? (view.value === "category" ? selectedCategoryId.value : "");
+  createCategoryId.value = categoryId ?? (view.value === "category" ? selectedCategoryId.value : props.guidedCreation && props.categories.length === 1 ? props.categories[0]!.id : "");
   showModal.value = true;
 }
 async function openEdit(product: Product) {

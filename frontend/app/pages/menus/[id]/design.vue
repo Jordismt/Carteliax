@@ -60,6 +60,7 @@ interface Menu {
   name: string;
   slug: string;
   is_published: boolean;
+  description?: string | null;
 }
 
 interface Business {
@@ -129,7 +130,7 @@ const router = useRouter();
 
 const { apiFetch } = useApi();
 
-const { getTheme, saveDraft, publishTheme, resetTheme } = useMenuTheme();
+const { getTheme, saveDraft, resetTheme } = useMenuTheme();
 
 const menuId = computed(() => String(route.params.id));
 
@@ -146,7 +147,7 @@ const publicPreview = computed<PublicSiteResponse>(() => ({
   success: true,
   business: { name: business.value?.name ?? '', public_slug: business.value?.public_slug ?? '', description: business.value?.description ?? null, logo_url: business.value?.logo_url ?? null, cover_url: business.value?.cover_url ?? null, primary_color: business.value?.primary_color ?? '#16a34a', default_language: business.value?.default_language ?? 'es', profile: { ...emptyPublicProfile(), ...business.value?.public_profile } },
   menus: [],
-  currentMenu: menu.value && business.value ? { success: true, business: { id: business.value.id, name: business.value.name, logo_url: business.value.logo_url }, menu: { id: menu.value.id, name: menu.value.name, slug: menu.value.slug, description: null }, theme: theme.value, categories: previewCategories.value } : null,
+  currentMenu: menu.value && business.value ? { success: true, business: { id: business.value.id, name: business.value.name, logo_url: business.value.logo_url }, menu: { id: menu.value.id, name: menu.value.name, slug: menu.value.slug, description: menu.value.description ?? null }, theme: theme.value, categories: previewCategories.value } : null,
 }));
 
 const savedTheme = ref<MenuTheme>(cloneTheme(DEFAULT_MENU_THEME));
@@ -155,7 +156,6 @@ const themeRecord = ref<MenuThemeRecord | null>(null);
 
 const loading = ref(true);
 const saving = ref(false);
-const publishing = ref(false);
 const resetting = ref(false);
 
 const errorMessage = ref("");
@@ -186,7 +186,7 @@ const pendingNavigation = ref<
 
 const hasChanges = computed(() => JSON.stringify(theme.value) !== JSON.stringify(savedTheme.value));
 
-const isBusy = computed(() => saving.value || publishing.value || resetting.value);
+const isBusy = computed(() => saving.value || resetting.value);
 
 const isDesignPublished = computed(() => Boolean(themeRecord.value?.published_at));
 
@@ -445,42 +445,12 @@ async function saveChanges(): Promise<boolean> {
 // GUARDAR Y PUBLICAR
 // ==========================================
 
-async function publishChanges() {
+async function continueToReview() {
   if (isBusy.value) return;
-
-  publishing.value = true;
-  clearMessages();
-
-  try {
-    const snapshot = cloneTheme(theme.value);
-
-    // Guardar automáticamente los cambios.
-
-    if (hasChanges.value) {
-      const saved = await saveDraft(menuId.value, snapshot);
-
-      themeRecord.value = saved.theme;
-
-      savedTheme.value = cloneTheme(saved.theme.draft_config);
-    }
-
-    // Publicar el borrador guardado.
-
-    const response = await publishTheme(menuId.value);
-
-    themeRecord.value = response.theme;
-
-    // Puede haber cambios nuevos realizados
-    // mientras se procesaba la publicación.
-
-    successMessage.value = hasChanges.value
-      ? "Diseño publicado. Tienes nuevos cambios sin guardar."
-      : "¡Tu diseño se ha publicado correctamente!";
-  } catch (error) {
-    errorMessage.value = getError(error, "No se pudo publicar el diseño.");
-  } finally {
-    publishing.value = false;
-  }
+  if (hasChanges.value && !await saveChanges()) return;
+  // Only the final review publishes. Leaving this editor preserves the draft.
+  if (hasChanges.value) return;
+  await navigateTo(`/menus/${menuId.value}/review`);
 }
 
 // ==========================================
@@ -732,12 +702,12 @@ onBeforeUnmount(() => {
               type="button"
               :disabled="isBusy"
               class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-emerald-700 px-3 py-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-              @click="publishChanges">
-              <LoaderCircle v-if="publishing" :size="18" class="animate-spin" />
+              @click="continueToReview">
+              <LoaderCircle v-if="saving" :size="18" class="animate-spin" />
 
               <Send v-else :size="18" />
 
-              {{ publishing ? "Publicando..." : "Guardar y publicar" }}
+              {{ saving ? "Guardando..." : "Guardar y revisar" }}
             </button>
 
             <!-- OPCIONES SECUNDARIAS -->
@@ -782,6 +752,7 @@ onBeforeUnmount(() => {
         </div>
       </header>
 
+      <MenusCreationProgress v-if="!menu.is_published" :menu-id="menuId" :business-id="menu.business_id" :step="3" />
       <UiMenuNavigation :menu-id="menuId" class="mb-5" />
       <!-- ======================================
            MENSAJES
@@ -831,7 +802,7 @@ onBeforeUnmount(() => {
         =================================== -->
 
         <div id="design-options" class="min-w-0 space-y-4">
-          <div v-if="business?.public_slug" class="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600"><p>La plantilla del establecimiento define toda la web y sus cartas. Aquí se conservan las opciones de contenido y el diseño histórico.</p><NuxtLink :to="`/businesses/${business.id}`" class="mt-2 inline-block font-semibold underline">Cambiar plantilla de la web</NuxtLink></div>
+          <div v-if="business?.public_slug" class="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600"><p>Tu carta comparte la identidad del restaurante. Elige la plantilla, el color y las imágenes desde la personalización de la miniweb; después vuelve aquí para revisar la carta. Cambiar la identidad afecta a toda la web y a las cartas ya publicadas.</p><NuxtLink :to="`/businesses/${business.id}?section=web&fromMenu=${menuId}`" class="mt-2 inline-block font-semibold underline">Personalizar plantilla e identidad</NuxtLink></div>
           <MenuEditorMenuThemeEditor v-model="theme" :unified-site="!!business?.public_slug" />
 
         </div>
@@ -1029,7 +1000,7 @@ onBeforeUnmount(() => {
           <div>
             <h3 class="text-sm font-extrabold text-slate-900">¿Te gusta el resultado?</h3>
 
-            <p class="mt-1 text-xs text-slate-600">Publica tu diseño cuando estés preparado.</p>
+            <p class="mt-1 text-xs text-slate-600">Guarda el diseño y comprueba la vista previa final antes de publicar.</p>
           </div>
         </div>
 
@@ -1037,12 +1008,12 @@ onBeforeUnmount(() => {
           type="button"
           :disabled="isBusy"
           class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-extrabold text-white transition hover:bg-emerald-700 disabled:opacity-50 sm:w-auto"
-          @click="publishChanges">
-          <LoaderCircle v-if="publishing" :size="17" class="animate-spin" />
+          @click="continueToReview">
+          <LoaderCircle v-if="saving" :size="17" class="animate-spin" />
 
           <Send v-else :size="17" />
 
-          {{ publishing ? "Publicando..." : "Guardar y publicar" }}
+          {{ saving ? "Guardando..." : "Guardar y revisar" }}
         </button>
       </div>
     </template>

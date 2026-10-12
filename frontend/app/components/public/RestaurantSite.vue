@@ -6,6 +6,9 @@ import { localizePublicMenu, localizeRestaurant } from '~/utils/publicMenuLangua
 import '~/assets/css/restaurant.css';
 import { publicSitePath } from '~/utils/publicUrls';
 const props = defineProps<{ site: PublicSiteResponse; language: string; preview?: boolean }>();
+const root = ref<HTMLElement>();
+const { refreshMotion } = useRestaurantMotion(root);
+watch(() => props.site, refreshMotion);
 const emit = defineEmits<{ language: [code: string] }>();
 const business = computed(() => props.site.business);
 const profile = computed(() => business.value.profile);
@@ -35,7 +38,7 @@ const style = computed(() => {
 </script>
 
 <template>
-  <div class="restaurant-site" :data-preview="preview || undefined" :class="`site-${profile.template}`" :style="style">
+  <div ref="root" class="restaurant-site" :data-preview="preview || undefined" :class="`site-${profile.template}`" :style="style">
     <a class="skip-link" href="#carta">{{ copy.menu }}</a>
     <nav class="site-nav" :aria-label="business.name">
       <a class="brand" href="#inicio"><PublicRestaurantImage v-if="business.logo_url" class="brand-logo" :src="business.logo_url" :alt="business.name" :width="36" :height="36" eager /><span>{{ business.name }}</span></a>
@@ -43,7 +46,7 @@ const style = computed(() => {
     </nav>
     <main>
       <header id="inicio" class="site-hero" :class="{ 'has-photo': coverUrl }">
-        <div class="hero-content">
+        <div class="hero-content"><span class="hero-rule" aria-hidden="true" />
           <PublicRestaurantImage v-if="business.logo_url" class="hero-logo" :src="business.logo_url" :alt="business.name" :width="64" :height="64" eager />
           <span v-else class="hero-mark" aria-hidden="true"><UtensilsCrossed :size="24" /></span>
           <p v-if="profile.city" class="eyebrow">{{ profile.city }}</p>
@@ -52,10 +55,11 @@ const style = computed(() => {
           <div class="hero-actions"><a class="menu-cta" href="#carta">{{ copy.menu }} <ArrowDown :size="18" /></a><a v-if="directions" class="secondary" :href="directions" target="_blank" rel="noopener noreferrer"><MapPin :size="18" /> {{ copy.directions }}</a></div>
         </div>
         <PublicRestaurantImage v-if="coverUrl" class="hero-photo" :src="coverUrl" :alt="business.name" :width="1200" :height="900" priority />
+      <a class="hero-scroll" href="#carta"><span>{{ copy.menu }}</span><ArrowDown :size="16" /></a>
       </header>
       <!-- Menu first: restaurant information never delays access to dishes. -->
       <section id="carta" class="site-menu" :aria-label="copy.menu">
-        <div class="menu-heading"><div><p class="eyebrow">{{ copy.information }}</p><h2>{{ menuTitle }}</h2></div>
+        <div class="menu-heading" data-reveal="heading"><div><p class="eyebrow">{{ copy.information }}</p><h2>{{ menuTitle }}</h2></div>
           <nav v-if="site.menus.length > 1" class="menu-tabs" :aria-label="copy.menu">
             <NuxtLink v-for="menu in site.menus" :key="menu.slug" :to="publicSitePath(business.public_slug, menu.slug, language)" :aria-current="site.currentMenu?.menu.slug === menu.slug ? 'page' : undefined">{{ menu.translated_names?.[language] || menu.name }}</NuxtLink>
           </nav>
@@ -63,8 +67,8 @@ const style = computed(() => {
         <PublicRestaurantMenu v-if="site.currentMenu" :data="site.currentMenu" :language="language" :preview="preview" />
         <p v-else class="empty-menu">{{ language === 'en' ? 'Our menu will be available soon.' : language === 'fr' ? 'Notre carte sera bientôt disponible.' : language === 'val' ? 'La nostra carta estarà disponible prompte.' : 'Nuestra carta estará disponible pronto.' }}</p>
       </section>
-      <section v-if="about" id="nosotros" class="site-section about-section"><p class="eyebrow">{{ business.name }}</p><h2>{{ copy.about }}</h2><p class="prose">{{ about }}</p></section>
-      <section v-if="hours.length || profile.phone || profile.whatsapp || profile.email || socialLinks.length || profile.website" class="site-section info-section">
+      <section v-if="about" id="nosotros" class="site-section about-section" data-reveal="story"><p class="eyebrow">{{ business.name }}</p><h2>{{ copy.about }}</h2><p class="prose">{{ about }}</p></section>
+      <section v-if="hours.length || profile.phone || profile.whatsapp || profile.email || socialLinks.length || profile.website" class="site-section info-section" data-reveal="section">
         <div v-if="hours.length"><h2>{{ copy.hours }}</h2><dl class="hours"><div v-for="day in hours" :key="day.day"><dt>{{ copy.days[day.day] }}</dt><dd>{{ day.intervals.length ? day.intervals.map(i => `${i.open} – ${i.close}`).join(' / ') : copy.closed }}</dd></div></dl></div>
         <div v-if="profile.phone || profile.whatsapp || profile.email || socialLinks.length || profile.website"><h2>{{ copy.contact }}</h2><div class="contact-links">
           <a v-if="profile.phone" :href="phoneUrl"><Phone :size="18" /> {{ profile.phone }}</a>
@@ -74,7 +78,7 @@ const style = computed(() => {
           <a v-if="profile.website" :href="profile.website" target="_blank" rel="noopener noreferrer">{{ copy.external }} <ArrowUpRight :size="16" /></a>
         </div></div>
       </section>
-      <section v-if="address || directions" id="ubicacion" class="site-section location-section"><div><p class="eyebrow">{{ profile.city }}</p><h2>{{ copy.location }}</h2><address v-if="address">{{ address }}</address><a v-if="directions" class="secondary" :href="directions" target="_blank" rel="noopener noreferrer"><MapPin :size="18" />{{ copy.directions }}</a></div>
+      <section v-if="address || directions" id="ubicacion" class="site-section location-section" data-reveal="section"><div><p class="eyebrow">{{ profile.city }}</p><h2>{{ copy.location }}</h2><address v-if="address">{{ address }}</address><a v-if="directions" class="secondary" :href="directions" target="_blank" rel="noopener noreferrer"><MapPin :size="18" />{{ copy.directions }}</a></div>
         <div v-if="profile.address" class="map-area"><iframe v-if="mapVisible" :src="mapUrl" :title="`${copy.location}: ${business.name}`" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen /><button v-else type="button" class="map-placeholder" @click="mapVisible = true"><MapPin :size="28" /><span>{{ copy.map }}</span><small>Google Maps</small></button></div>
       </section>
     </main>

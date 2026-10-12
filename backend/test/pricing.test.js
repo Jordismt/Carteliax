@@ -65,8 +65,8 @@ test('read-only diagnostic checks expected mode before contacting Stripe', async
  await assert.rejects(checkBillingConfig('live'),{code:'DIAGNOSTIC_MODE_MISMATCH'});assert.equal(calls,0);
  assert.deepEqual(await checkBillingConfig('test'),{mode:'test',commercialConfiguration:'PASS',customer:'NOT_CHECKED'});
 });
-test('commercial plan is exactly EUR 17.49 per month, IVA inclusive and seven-day trial',()=>{
- assert.equal(COMMERCIAL_PLAN.monthlyAmount,17.49);assert.equal(COMMERCIAL_PLAN.monthlyPrice,'17,49 €');assert.equal(COMMERCIAL_PLAN.monthlyLabel,'17,49 €/mes');assert.equal(COMMERCIAL_PLAN.taxLabel,'IVA incluido (21 %)');assert.equal(COMMERCIAL_PLAN.trialDays,7);
+test('commercial display is EUR 18.99 per month, IVA inclusive and seven-day trial',()=>{
+ assert.equal(COMMERCIAL_PLAN.monthlyAmount,18.99);assert.equal(COMMERCIAL_PLAN.monthlyPrice,'18,99 €');assert.equal(COMMERCIAL_PLAN.monthlyLabel,'18,99 €/mes');assert.equal(COMMERCIAL_PLAN.taxLabel,'IVA incluido (21 %)');assert.equal(COMMERCIAL_PLAN.trialDays,7);
 });
 test('missing VAT configuration blocks Checkout without reserving or calling Stripe Checkout',()=>{
  // A separate process exercises startup with the optional VAT variable absent.

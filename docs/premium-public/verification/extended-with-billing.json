@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Carta → diseño → vista previa con productos reales",
+    "pass": true
+  },
+  {
+    "name": "Cambios pendientes, cancelar salida y guardar borrador",
+    "pass": true
+  },
+  {
+    "name": "Guardar, revisar y publicar diseño conserva todas las opciones",
+    "pass": true
+  },
+  {
+    "name": "Carta → QR cuadrado y descargas PNG/PDF",
+    "pass": true
+  },
+  {
+    "name": "QR → carta pública, categorías, precio y alérgenos",
+    "pass": true
+  },
+  {
+    "name": "Facturación: active → lenguaje humano y permisos conservados",
+    "pass": false,
+    "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Suscripción activa', { exact: true }) to be visible\u001b[22m\n"
+  }
+]

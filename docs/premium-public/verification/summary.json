@@ -1,0 +1,15 @@
+{
+  "build": "PASS",
+  "typecheck": "PASS",
+  "diff_check": "PASS",
+  "public_checks": 34,
+  "creation_checks": 7,
+  "core_editor_checks": 7,
+  "extended_editor_checks": 6,
+  "legacy_matrix_checks": 99,
+  "design_qr_checks": 5,
+  "backend_publication_unit_tests": 4,
+  "hydration_errors_in_new_suite": [],
+  "services": "API/Auth/Storage simulated; SSR uses local fixtures",
+  "out_of_scope_failure": "Old billing fixture lacks billing_compatibility; existing UI correctly displays Referencia de facturación anterior rather than Suscripción activa. No billing implementation changed."
+}

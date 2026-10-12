@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Crear y editar categoría; ordenar y visibilidad",
+    "pass": true
+  },
+  {
+    "name": "Añadir producto con categoría, foto, precio y alérgenos",
+    "pass": true
+  },
+  {
+    "name": "Cambiar y quitar foto de producto",
+    "pass": true
+  },
+  {
+    "name": "Producto asociado: error al eliminar; retirar y eliminar",
+    "pass": true
+  },
+  {
+    "name": "Añadir producto existente a categoría y retirarlo",
+    "pass": true
+  },
+  {
+    "name": "Eliminar categoría vacía requiere confirmación",
+    "pass": true
+  }
+]
