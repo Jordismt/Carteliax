@@ -16,7 +16,7 @@ export async function verifyCommercialPrice() {
   if (!price.active) throw billingConfigurationError('PRICE_INACTIVE');
   if (price.livemode !== STRIPE_LIVE_MODE) throw billingConfigurationError('PRICE_MODE_MISMATCH');
   if (price.currency !== 'eur') throw billingConfigurationError('PRICE_CURRENCY');
-  if (price.unit_amount !== 1749) throw billingConfigurationError('PRICE_AMOUNT');
+  if (price.unit_amount !== 1899) throw billingConfigurationError('PRICE_AMOUNT');
   if (price.recurring?.interval !== 'month') throw billingConfigurationError('PRICE_INTERVAL');
   if (price.recurring.interval_count !== 1) throw billingConfigurationError('PRICE_INTERVAL_COUNT');
   if (price.tax_behavior !== 'inclusive') throw billingConfigurationError('PRICE_TAX_BEHAVIOR');

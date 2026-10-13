@@ -17,7 +17,7 @@ require('dotenv').config({ path: __dirname + '/../.env', quiet: true });
     await createCheckout({ body: { businessId: ids.a1 }, user: { id: ids.a, email: 'pricing-checkout@example.test' } }, res);
     assert.equal(res.statusCode, 200); assert.equal(res.body.success, true);
     const sessionId = state.subscriptions[0].checkout_session_id;
-    fs.writeFileSync('/tmp/carteliax-price1749-checkout-resource.json', JSON.stringify({ session: sessionId }), { mode: 0o600 });
+    fs.writeFileSync('/tmp/carteliax-price1899-checkout-resource.json', JSON.stringify({ session: sessionId }), { mode: 0o600 });
     session = await stripe.checkout.sessions.retrieve(sessionId);
     const lines = await stripe.checkout.sessions.listLineItems(sessionId);
     assert.equal(session.livemode, false); assert.equal(session.mode, 'subscription');
@@ -26,12 +26,12 @@ require('dotenv').config({ path: __dirname + '/../.env', quiet: true });
     assert.equal(session.allow_promotion_codes, true);
     assert.equal(lines.data.length, 1); assert.equal(lines.data[0].quantity, 1);
     assert.equal(lines.data[0].price.id, PRICE_ID);
-    assert.equal(lines.data[0].price.unit_amount, 1749);
+    assert.equal(lines.data[0].price.unit_amount, 1899);
     assert.equal(lines.data[0].price.currency, 'eur');
     assert.equal(lines.data[0].price.tax_behavior, 'inclusive');
     console.log(JSON.stringify({
       type: 'REAL_STRIPE_TEST_CHECKOUT_API_MOCKED_DB_IDENTITY', pass: true,
-      monthlyAmount: 1749, currency: 'eur', taxBehavior: 'inclusive',
+      monthlyAmount: 1899, currency: 'eur', taxBehavior: 'inclusive',
       paymentMethodCollection: session.payment_method_collection,
       automaticTax: session.automatic_tax.enabled, promotions: session.allow_promotion_codes,
       cardCompletionVerified: false, supabaseVerified: false, appWebhooksVerified: false,

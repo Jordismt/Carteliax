@@ -3,6 +3,30 @@ const {stripe}=await import('../src/modules/subscriptions/stripeService.js');con
 const sub={id:'sub_fixture',livemode:false,customer:'cus_fixture',status:'active',metadata:{business_id:ids.a1,owner_id:ids.a,checkout_attempt_id:'attempt'},items:{data:[{price:{id:'price_fixture'},quantity:1,current_period_end:2000000000}]},trial_end:1900000000};
 const rpc = fn => async (name,args) => name === 'cx_acquire_billing_sync' ? {data:'cccccccc-cccc-4ccc-8ccc-cccccccccccc',error:null} : name === 'cx_release_billing_sync' ? {error:null} : fn(name,args);
 const signed=(type,object)=>{const body=Buffer.from(JSON.stringify({id:'evt_fixture',type,created:1800000000,livemode:false,data:{object}}));return {body,headers:{'stripe-signature':stripe.webhooks.generateTestHeaderString({payload:body.toString(),secret:'whsec_fixture'})}};};
+test('monthly renewals and cancellation still synchronize current and historical commercial contracts',async t=>{
+ const {subscriptionHasAccess}=await import('../src/modules/subscriptions/subscriptionAccess.js');
+ for(const [priceId,amount] of [['price_fixture',1899],['price_historical_1749',1749]]) {
+  const cases=[
+   ...[1,2,3].map(month=>({name:`paid month ${month}`,type:'invoice.paid',status:'active',cancel:false,end:2000000000+month*2592000})),
+   {name:'scheduled cancellation',type:'customer.subscription.updated',status:'active',cancel:true,end:2000000000},
+   {name:'effective cancellation',type:'customer.subscription.deleted',status:'canceled',cancel:false,end:2000000000},
+  ];
+  for(const scenario of cases) await t.test(`${amount} cents: ${scenario.name}`,async t=>{
+   const state=fixture();Object.assign(state.subscriptions[0],{stripe_subscription_id:sub.id,stripe_customer_id:sub.customer});
+   t.mock.method(supabaseAdmin,'from',memoryDb(state).from);
+   const remote={...sub,status:scenario.status,cancel_at_period_end:scenario.cancel,items:{data:[{price:{id:priceId,unit_amount:amount},quantity:1,current_period_end:scenario.end}]}};
+   t.mock.method(stripe.subscriptions,'retrieve',async()=>remote);
+   let payload,calls=0;
+   t.mock.method(supabaseAdmin,'rpc',rpc(async(name,args)=>{assert.equal(name,'cx_sync_billing_event');payload=args.p_payload;calls++;return {error:null};}));
+   const res=response();await stripeWebhook(signed(scenario.type,scenario.type==='invoice.paid'?{subscription:sub.id}:remote),res);
+   assert.equal(res.statusCode,200);assert.equal(calls,1);
+   assert.equal(payload.status,scenario.status);assert.equal(payload.cancel_at_period_end,scenario.cancel);
+   assert.equal(payload.current_period_end,new Date(scenario.end*1000).toISOString());
+   assert.equal(subscriptionHasAccess(payload),scenario.status==='active');
+   assert.equal(subscriptionHasAccess(payload,scenario.end*1000),false);
+  });
+ }
+});
 test('signed webhook HTTP controller validation and failure semantics (SDK real, remote calls mocked)',async t=>{
 t.mock.method(supabaseAdmin,'from',memoryDb(fixture()).from);
  await t.test('uses authoritative current Stripe state, dates and service transaction',async t=>{t.mock.method(stripe.subscriptions,'retrieve',async()=>sub);let args;t.mock.method(supabaseAdmin,'rpc',rpc(async(name,data)=>{assert.equal(name,'cx_sync_billing_event');args=data;return {error:null};}));const res=response();await stripeWebhook(signed('customer.subscription.updated',{...sub,status:'trialing',trial_end:1}),res);assert.equal(res.statusCode,200);assert.equal(args.p_payload.status,'active');assert.equal(args.p_payload.trial_ends_at,new Date(1900000000000).toISOString());});

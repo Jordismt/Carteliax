@@ -6,7 +6,7 @@ const {createCheckout,createPortal,cancelPendingCheckout}=await import('../src/m
 const {stripeWebhook}=await import('../src/modules/subscriptions/stripeWebhookController.js');
 const {requireActiveSubscription}=await import('../src/middlewares/requireActiveSubscription.js');
 const {createProductSchema}=await import('../src/modules/products/productSchemas.js');
-const price={active:true,livemode:false,tax_behavior:'inclusive',unit_amount:1749,currency:'eur',recurring:{interval:'month',interval_count:1}};
+const price={active:true,livemode:false,tax_behavior:'inclusive',unit_amount:1899,currency:'eur',recurring:{interval:'month',interval_count:1}};
 const subscription=(id='sub_0',status='active')=>({id,customer:'cus_0',status,livemode:false,metadata:{business_id:ids.a1,owner_id:ids.a},items:{data:[{price:{id:'price_fixture'},quantity:1,current_period_end:Math.floor(Date.now()/1000)+86400}]}});
 function signed(event){const body=Buffer.from(JSON.stringify(event));return {body,headers:{'stripe-signature':stripe.webhooks.generateTestHeaderString({payload:body.toString(),secret:'whsec_fixture'})}}}
 test('preproduction regressions: isolated database and Stripe transports',async t=>{

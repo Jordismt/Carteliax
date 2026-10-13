@@ -18,7 +18,7 @@ test('strict access: mode, linkage, date and cancellation boundaries',()=>{
  assert(subscriptionHasAccess(current,end-1));assert.equal(subscriptionHasAccess(current,end),false);
 });
 test('Checkout recovery regressions (remote Stripe and PostgREST mocked)',async t=>{
- t.mock.method(stripe.prices,'retrieve',async()=>({active:true,livemode:false,tax_behavior:'inclusive',unit_amount:1749,currency:'eur',recurring:{interval:'month',interval_count:1}}));
+ t.mock.method(stripe.prices,'retrieve',async()=>({active:true,livemode:false,tax_behavior:'inclusive',unit_amount:1899,currency:'eur',recurring:{interval:'month',interval_count:1}}));
  t.mock.method(stripe.taxRates,'retrieve',async()=>({active:true,livemode:false,percentage:21,inclusive:true,tax_type:'vat',country:'ES'}));
  await t.test('definitive Stripe rejection releases only its own reservation',async t=>{
   const state=fixture();state.subscriptions=[];t.mock.method(supabaseAdmin,'from',memoryDb(state).from);

@@ -22,9 +22,14 @@ test('standard and restricted Stripe keys preserve mode, price guards and signed
       process.env.STRIPE_SECRET_KEY='${kind}_${mode}_fixture'; process.env.STRIPE_MODE='${mode}';
       const {stripe,STRIPE_LIVE_MODE,verifyCommercialPrice}=await import('./src/modules/subscriptions/stripeService.js');
       assert.equal(STRIPE_LIVE_MODE,${mode === 'live'});
-      stripe.prices.retrieve=async()=>({active:true,livemode:${mode === 'live'},unit_amount:1749,currency:'eur',tax_behavior:'inclusive',recurring:{interval:'month',interval_count:1}});
+      stripe.prices.retrieve=async()=>({active:true,livemode:${mode === 'live'},unit_amount:1899,currency:'eur',tax_behavior:'inclusive',recurring:{interval:'month',interval_count:1}});
       stripe.taxRates.retrieve=async()=>({active:true,livemode:${mode === 'live'},percentage:21,inclusive:true,tax_type:'vat',country:'ES'});
       await verifyCommercialPrice();
+      for (const unit_amount of [0, 1749, 1898, 1900, 2298]) {
+        stripe.prices.retrieve=async()=>({active:true,livemode:${mode === 'live'},unit_amount,currency:'eur',tax_behavior:'inclusive',recurring:{interval:'month',interval_count:1}});
+        await assert.rejects(verifyCommercialPrice(),{billingReason:'PRICE_AMOUNT'});
+      }
+      stripe.prices.retrieve=async()=>({active:true,livemode:${mode === 'live'},unit_amount:1899,currency:'eur',tax_behavior:'inclusive',recurring:{interval:'month',interval_count:1}});
       // Real SDK, mocked reads: Dashboard manual rates in either configured mode.
       stripe.taxRates.retrieve=async()=>({active:true,livemode:${mode === 'live'},percentage:21,inclusive:true,tax_type:null,country:'ES',display_name:'IVA'});
       await verifyCommercialPrice();

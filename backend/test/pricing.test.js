@@ -7,7 +7,7 @@ safeEnv();
 const { stripe, verifyCommercialPrice, verifyReusedCustomer } = await import('../src/modules/subscriptions/stripeService.js');
 const { createCheckout } = await import('../src/modules/subscriptions/subscriptionController.js');
 const { supabaseAdmin } = await import('../src/infrastructure/database/supabase.js');
-const price={active:true,livemode:false,tax_behavior:'inclusive',unit_amount:1749,currency:'eur',recurring:{interval:'month',interval_count:1}};
+const price={active:true,livemode:false,tax_behavior:'inclusive',unit_amount:1899,currency:'eur',recurring:{interval:'month',interval_count:1}};
 const rate={active:true,livemode:false,percentage:21,inclusive:true,tax_type:'vat',country:'ES'};
 test('existing customer discounts are allowed without weakening tax, mode or balance checks',async t=>{
  for(const discounts of [{discount:{id:'di_fixture'}},{discounts:['di_fixture']}]) await t.test(JSON.stringify(discounts),async t=>{
@@ -65,8 +65,12 @@ test('read-only diagnostic checks expected mode before contacting Stripe', async
  await assert.rejects(checkBillingConfig('live'),{code:'DIAGNOSTIC_MODE_MISMATCH'});assert.equal(calls,0);
  assert.deepEqual(await checkBillingConfig('test'),{mode:'test',commercialConfiguration:'PASS',customer:'NOT_CHECKED'});
 });
-test('commercial display is EUR 18.99 per month, IVA inclusive and seven-day trial',()=>{
+test('commercial display and accepted Stripe Price agree on EUR 18.99, inclusive VAT and seven-day trial',async t=>{
  assert.equal(COMMERCIAL_PLAN.monthlyAmount,18.99);assert.equal(COMMERCIAL_PLAN.monthlyPrice,'18,99 €');assert.equal(COMMERCIAL_PLAN.monthlyLabel,'18,99 €/mes');assert.equal(COMMERCIAL_PLAN.taxLabel,'IVA incluido (21 %)');assert.equal(COMMERCIAL_PLAN.trialDays,7);
+ t.mock.method(stripe.prices,'retrieve',async()=>price);
+ t.mock.method(stripe.taxRates,'retrieve',async()=>rate);
+ const verified=await verifyCommercialPrice();
+ assert.equal(verified.price.unit_amount,Math.round(COMMERCIAL_PLAN.monthlyAmount*100));
 });
 test('missing VAT configuration blocks Checkout without reserving or calling Stripe Checkout',()=>{
  // A separate process exercises startup with the optional VAT variable absent.
@@ -77,7 +81,7 @@ test('missing VAT configuration blocks Checkout without reserving or calling Str
   const {stripe,verifyCommercialPrice}=await import('./src/modules/subscriptions/stripeService.js');
   const {supabaseAdmin}=await import('./src/infrastructure/database/supabase.js');
   const {createCheckout}=await import('./src/modules/subscriptions/subscriptionController.js');
-  stripe.prices.retrieve=async()=>({active:true,livemode:false,unit_amount:1749,currency:'eur',tax_behavior:'inclusive',recurring:{interval:'month',interval_count:1}});
+  stripe.prices.retrieve=async()=>({active:true,livemode:false,unit_amount:1899,currency:'eur',tax_behavior:'inclusive',recurring:{interval:'month',interval_count:1}});
   let calls=0;stripe.taxRates.retrieve=async()=>{calls++;throw Error('unexpected tax request')};stripe.checkout.sessions.create=async()=>{calls++;throw Error('unexpected Checkout')};
   const state=fixture();state.subscriptions=[];supabaseAdmin.from=memoryDb(state).from;
   await assert.rejects(verifyCommercialPrice(),{code:'BILLING_CONFIGURATION',billingReason:'VAT_RATE_MISSING'});
@@ -86,7 +90,7 @@ test('missing VAT configuration blocks Checkout without reserving or calling Str
  `],{cwd:new URL('../',import.meta.url),stdio:'pipe'});
 });
 test('billing rejects incorrect gross price, recurrence, mode and VAT before Checkout',async t=>{
- const invalidPrices=[...[-1,0,1599,1748,1750,1799,1800,2116].map(unit_amount=>({...price,unit_amount})),{...price,active:false},{...price,livemode:true},{...price,currency:'usd'},{...price,recurring:{interval:'year',interval_count:1}},{...price,recurring:{interval:'month',interval_count:2}},{...price,recurring:null},{...price,tax_behavior:'exclusive'},{...price,tax_behavior:'unspecified'}];
+ const invalidPrices=[...[-1,0,1599,1748,1749,1750,1799,1800,1898,1900,2116,2298,null,'1899',1899.1].map(unit_amount=>({...price,unit_amount})),{...price,active:false},{...price,livemode:true},{...price,currency:'usd'},{...price,recurring:{interval:'year',interval_count:1}},{...price,recurring:{interval:'month',interval_count:2}},{...price,recurring:null},{...price,tax_behavior:'exclusive'},{...price,tax_behavior:'unspecified'}];
  const invalidRates=[{...rate,active:false},{...rate,livemode:true},{...rate,percentage:20},{...rate,inclusive:false},{...rate,tax_type:'sales_tax'},{...rate,country:'FR'}];
  for (const [index,p,r]of [...invalidPrices.map((p,i)=>['price '+i,p,rate]),...invalidRates.map((r,i)=>['VAT '+i,price,r])]) await t.test(index,async t=>{
   const state=fixture();state.subscriptions=[];t.mock.method(supabaseAdmin,'from',memoryDb(state).from);t.mock.method(stripe.prices,'retrieve',async()=>p);t.mock.method(stripe.taxRates,'retrieve',async()=>r);let calls=0;t.mock.method(stripe.checkout.sessions,'create',async()=>{calls++;throw Error('should not be called');});
